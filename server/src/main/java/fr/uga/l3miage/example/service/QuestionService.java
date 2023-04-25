@@ -2,11 +2,15 @@ package fr.uga.l3miage.example.service;
 
 import fr.uga.l3miage.example.component.ExampleComponent;
 import fr.uga.l3miage.example.component.QuestionComponent;
+import fr.uga.l3miage.example.component.ReponseComponent;
 import fr.uga.l3miage.example.exception.rest.*;
 import fr.uga.l3miage.example.exception.technical.*;
+import fr.uga.l3miage.example.mapper.QuestionMapper;
 import fr.uga.l3miage.example.mapper.TestMapper;
+import fr.uga.l3miage.example.models.QuestionEntity;
 import fr.uga.l3miage.example.models.TestEntity;
 import fr.uga.l3miage.example.request.CreateTestRequest;
+import fr.uga.l3miage.example.response.QuestionDto;
 import fr.uga.l3miage.example.response.Test;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,65 +22,50 @@ import javax.transaction.Transactional;
 public class QuestionService {
     private static final String ERROR_DETECTED = "Une erreur lors de la création de l'entité TestConfigWithProperties à été détecté.";
     private final QuestionComponent questionComponent;
-    private final TestMapper testMapper;
+    private final ReponseComponent reponseComponent;
+    private final QuestionMapper questionMapper;
 
 
-    public String helloWord(final boolean isInError) {
+    public QuestionDto getQuestion(final Long id) throws EntityNotFoundException {
         try {
-            return questionComponent.getHelloWord(isInError);
-        } catch (IsInErrorException ex) {
-            throw new IsInErrorRestException("Une erreur à été demandée par le client, ici elle est catch par le service qui renvoie une rest exception et qui a comme cause l'exception technique", ex);
-        }
-    }
-
-    public Test getTest(final String description) {
-        try {
-            return testMapper.toDto(questionComponent.getTest(description));
-        } catch (TestEntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Impossible de charger l'entité. Raison : [%s]",ex.getMessage()),description,ex);
+            return QuestionMapper.toQuestionDto(questionComponent.getQuestion(id));
+        } catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
         }
     }
 
 
 
-    public void createTest(final CreateTestRequest createTestRequest) {
-        TestEntity newTestEntity = testMapper.toEntity(createTestRequest);
-        if(newTestEntity.getTestInt()!=0){
+    public void createQuestion(final QuestionEntity question) throws AlreadyExistException {
+        QuestionEntity newQuestionEntity = questionMapper.toQuestionEntity(question);
+        try {
+            questionComponent.createQuestion(newQuestionEntity);
+        } catch (AlreadyExistException ex) {
+            throw new AlreadyExistException(ERROR_DETECTED,question.getId(),ex);
+        }
+    }
+
+
+    public void updateQuestion(final Long idQuesToModify,final QuestionDto question) throws EntityNotFoundException, NotTheSameIdException {
+        if (idQuesToModify == question.getId()){
             try {
-                questionComponent.createTest(newTestEntity);
-            } catch (IsNotTestException ex) {
-                throw new IsNotTestRestException(ERROR_DETECTED,createTestRequest,ex);
-            } catch (DescriptionAlreadyExistException ex) {
-                throw new DescriptionAlreadyUseRestException(ERROR_DETECTED,newTestEntity.getDescription(),ex);
+                questionComponent.updateQuestion(idQuesToModify,question);
+            } catch (EntityNotFoundException ex) {
+                throw new EntityNotFoundException(String.format("Aucune question n'a  été trouvé pour l'Id : Impossible de modifier",idQuesToModify),idQuesToModify);
             }
         }else{
-            throw new TestIntIsZeroRestException("La somme des testInt ne doit pas être égale à zéro");
+            throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
         }
+
     }
-
-
-    public void updateTest(final String lastDescription,final Test test) {
-        if (test.getTestInt() != 0) {
-            try {
-                questionComponent.updateTest(lastDescription, test);
-            } catch (TestEntityNotFoundException ex) {
-                throw new TestEntityNotFoundRestException(String.format("Impossible de charger l'entité. Raison : [%s]",ex.getMessage()),lastDescription,ex);
-            } catch (IsNotTestException ex) {
-                throw new IsNotTestRestException("Une erreur lors de la mise à jour de l'entité TestConfigWithProperties a été détectée.",null,ex);
-            } catch (DescriptionAlreadyExistException ex) {
-                throw new DescriptionAlreadyUseRestException(ERROR_DETECTED,test.getDescription(),ex);
-            }
-        }else throw new TestIntIsZeroRestException("L'attribut testInt ne peut pas être égal à zéro");
-    }
-
-
 
     @Transactional
-    public void deleteTest(String description) {
+    public void deleteQuestion(final Long id) throws EntityNotFoundException{
         try {
-            questionComponent.deleteTest(description);
-        } catch (MultipleEntityHaveSameDescriptionException | TestEntityNotFoundException ex) {
-            throw new TestEntityNotDeletedRestException(ex.getMessage());
+            questionComponent.deleteQuestion(id);
+        } catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
         }
     }
+
 }
