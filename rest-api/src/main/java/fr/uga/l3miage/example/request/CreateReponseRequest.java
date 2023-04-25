@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @Schema(description = "Correspond à la requête permettant de créer une entité Reponse")
-public class CreationReponseRequest {
+public class CreateReponseRequest {
     @Schema(description = "Reponse ID")
     private Long id;
     

@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Builder
 @Schema(description = "Correspond à la requête permettant de créer une entité Question")
-public class CreationQuestionRequest {
+public class CreateQuestionRequest {
     @Schema(description = "Question ID")
     private Long id;
     
