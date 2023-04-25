@@ -11,15 +11,15 @@ import lombok.Getter;
  */
 @Getter
 public class EntityNotFoundException extends Exception {
-    private final String description;
+    private final Long id;
 
-    public EntityNotFoundException(String message, String description) {
+    public EntityNotFoundException(String message, Long id) {
         super(message);
-        this.description = description;
+        this.id = id;
     }
 
-    public EntityNotFoundException(String message, String description, Throwable cause) {
+    public EntityNotFoundException(String message, Long id, Throwable cause) {
         super(message, cause);
-        this.description = description;
+        this.id = id;
     }
 }

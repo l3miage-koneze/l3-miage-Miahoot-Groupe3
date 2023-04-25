@@ -25,7 +25,7 @@ public class MiahootComponent {
             return miaOpt.get();
         }
         else{
-            throw new EntityNotFoundException(String.format("Aucune entité n'a été trouvée pour la description [%s]", description), description));
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id' [%d]", id), id));
         }
     }
 
