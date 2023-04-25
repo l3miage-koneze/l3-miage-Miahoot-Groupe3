@@ -29,7 +29,7 @@ public class ReponseComponent {
         }
     }
 
-    public void createReponse(final ReponseEntity reponse) throws IsNotTestException, AlreadyExistException {
+    public void createReponse(final ReponseEntity reponse) throws AlreadyExistException {
         if (reponseRepository.findById(reponse.getId()).isPresent()){
             throw new AlreadyExistException(String.format("La réponse n°[%lu] existe déjà en BD.", reponse.getId()), reponse.getId());
         }

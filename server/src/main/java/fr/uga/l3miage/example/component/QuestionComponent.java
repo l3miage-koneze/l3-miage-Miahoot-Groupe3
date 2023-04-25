@@ -32,7 +32,7 @@ public class QuestionComponent {
         }
     }
 
-    public void createQuestion(final QuestionEntity question) throws IsNotTestException, AlreadyExistException {
+    public void createQuestion(final QuestionEntity question) throws AlreadyExistException {
         if (questionRepository.findById(question.getId()).isPresent()){
             throw new AlreadyExistException(String.format("La question n°[%lu] existe déjà en BD.", question.getId()), question.getId());
         }

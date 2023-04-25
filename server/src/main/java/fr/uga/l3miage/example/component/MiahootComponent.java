@@ -32,7 +32,7 @@ public class MiahootComponent {
         }
     }
 
-    public void createMiahoot(final MiahootEntity miahoot) throws IsNotTestException, AlreadyExistException {
+    public void createMiahoot(final MiahootEntity miahoot) throws AlreadyExistException {
         if (miahootRepository.findById(miahoot.getId()).isPresent()){
             throw new AlreadyExistException(String.format("Le Miahoot n°[%lu] existe déjà en BD.", miahoot.getId()), miahoot.getId());
         }
