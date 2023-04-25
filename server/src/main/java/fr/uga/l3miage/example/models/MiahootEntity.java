@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 
 import java.util.Objects;
 
+
 @Getter
 @Setter
 @Builder
@@ -27,7 +28,7 @@ public class MiahootEntity {
     @OneToMany
     private QuestionEntity[] questions;
 
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
