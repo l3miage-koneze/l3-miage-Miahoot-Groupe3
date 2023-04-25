@@ -30,10 +30,9 @@ public class ReponseController implements ReponseEndpoint {
     private final ReponseService reponseService;
     private final ReponseMapper reponseMapper;
 
-    @PostMapping(value = "/Reponse")
+    @PostMapping(value = "/Reponses")
     @ResponseStatus(HttpStatus.CREATED)
     public ReponseDto newReponse(@RequestBody @Valid ReponseDto reponseDto){
-        //ReponseEntity reponseEntity = reponseMapper.toReponseEntity(reponseDto);
         if(reponseDto == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST , null);
         }
@@ -45,7 +44,7 @@ public class ReponseController implements ReponseEndpoint {
         }
     }
 
-    @GetMapping("/Reponse/{id}")
+    @GetMapping("/Reponses/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ReponseDto getReponse(@PathVariable("id") Long id){
         try{
@@ -57,13 +56,26 @@ public class ReponseController implements ReponseEndpoint {
     }
 
 
-@GetMapping("/Reponse")
-public Collection<ReponseDto> getAllReponse() {
+@GetMapping("/Reponses")
+public Collection<ReponseDto> getAllReponses() {
    return reponseMapper.toReponseDto(reponseService.list());
 }
 
+@GetMapping("/Reponses")
+public Collection<ReponseDto> getReponsesByLabel(@RequestParam(value = "q", required = false) String query) {
+    Collection<ReponseEntity> reponseEntities;
+    if (query == null) {
+        reponseEntities = reponseService.list();
+    } else {
+        reponseEntities = reponseService.searchByLabel(query);
+    }
+    return reponseEntities.stream()
+            .map(reponseMapper::toReponseDto)
+            .toList();
+}
 
-@DeleteMapping("/Reponse/{id}")
+
+@DeleteMapping("/Reponses/{id}")
 @ResponseStatus(HttpStatus.NO_CONTENT)
 public void deleteReponse(@PathVariable("id") Long id) throws Exception{
     try{
@@ -75,7 +87,7 @@ public void deleteReponse(@PathVariable("id") Long id) throws Exception{
 
 
 
-    @PutMapping("Reponse/{id}")
+    @PutMapping("Reponses/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ReponseDto updateReponse(@PathVariable("id") @NotNull Long id, @RequestBody @Valid ReponseDto reponseDto){
         try {

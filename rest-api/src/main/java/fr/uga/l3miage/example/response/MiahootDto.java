@@ -1,6 +1,6 @@
 package fr.uga.l3miage.example.response;
 
-import java.util.List;
+import java.util.Collection;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -17,5 +17,5 @@ public class MiahootDto {
     private String nom;
     
     @Schema(description = "Liste de questions")
-    private List<QuestionDto> questions;
+    private Collection<QuestionDto> questions;
 }

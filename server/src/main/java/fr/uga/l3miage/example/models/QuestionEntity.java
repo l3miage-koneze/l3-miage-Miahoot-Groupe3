@@ -5,6 +5,8 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import java.util.Collection;
 import java.util.Objects;
 
 @Getter
@@ -22,8 +24,11 @@ public class QuestionEntity {
     private String label;
 
     @OneToMany
-    private ReponseEntity[] reponses;
+    private Collection<ReponseEntity> reponses;
     
+    public Collection<ReponseEntity> getReponses(){
+        return reponses;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

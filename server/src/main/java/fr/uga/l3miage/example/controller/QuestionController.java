@@ -3,10 +3,12 @@ package fr.uga.l3miage.example.controller;
 import fr.uga.l3miage.example.endpoint.QuestionEndpoint;
 import fr.uga.l3miage.example.exception.rest.IsInErrorRestException;
 import fr.uga.l3miage.example.mapper.QuestionMapper;
+import fr.uga.l3miage.example.mapper.ReponseMapper;
 import fr.uga.l3miage.example.models.QuestionEntity;
 import fr.uga.l3miage.example.request.CreateTestRequest;
 import fr.uga.l3miage.example.response.MiahootDto;
 import fr.uga.l3miage.example.response.QuestionDto;
+import fr.uga.l3miage.example.response.ReponseDto;
 import fr.uga.l3miage.example.response.Test;
 import fr.uga.l3miage.example.service.QuestionService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +31,9 @@ public class QuestionController implements QuestionEndpoint {
 
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
+    private final ReponseMapper reponseMapper;
 
-    @PostMapping(value = "/Question")
+    @PostMapping(value = "/Questions")
     @ResponseStatus(HttpStatus.CREATED)
     public QuestionDto newQuestion(@RequestBody @Valid QuestionDto questionDto){
         //QuestionEntity QuestionEntity = QuestionMapper.toQuestionEntity(QuestionDto);
@@ -45,7 +48,7 @@ public class QuestionController implements QuestionEndpoint {
         }
     }
 
-    @GetMapping("/Question/{id}")
+    @GetMapping("/Questions/{id}")
     @ResponseStatus(HttpStatus.OK)
     public QuestionDto getQuestion(@PathVariable("id") Long id){
         try{
@@ -57,13 +60,25 @@ public class QuestionController implements QuestionEndpoint {
     }
 
 
-@GetMapping("/Question")
-public Collection<QuestionDto> getAllQuestion() {
+@GetMapping("/Questions")
+public Collection<QuestionDto> getAllQuestions() {
    return questionMapper.toQuestionDto(questionService.list());
 }
 
+@GetMapping("/Questions")
+public Collection<QuestionDto> getQuestionsByLabel(@RequestParam(value = "q", required = false) String query){
+    Collection<QuestionEntity> questionEntities;
+    if (query == null) {
+        questionEntities = questionService.list();
+    } else {
+        questionEntities = questionService.searchByLabel(query);
+    }
+    return questionEntities.stream()
+            .map(questionMapper::toQuestionDto)
+            .toList();
+}
 
-@DeleteMapping("/Question/{id}")
+@DeleteMapping("/Questions/{id}")
 @ResponseStatus(HttpStatus.NO_CONTENT)
 public void deleteQuestion(@PathVariable("id") Long id) throws Exception{
     try{
@@ -75,7 +90,7 @@ public void deleteQuestion(@PathVariable("id") Long id) throws Exception{
 
 
 
-    @PutMapping("Question/{id}")
+    @PutMapping("Questions/{id}")
     @ResponseStatus(HttpStatus.OK)
     public QuestionDto updateQuestion(@PathVariable("id") @NotNull Long id, @RequestBody @Valid QuestionDto questionDto){
         try {
@@ -89,6 +104,16 @@ public void deleteQuestion(@PathVariable("id") Long id) throws Exception{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, null, e);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, null, e);
+        }
+    }
+
+    @GetMapping("/Questions/{id}/Reponses")
+    public Collection<ReponseDto> getAllReponses(@PathVariable("id") @NotNull Long questionId) {
+        try {
+            var question = questionService.get(questionId);
+            return reponseMapper.toReponseDto(question.getReponses());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null, e);
         }
     }
     }

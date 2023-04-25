@@ -1,6 +1,6 @@
 package fr.uga.l3miage.example.response;
 
-import java.util.List;
+import java.util.Collection;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -17,5 +17,5 @@ public class QuestionDto {
     private String label;
     
     @Schema(description = "Liste de responses")
-    private List<ReponseDto> reponses;
+    private Collection<ReponseDto> reponses;
 }
