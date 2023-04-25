@@ -10,16 +10,16 @@ import lombok.Getter;
  * </ul>
  */
 @Getter
-public class DescriptionAlreadyExistException extends Exception {
-    private final String description;
+public class AlreadyExistException extends Exception {
+    private final Long id;
 
-    public DescriptionAlreadyExistException(String message, String description) {
+    public AlreadyExistException(String message, Long id) {
         super(message);
-        this.description = description;
+        this.id = id;
     }
 
-    public DescriptionAlreadyExistException(String message, String description, Throwable cause) {
+    public AlreadyExistException(String message, Long id, Throwable cause) {
         super(message, cause);
-        this.description = description;
+        this.id = id;
     }
 }
