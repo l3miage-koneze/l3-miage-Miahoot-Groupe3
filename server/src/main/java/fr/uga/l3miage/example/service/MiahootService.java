@@ -4,9 +4,12 @@ import fr.uga.l3miage.example.component.ExampleComponent;
 import fr.uga.l3miage.example.component.MiahootComponent;
 import fr.uga.l3miage.example.exception.rest.*;
 import fr.uga.l3miage.example.exception.technical.*;
+import fr.uga.l3miage.example.mapper.MiahootMapper;
 import fr.uga.l3miage.example.mapper.TestMapper;
-import fr.uga.l3miage.example.models.TestEntity;
+import fr.uga.l3miage.example.models.MiahootEntity;
+import fr.uga.l3miage.example.request.CreateMiahootRequest;
 import fr.uga.l3miage.example.request.CreateTestRequest;
+import fr.uga.l3miage.example.response.MiahootDto;
 import fr.uga.l3miage.example.response.Test;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,66 +22,43 @@ public class MiahootService {
 
     private static final String ERROR_DETECTED = "Une erreur lors de la création de l'entité TestConfigWithProperties à été détecté.";
     private final MiahootComponent miahootComponent;
-    private final TestMapper testMapper;
+    private final MiahootMapper miahootMapper;
 
-
-    public String helloWord(final boolean isInError) {
+    public MiahootDto getMiahoot(final Long id) throws EntityNotFoundException{
         try {
-            return miahootComponent.getHelloWord(isInError);
-        } catch (IsInErrorException ex) {
-            throw new IsInErrorRestException("Une erreur à été demandée par le client, ici elle est catch par le service qui renvoie une rest exception et qui a comme cause l'exception technique", ex);
+            return miahootMapper.toMiahootDto(miahootComponent.getMiahoot(id));
+        } catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
         }
     }
 
 
-    public Test getTest(final String description) {
+    public void createMiahoot(final CreateMiahootRequest createMiahootRequest) throws AlreadyExistException {
+        MiahootEntity newMiahootEntity = miahootMapper.toMiahootEntity(createMiahootRequest);
         try {
-            return testMapper.toDto(miahootComponent.getTest(description));
-        } catch (TestEntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Impossible de charger l'entité. Raison : [%s]",ex.getMessage()),description,ex);
+            miahootComponent.createMiahoot(newMiahootEntity);
+        } catch (AlreadyExistException ex) {
+            throw new AlreadyExistException(ERROR_DETECTED,newMiahootEntity.getId(),ex);
         }
     }
 
-
-    public void createTest(final CreateTestRequest createTestRequest) {
-        TestEntity newTestEntity = testMapper.toEntity(createTestRequest);
-        if(newTestEntity.getTestInt()!=0){
-            try {
-                miahootComponent.createTest(newTestEntity);
-            } catch (IsNotTestException ex) {
-                throw new IsNotTestRestException(ERROR_DETECTED,createTestRequest,ex);
-            } catch (DescriptionAlreadyExistException ex) {
-                throw new DescriptionAlreadyUseRestException(ERROR_DETECTED,newTestEntity.getDescription(),ex);
-            }
-        }else{
-            throw new TestIntIsZeroRestException("La somme des testInt ne doit pas être égale à zéro");
+    public void updateMiahoot(final Long idMiaToModify,final MiahootDto miahoot) throws EntityNotFoundException, NotTheSameIdException {
+        try {
+            miahootComponent.updateMiahoot(idMiaToModify,miahoot);
+        } catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a pas été trouvé pour l'Id : Impossible de modifier",idMiaToModify),idMiaToModify);
+        } catch (NotTheSameIdException ex) {
+            throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
         }
-    }
-
-
-    public void updateTest(final String lastDescription,final Test test) {
-        if (test.getTestInt() != 0) {
-            try {
-                miahootComponent.updateTest(lastDescription, test);
-            } catch (TestEntityNotFoundException ex) {
-                throw new TestEntityNotFoundRestException(String.format("Impossible de charger l'entité. Raison : [%s]",ex.getMessage()),lastDescription,ex);
-            } catch (IsNotTestException ex) {
-                throw new IsNotTestRestException("Une erreur lors de la mise à jour de l'entité TestConfigWithProperties a été détectée.",null,ex);
-            } catch (DescriptionAlreadyExistException ex) {
-                throw new DescriptionAlreadyUseRestException(ERROR_DETECTED,test.getDescription(),ex);
-            }
-        }else throw new TestIntIsZeroRestException("L'attribut testInt ne peut pas être égal à zéro");
     }
 
 
     @Transactional
-    public void deleteTest(String description) {
+    public void deleteMiahoot(final Long id) throws EntityNotFoundException {
         try {
-            miahootComponent.deleteTest(description);
-        } catch (MultipleEntityHaveSameDescriptionException | TestEntityNotFoundException ex) {
-            throw new TestEntityNotDeletedRestException(ex.getMessage());
+            miahootComponent.deleteMiahoot(id);
+        } catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été retrouvé pour l'id [%lu] : impossible de supprimer",id),id);
         }
     }
 }
-
-
