@@ -1,56 +1,70 @@
 package fr.uga.l3miage.example.component;
 
 import fr.uga.l3miage.example.exception.technical.*;
-import fr.uga.l3miage.example.mapper.TestMapper;
-import fr.uga.l3miage.example.models.TestEntity;
-import fr.uga.l3miage.example.repository.TestRepository;
-import fr.uga.l3miage.example.response.Test;
+import fr.uga.l3miage.example.mapper.QuestionMapper;
+import fr.uga.l3miage.example.models.ReponseEntity;
+import fr.uga.l3miage.example.models.QuestionEntity;
+import fr.uga.l3miage.example.repository.ReponseRepository;
+import fr.uga.l3miage.example.repository.QuestionRepository;
+import fr.uga.l3miage.example.response.QuestionDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class QuestionComponent {
 
-    private final TestRepository testRepository;
-    private final TestMapper testMapper;
+    private final QuestionRepository questionRepository;
+    private final ReponseRepository reponseRepository;
+    private final QuestionMapper questionMapper;
 
-    private final String helloWord;
 
-    public TestEntity getTest(final String description) throws TestEntityNotFoundException {
-        return testRepository.findByDescription(description)
-                .orElseThrow(() -> new TestEntityNotFoundException(String.format("Aucune entité n'a été trouvée pour la description [%s]", description), description));
+    public QuestionEntity getQuestion(final Long id) throws EntityNotFoundException {
+        Optional<QuestionEntity> quesOpt = questionRepository.findById(id);
+        if (quesOpt.isPresent()){
+            return quesOpt.get();
+        }
+        else{
+            throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
+        }
     }
 
+    public void createQuestion(final QuestionEntity question) throws IsNotTestException, AlreadyExistException {
+        if (questionRepository.findById(question.getId()).isPresent()){
+            throw new AlreadyExistException(String.format("La question n°[%lu] existe déjà en BD.", question.getId()), question.getId());
+        }
+        else{
+            questionRepository.save(question);
+        }
+    }
 
-    public void createTest(final TestEntity entity) throws IsNotTestException, DescriptionAlreadyExistException {
-        if (Boolean.TRUE.equals(entity.getIsTest())) {
-            if (testRepository.findByDescription(entity.getDescription()).isPresent()) {
-                throw new DescriptionAlreadyExistException(String.format("La description %s existe déjà en BD.", entity.getDescription()), entity.getDescription());
+    public void updateQuestion(final Long idQuesToModify, final QuestionDto question) throws EntityNotFoundException, NotTheSameIdException{
+        if (idQuesToModify == question.getId()) {
+            Optional<QuestionEntity> quesOpt = questionRepository.findById(idQuesToModify);
+            if (quesOpt.isPresent()){
+                questionMapper.mergeQuestionEntity(quesOpt.get(), question);
+                questionRepository.save(quesOpt.get());
             }
-            testRepository.save(entity);
-        } else throw new IsNotTestException("Le champs isTest n'est pas à true, donc erreur technique levée", entity);
-    }
-
-    public void updateTest(final String lastDescription, final Test test) throws TestEntityNotFoundException, IsNotTestException, DescriptionAlreadyExistException {
-        if (Boolean.TRUE.equals(test.getIsTest())) {
-            if (!lastDescription.equals(test.getDescription()) && testRepository.findByDescription(test.getDescription()).isPresent()) {
-                throw new DescriptionAlreadyExistException(String.format("La description %s existe déjà en BD.", test.getDescription()), test.getDescription());
+            else{
+                throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%lu] : impossible de modifier.", idQuesToModify), idQuesToModify);
             }
-            TestEntity actualEntity = testRepository.findByDescription(lastDescription)
-                    .orElseThrow(() -> new TestEntityNotFoundException(String.format("Aucune entité n'a été trouvé pour la description [%s]", lastDescription), lastDescription));
-            testMapper.mergeTestEntity(actualEntity, test);
-            testRepository.save(actualEntity);
-        } else throw new IsNotTestException("Le champs isTest n'est pas à true, donc erreur technique levée", null);
+        } else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
     }
 
 
-    public void deleteTest(final String description) throws MultipleEntityHaveSameDescriptionException, TestEntityNotFoundException {
-        int deleted = testRepository.deleteByDescription(description);
-        if (deleted > 1)
-            throw new MultipleEntityHaveSameDescriptionException("Plusieurs entités ont la même description alors que c'est impossible niveau métier !!");
-        else if (deleted == 0)
-            throw new TestEntityNotFoundException("L'entité à supprimer n'a pas été trouvée", description);
-
+    public void deleteQuestion(final Long id) throws EntityNotFoundException {
+        Optional<QuestionEntity> quesOpt = questionRepository.findById(id);
+        if (quesOpt.isPresent()) {
+            questionRepository.deleteById(id);
+            for (ReponseEntity reponse : quesOpt.get().getReponses()) {
+                reponseRepository.deleteById(reponse.getId());
+            }
+        } else {
+            throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
+        }
     }
+
 }
