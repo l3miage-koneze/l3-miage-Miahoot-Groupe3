@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 
 import java.util.Objects;
 
+
 @Getter
 @Setter
 public class Miahoot {
@@ -23,7 +24,7 @@ public class Miahoot {
     @OneToMany
     private Question[] questions;
 
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
