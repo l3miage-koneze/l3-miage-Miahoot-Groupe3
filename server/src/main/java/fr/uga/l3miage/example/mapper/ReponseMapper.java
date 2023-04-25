@@ -12,7 +12,7 @@ import lombok.NonNull;
 
 @Mapper
 public interface ReponseMapper {
-    ReponseDto toReponseDto(ReponseEntity reponse);
+    ReponseDto toReponseDto(Object updated);
     ReponseEntity toReponseEntity(@Valid ReponseDto reponseDto);
     void mergeReponseEntity(@MappingTarget @NonNull ReponseEntity reponseEntity, ReponseDto reponseDto);
 }

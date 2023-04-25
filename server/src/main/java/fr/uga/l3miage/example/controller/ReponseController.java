@@ -18,6 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import java.util.stream.Collectors;
 import java.util.Collection;
 
@@ -27,74 +29,66 @@ public class ReponseController implements ReponseEndpoint {
 
     private final ReponseService reponseService;
     private final ReponseMapper reponseMapper;
-/* 
-    @Autowired
-    public ReponseController(ReponseService reponseService, ReponseMapper reponseMapper){
-        this.reponseService = reponseService;
-        this.reponseMapper = reponseMapper;
-    }
-*/
-@GetMapping("/reponse")
-public Collection<ReponseDto> reponse(@RequestParam(value = "q", required = false) String query) {
-    Collection<ReponseDto> reponses;
-    if (query == null) {
-        reponses = reponseService.list();
-    } else {
-        reponses = reponseService.searchByName(query);
-    }
-    return reponses.stream().map(reponseMapper::toReponseDto).collect(Collectors.toList());
-}
 
-    @GetMapping("/reponse/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ReponseDto reponse(@PathVariable("id") Long id){
-        try{
-            ReponseEntity reponse= this.reponseService.get(id);
-            return this.reponseMapper.toReponseDto(reponse);
-        } catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null , e);
-        }
-    }
-
-
-
-    @PostMapping("/reponse")
+    @PostMapping(value = "/Reponse")
     @ResponseStatus(HttpStatus.CREATED)
     public ReponseDto newReponse(@RequestBody @Valid ReponseDto reponseDto){
-        ReponseEntity reponseEntity = reponseMapper.toReponseEntity(reponseDto);
-        if(reponseEntity == null){
+        //ReponseEntity reponseEntity = reponseMapper.toReponseEntity(reponseDto);
+        if(reponseDto == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST , null);
         }
         try{
-            reponseEntity = this.reponseService.save(reponseEntity);
+            ReponseEntity reponseEntity = this.reponseService.save(reponseMapper.toReponseEntity(reponseDto));
             return reponseMapper.toReponseDto(reponseEntity);
         } catch(Exception e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, null , e);
         }
     }
 
-    @PutMapping("reponse/{id}")
+    @GetMapping("/Reponse/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ReponseDto updateMiahoot(@RequestBody ReponseDto reponseDto, @PathVariable("id") Long id){
-        if(id != reponseDto.id()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    public ReponseDto getReponse(@PathVariable("id") Long id){
         try{
-            ReponseEntity updated = this.reponseService.update(this.reponseMapper.toReponseEntity(reponseDto));
-            return this.reponseMapper.toReponseDto(updated);
-        } catch( EntityNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            ReponseEntity reponseEntity= this.reponseService.get(id);
+            return this.reponseMapper.toReponseDto(reponseEntity);
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null , e);
         }
     }
 
 
-    @DeleteMapping("/reponse/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteReponse(@PathVariable("id") Long id){
-        try{
-            reponseService.delete(id);
-        }catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Reponse was not found");
-        }
+@GetMapping("/Reponse")
+public Collection<ReponseDto> getAllReponse() {
+   return reponseMapper.toReponseDto(reponseService.list());
+}
+
+
+@DeleteMapping("/Reponse/{id}")
+@ResponseStatus(HttpStatus.NO_CONTENT)
+public void deleteReponse(@PathVariable("id") Long id) throws Exception{
+    try{
+        reponseService.delete(id);
+    }catch(Exception e){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Reponse was not found");
     }
 }
+
+
+
+    @PutMapping("Reponse/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ReponseDto updateReponse(@PathVariable("id") @NotNull Long id, @RequestBody @Valid ReponseDto reponseDto){
+        try {
+            if (reponseDto.id().equals(id)) {
+                ReponseEntity reponseEntity = (ReponseEntity) reponseMapper.toReponseEntity(reponseDto);
+                var updated = reponseService.update(reponseEntity);
+                return reponseMapper.toReponseDto(updated);
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null, e);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, null, e);
+        }
+    }
+    }

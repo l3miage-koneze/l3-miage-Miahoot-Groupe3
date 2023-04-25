@@ -3,6 +3,7 @@ package fr.uga.l3miage.example.controller;
 import fr.uga.l3miage.example.endpoint.MiahootEndpoint;
 import fr.uga.l3miage.example.exception.rest.IsInErrorRestException;
 import fr.uga.l3miage.example.mapper.MiahootMapper;
+import fr.uga.l3miage.example.mapper.QuestionMapper;
 import fr.uga.l3miage.example.request.CreateTestRequest;
 import fr.uga.l3miage.example.response.MiahootDto;
 import fr.uga.l3miage.example.response.Test;
@@ -37,14 +38,14 @@ public class MiahootController implements MiahootEndpoint {
     }
 
     @GetMapping("/miahoot")
-    public Collection<MiahootDTO> miahoot (@RequestParam(value = "q", required = false) String query) {
-        Collection<Miahoot> miahoots;
+    public Collection<MiahootDto> miahoot (@RequestParam(value = "q", required = false) String query) {
+        Collection<MiahootDto> miahoots;
         if (query == null) {
             miahoots = miahootService.list();
         } else {
             miahoots = miahootService.searchByName(query);
         }
-        return miahoots.stream().map(miahootMapper::entityToDTO).toList();
+        return miahoots.stream().map(miahootMapper::toMiahootDto).toList();
     }
 
     @GetMapping("/miahoot/{id}")

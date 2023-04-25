@@ -2,12 +2,13 @@ package fr.uga.l3miage.example.controller;
 
 import fr.uga.l3miage.example.endpoint.QuestionEndpoint;
 import fr.uga.l3miage.example.exception.rest.IsInErrorRestException;
+import fr.uga.l3miage.example.mapper.QuestionMapper;
+import fr.uga.l3miage.example.models.QuestionEntity;
 import fr.uga.l3miage.example.request.CreateTestRequest;
 import fr.uga.l3miage.example.response.MiahootDto;
 import fr.uga.l3miage.example.response.QuestionDto;
 import fr.uga.l3miage.example.response.Test;
 import fr.uga.l3miage.example.service.QuestionService;
-import fr.uga.l3miage.example.service.ReponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import java.util.stream.Collectors;
 import java.util.Collection;
 
 @RestController
@@ -25,96 +29,66 @@ public class QuestionController implements QuestionEndpoint {
 
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
-    private final ReponseService reponseService;
-    private final ReponseMapper reponsemapper;
 
-    @Autowired
-    public QuestionController(QuestionService questionService, QuestionMapper questionMapper, ReponseService reponseService, ReponseMapper reponsemapper){
-        this.questionService = questionService;
-        this.questionMapper = questionMapper;
-        this.reponseService = reponseService;
-        this.reponsemapper = reponsemapper;
-    }
-
-
-    @GetMapping("/question")
-    public Collection<QuestionDto> question (@RequestParam( value = "q", required = false) String query) {
-        Collection<Question> questions;
-        if(query == null){
-            questions = questionService.list();
-        } else {
-            questions = questionService.searchByName(query);
-        }
-        return questions.stream().map(questionMapper::entityToDTO).toList();
-    }
-
-
-
-    @GetMapping("/question/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public QuestionDto question(@PathVariable("id") Long id){
-        try{
-            Question question = this.questionService.get(id);
-            return this.questionMapper.entityToDTO(question);
-        } catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null, e);
-        }
-    }
-
-
-
-    @PostMapping("/question")
+    @PostMapping(value = "/Question")
     @ResponseStatus(HttpStatus.CREATED)
-    public QuestionDTO newQuestion(@RequestBody @Valid QuestionDto question) {
-        question = questionMapper.dtoToEntity(question);
-        if(question == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, null);
+    public QuestionDto newQuestion(@RequestBody @Valid QuestionDto questionDto){
+        //QuestionEntity QuestionEntity = QuestionMapper.toQuestionEntity(QuestionDto);
+        if(questionDto == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , null);
         }
         try{
-            question = this.questionService.save(question);
-            return questionMapper.entityToDTO(question);
+            QuestionEntity questionEntity = this.questionService.save(questionMapper.toQuestionEntity(questionDto));
+            return questionMapper.toQuestionDto(questionEntity);
         } catch(Exception e){
-            throw  new ResponseStatusException(HttpStatus.NOT_FOUND, null, e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null , e);
         }
     }
 
-    @PutMapping("question/{id}")
+    @GetMapping("/Question/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public MiahootDto updateQuestion(@RequestBody QuestionDTO question, @PathVariable("id") Long id){
-        if(id != question.id()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    public QuestionDto getQuestion(@PathVariable("id") Long id){
         try{
-            Question updated = this.questionService.update(this.questionMapper.dtoToEntity(question));
-            return this.questionMapper.entityDTO(updated);
-        } catch( EntityNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            QuestionEntity questionEntity= this.questionService.get(id);
+            return this.questionMapper.toQuestionDto(questionEntity);
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null , e);
         }
     }
 
 
-    @DeleteMapping("/question/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteQuestion(@PathVariable("id") Long id){
-        try{
-            questionService.delete(id);
-        }catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Question was not found");
-        }
-    }
-
-
-    @GetMapping("/question/{id}/reponses")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ReponseDTO newQuestion(@PathVariable("id") Long questionId, @RequestBody @Valid reponseDTO reponse){
-
-        Reponse answers = questionMapper.dtoToEntity(reponse);
-        try{
-            Reponse repons = this.questionService.save(questionId, answers);
-            return reponseMapper.entityToDTO(repons);
-        } catch( Exception e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The question was not found");
-        }
-    }
-
+@GetMapping("/Question")
+public Collection<QuestionDto> getAllQuestion() {
+   return questionMapper.toQuestionDto(questionService.list());
 }
+
+
+@DeleteMapping("/Question/{id}")
+@ResponseStatus(HttpStatus.NO_CONTENT)
+public void deleteQuestion(@PathVariable("id") Long id) throws Exception{
+    try{
+        questionService.delete(id);
+    }catch(Exception e){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The Question was not found");
+    }
+}
+
+
+
+    @PutMapping("Question/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionDto updateQuestion(@PathVariable("id") @NotNull Long id, @RequestBody @Valid QuestionDto questionDto){
+        try {
+            if (questionDto.id().equals(id)) {
+                QuestionEntity questionEntity = (QuestionEntity) questionMapper.toQuestionEntity(questionDto);
+                var updated = questionService.update(questionEntity);
+                return questionMapper.toQuestionDto(updated);
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null, e);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, null, e);
+        }
+    }
+    }
