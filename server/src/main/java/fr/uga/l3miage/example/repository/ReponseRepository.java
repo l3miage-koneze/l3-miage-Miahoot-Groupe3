@@ -1,11 +1,11 @@
 package fr.uga.l3miage.example.repository;
 
-import fr.uga.l3miage.example.models.Reponse;
+import fr.uga.l3miage.example.models.ReponseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ReponseRepository extends JpaRepository<Reponse, Long> {
+public interface ReponseRepository extends JpaRepository<ReponseEntity, Long> {
 
     //ATTENTION !
     /* Les fichiers repository sont vides car les fonctions CRUD sont déjà fournies par

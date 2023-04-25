@@ -17,13 +17,6 @@ public class QuestionComponent {
 
     private final String helloWord;
 
-
-    public String getHelloWord(boolean isInError) throws IsInErrorException {
-        if (!isInError) return helloWord;
-        throw new IsInErrorException("Le client a demandé d'être en erreur");
-    }
-
-
     public TestEntity getTest(final String description) throws TestEntityNotFoundException {
         return testRepository.findByDescription(description)
                 .orElseThrow(() -> new TestEntityNotFoundException(String.format("Aucune entité n'a été trouvée pour la description [%s]", description), description));

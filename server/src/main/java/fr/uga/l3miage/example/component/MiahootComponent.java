@@ -1,34 +1,35 @@
 package fr.uga.l3miage.example.component;
 
 import fr.uga.l3miage.example.exception.technical.*;
-import fr.uga.l3miage.example.mapper.TestMapper;
-import fr.uga.l3miage.example.models.TestEntity;
-import fr.uga.l3miage.example.repository.TestRepository;
-import fr.uga.l3miage.example.response.Test;
+import fr.uga.l3miage.example.mapper.MiahootMapper;
+import fr.uga.l3miage.example.models.MiahootEntity;
+import fr.uga.l3miage.example.repository.MiahootRepository;
+import fr.uga.l3miage.example.response.MiahootDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class MiahootComponent {
 
-    private final TestRepository testRepository;
-    private final TestMapper testMapper;
-
-    private final String helloWord;
+    private final MiahootRepository miahootRepository;
+    private final MiahootMapper miahootMapper;
 
 
-    public String getHelloWord(boolean isInError) throws IsInErrorException {
-        if (!isInError) return helloWord;
-        throw new IsInErrorException("Le client a demandé d'être en erreur");
+    public MiahootEntity getMiahoot(final Long id) throws EntityNotFoundException {
+        Optional<MiahootEntity> miaOpt = miahootRepository.findById(id);
+        if (miaOpt.isPresent()){
+            return miaOpt.get();
+        }
+        else{
+            throw new EntityNotFoundException(String.format("Aucune entité n'a été trouvée pour la description [%s]", description), description));
+        }
     }
 
-    public TestEntity getTest(final String description) throws TestEntityNotFoundException {
-        return testRepository.findByDescription(description)
-                .orElseThrow(() -> new TestEntityNotFoundException(String.format("Aucune entité n'a été trouvée pour la description [%s]", description), description));
-    }
-
-    public void createTest(final TestEntity entity) throws IsNotTestException, DescriptionAlreadyExistException {
+    public void createMiahoot(final TestEntity entity) throws IsNotTestException, DescriptionAlreadyExistException {
         if (Boolean.TRUE.equals(entity.getIsTest())) {
             if (testRepository.findByDescription(entity.getDescription()).isPresent()) {
                 throw new DescriptionAlreadyExistException(String.format("La description %s existe déjà en BD.", entity.getDescription()), entity.getDescription());
@@ -37,7 +38,7 @@ public class MiahootComponent {
         } else throw new IsNotTestException("Le champs isTest n'est pas à true, donc erreur technique levée", entity);
     }
 
-    public void updateTest(final String lastDescription, final Test test) throws TestEntityNotFoundException, IsNotTestException, DescriptionAlreadyExistException {
+    public void updateMiahoot(final String lastDescription, final Test test) throws TestEntityNotFoundException, IsNotTestException, DescriptionAlreadyExistException {
         if (Boolean.TRUE.equals(test.getIsTest())) {
             if (!lastDescription.equals(test.getDescription()) && testRepository.findByDescription(test.getDescription()).isPresent()) {
                 throw new DescriptionAlreadyExistException(String.format("La description %s existe déjà en BD.", test.getDescription()), test.getDescription());
