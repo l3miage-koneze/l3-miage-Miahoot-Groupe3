@@ -12,5 +12,5 @@ import lombok.NonNull;
 public interface ReponseMapper {
     ReponseDto toReponseDto(ReponseEntity reponseEntity);
     ReponseEntity toEntity(CreateTestRequest request);
-    void mergeTestEntity(@MappingTarget @NonNull ReponseEntity reponseEntity, ReponseDto reponseDto);
+    void mergeReponseEntity(@MappingTarget @NonNull ReponseEntity reponseEntity, ReponseDto reponseDto);
 }

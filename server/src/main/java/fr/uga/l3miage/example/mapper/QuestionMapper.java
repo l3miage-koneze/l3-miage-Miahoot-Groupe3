@@ -15,5 +15,5 @@ import org.mapstruct.MappingTarget;
 public interface QuestionMapper {
     QuestionDto toQuestionDto (QuestionDto questionDto);
     QuestionEntity toQuestionEntity(CreateTestRequest reques);
-    void mergeTestEntity(@MappingTarget @NonNull QuestionEntity questionEntity, QuestionDto question);
+    void mergeQuestionEntity(@MappingTarget @NonNull QuestionEntity questionEntity, QuestionDto question);
 }
