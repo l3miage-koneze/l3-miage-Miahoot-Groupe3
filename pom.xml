@@ -10,6 +10,7 @@
     <modules>
         <module>rest-api</module>
         <module>server</module>
+        <module>Miahoot</module>
     </modules>
 
     <!--Indispensable pour faire démarrer spring boot, ici maven récupérer le pom.xml qui correspond à cette dépendance-->
