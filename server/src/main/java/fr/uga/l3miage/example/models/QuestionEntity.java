@@ -2,27 +2,27 @@ package fr.uga.l3miage.example.models;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
 import java.util.Objects;
 
 @Getter
 @Setter
-public class Miahoot {
+@Builder
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class QuestionEntity {
     @Id
     @GeneratedValue
     private Long id;
-
+    
     @Column
-    private String nom;
+    private String label;
 
     @OneToMany
-    private Question[] questions;
-
+    private ReponseEntity[] reponses;
     
     @Override
     public boolean equals(Object o) {
@@ -37,3 +37,4 @@ public class Miahoot {
         return getClass().hashCode();
     }
 }
+

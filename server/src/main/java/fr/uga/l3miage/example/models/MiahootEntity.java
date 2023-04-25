@@ -6,20 +6,27 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 import java.util.Objects;
 
 @Getter
 @Setter
-public class Reponse {
+@Builder
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class MiahootEntity {
     @Id
     @GeneratedValue
     private Long id;
-    
-    @Column
-    private String label;
 
     @Column
-    private boolean estValide;
+    private String nom;
+
+    @OneToMany
+    private QuestionEntity[] questions;
+
     
     @Override
     public boolean equals(Object o) {

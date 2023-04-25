@@ -2,14 +2,19 @@ package fr.uga.l3miage.example.models;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Objects;
 
 @Getter
 @Setter
-public class Question {
+@Builder
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class ReponseEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -17,8 +22,8 @@ public class Question {
     @Column
     private String label;
 
-    @OneToMany
-    private Reponse[] reponses;
+    @Column
+    private boolean estValide;
     
     @Override
     public boolean equals(Object o) {
@@ -33,4 +38,3 @@ public class Question {
         return getClass().hashCode();
     }
 }
-
