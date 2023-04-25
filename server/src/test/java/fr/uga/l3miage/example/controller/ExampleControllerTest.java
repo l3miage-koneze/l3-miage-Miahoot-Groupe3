@@ -2,7 +2,7 @@ package fr.uga.l3miage.example.controller;
 
 import fr.uga.l3miage.example.config.HelloWordConfig;
 import fr.uga.l3miage.example.error.*;
-import fr.uga.l3miage.example.exception.rest.DescriptionAlreadyUseRestException;
+import fr.uga.l3miage.example.exception.rest.AlreadyUseRestException;
 import fr.uga.l3miage.example.exception.rest.IsNotTestRestException;
 import fr.uga.l3miage.example.exception.rest.TestEntityNotFoundRestException;
 import fr.uga.l3miage.example.models.TestEntity;
@@ -246,34 +246,34 @@ class ExampleControllerTest {
     }
 
     @Test
-    void createTestEntity400_DescriptionAlreadyUseError() {
+    void createTestEntity400_AlreadyUseError() {
         final HttpHeaders headers = new HttpHeaders();
         final CreateTestRequest testRequest = CreateTestRequest
                 .builder()
-                .description("description")
+                .description("id")
                 .isTest(true)
                 .testIntMapperUtil1(1)
                 .testIntMapperUtil2(1)
                 .fieldNotMappingAutomatically("fieldNotMappingAutomatically")
                 .build();
 
-        doThrow(new DescriptionAlreadyUseRestException("", "description")).when(spyExampleService).createTest(testRequest);
+        doThrow(new AlreadyUseRestException("", 0L)).when(spyExampleService).createTest(testRequest);
 
-        ResponseEntity<DescriptionAlreadyUseErrorResponse> response = testRestTemplate.exchange(
+        ResponseEntity<AlreadyUseErrorResponse> response = testRestTemplate.exchange(
                 "/exemple/", HttpMethod.POST, new HttpEntity<>(testRequest, headers),
-                DescriptionAlreadyUseErrorResponse.class);
+                AlreadyUseErrorResponse.class);
 
-        final DescriptionAlreadyUseErrorResponse responseExpected = DescriptionAlreadyUseErrorResponse
+        final AlreadyUseErrorResponse responseExpected = AlreadyUseErrorResponse
                 .builder()
-                .errorCode(ErrorCode.DESCRIPTION_ALREADY_USE_ERROR)
+                .errorCode(ErrorCode.ALREADY_USE_ERROR)
                 .uri("/exemple/")
-                .description("description")
+                .id(0L)
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .build();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(testRepository.count()).isZero();
-        assertThat(Objects.requireNonNull(response.getBody()).getErrorCode()).isEqualTo(ErrorCode.DESCRIPTION_ALREADY_USE_ERROR);
+        assertThat(Objects.requireNonNull(response.getBody()).getErrorCode()).isEqualTo(ErrorCode.ALREADY_USE_ERROR);
         assertThat(response.getBody()).usingRecursiveComparison()
                 .ignoringFields("errorMessage")
                 .isEqualTo(responseExpected);
@@ -284,7 +284,7 @@ class ExampleControllerTest {
     void updateTestEntity202() {
         final TestEntity testEntity = TestEntity
                 .builder()
-                .description("description")
+                .description("id")
                 .fieldMapping("TestConfigWithProperties")
                 .testInt(1)
                 .isTest(true)
@@ -426,7 +426,7 @@ class ExampleControllerTest {
     }
 
     @Test
-    void updateTestEntity400_DescriptionAlreadyUseError() {
+    void updateTestEntity400_AlreadyUseError() {
         final HttpHeaders headers = new HttpHeaders();
         final fr.uga.l3miage.example.response.Test test = fr.uga.l3miage.example.response.Test
                 .builder()
@@ -439,23 +439,23 @@ class ExampleControllerTest {
         final Map<String, Object> urlParams = new HashMap<>();
         urlParams.put("lastDescription", "description");
 
-        doThrow(new DescriptionAlreadyUseRestException("","TestConfigWithProperties")).when(spyExampleService).updateTest(eq("description"),any(fr.uga.l3miage.example.response.Test.class));
+        doThrow(new AlreadyUseRestException("",-1L)).when(spyExampleService).updateTest(eq("description"),any(fr.uga.l3miage.example.response.Test.class));
 
-        ResponseEntity<DescriptionAlreadyUseErrorResponse> response = testRestTemplate.exchange(
+        ResponseEntity<AlreadyUseErrorResponse> response = testRestTemplate.exchange(
                 "/exemple/{lastDescription}", HttpMethod.PATCH, new HttpEntity<>(test, headers),
-                DescriptionAlreadyUseErrorResponse.class, urlParams);
+                AlreadyUseErrorResponse.class, urlParams);
 
 
-        final DescriptionAlreadyUseErrorResponse responseExpected = DescriptionAlreadyUseErrorResponse
+        final AlreadyUseErrorResponse responseExpected = AlreadyUseErrorResponse
                 .builder()
                 .uri("/exemple/description")
-                .errorCode(ErrorCode.DESCRIPTION_ALREADY_USE_ERROR)
+                .errorCode(ErrorCode.ALREADY_USE_ERROR)
                 .httpStatus(HttpStatus.BAD_REQUEST)
-                .description("TestConfigWithProperties")
+                .id(-1L)
                 .build();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(Objects.requireNonNull(response.getBody()).getErrorCode()).isEqualTo(ErrorCode.DESCRIPTION_ALREADY_USE_ERROR);
+        assertThat(Objects.requireNonNull(response.getBody()).getErrorCode()).isEqualTo(ErrorCode.ALREADY_USE_ERROR);
         assertThat(response.getBody())
                 .usingRecursiveComparison()
                 .ignoringFields("errorMessage")

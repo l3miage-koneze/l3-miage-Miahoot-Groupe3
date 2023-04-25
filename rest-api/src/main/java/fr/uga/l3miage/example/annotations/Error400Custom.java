@@ -1,6 +1,6 @@
 package fr.uga.l3miage.example.annotations;
 
-import fr.uga.l3miage.example.error.DescriptionAlreadyUseErrorResponse;
+import fr.uga.l3miage.example.error.AlreadyUseErrorResponse;
 import fr.uga.l3miage.example.error.IsNotTestErrorResponse;
 import fr.uga.l3miage.example.error.TestIntIsZeroErrorResponse;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -60,12 +60,12 @@ import java.lang.annotation.Target;
  */
 @ApiResponse(responseCode = "400", description = "Une erreur s'est produite lors de la création ou de la mise à jour de l'entité Test.",
         content = @Content(
-                schema = @Schema(oneOf = {IsNotTestErrorResponse.class, TestIntIsZeroErrorResponse.class, DescriptionAlreadyUseErrorResponse.class},
+                schema = @Schema(oneOf = {IsNotTestErrorResponse.class, TestIntIsZeroErrorResponse.class, AlreadyUseErrorResponse.class},
                         discriminatorProperty = "errorCode",
                         discriminatorMapping = {
                                 @DiscriminatorMapping(value = "TEST_INT_IS_ZERO_ERROR", schema = TestIntIsZeroErrorResponse.class),
                                 @DiscriminatorMapping(value = "IS_NOT_TEST_ERROR", schema = IsNotTestErrorResponse.class),
-                                @DiscriminatorMapping(value = "DESCRIPTION_ALREADY_USE_ERROR", schema = DescriptionAlreadyUseErrorResponse.class)
+                                @DiscriminatorMapping(value = "ALREADY_USE_ERROR", schema = AlreadyUseErrorResponse.class)
                         }),
                 mediaType = MediaType.APPLICATION_JSON_VALUE))
 @Target(ElementType.METHOD)

@@ -24,15 +24,15 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
  *     <li>{@link ToString} permet de redéfinir la fonction <u>toString</u> avec tous les champs de l'objet. Voir la  doc <a href="https://projectlombok.org/features/ToString">projetlombok.org/features/toString</a></li>
  * </ul>
  */
-@JsonTypeName(DescriptionAlreadyUseErrorResponse.TYPE_NAME)
+@JsonTypeName(AlreadyUseErrorResponse.TYPE_NAME)
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @ToString(callSuper = true, exclude = "errorCodeSwaggerDocumentation")
-public class DescriptionAlreadyUseErrorResponse extends ErrorResponse {
+public class AlreadyUseErrorResponse extends ErrorResponse {
     /**
-     * Match {@link ErrorCode#DESCRIPTION_ALREADY_USE_ERROR}
+     * Match {@link ErrorCode#ALREADY_USE_ERROR}
      */
-    protected static final String TYPE_NAME = "DESCRIPTION_ALREADY_USE_ERROR";
+    protected static final String TYPE_NAME = "ALREADY_USE_ERROR";
 
     /**
      * Cette variable est utilisée que pour la doc dans le swagger<br>
@@ -47,8 +47,8 @@ public class DescriptionAlreadyUseErrorResponse extends ErrorResponse {
     @JsonProperty(access = WRITE_ONLY)
     private final String errorCodeSwaggerDocumentation = "Field used only to generate documentation, do not use it";
 
-    @Schema(description = "Description déjà utilisée dans une autre entité Test")
-    private final String description;
+    @Schema(description = "id déjà utilisé")
+    private final Long id;
 
     /**
      * Ce constructeur permet de désérialiser l'erreur.<br>
@@ -63,12 +63,12 @@ public class DescriptionAlreadyUseErrorResponse extends ErrorResponse {
      * @param httpStatus élément de la classe {@link ErrorResponse}
      * @param errorCode élément de la classe {@link ErrorResponse}
      * @param errorMessage élément de la classe {@link ErrorResponse}
-     * @param description correspond à la description utilisée qui est en doublon.
+     * @param id correspond à la description utilisée qui est en doublon.
      */
     @Builder
     @Jacksonized
-    public DescriptionAlreadyUseErrorResponse(String uri, HttpStatus httpStatus, ErrorCode errorCode, String errorMessage, String description) {
+    public AlreadyUseErrorResponse(String uri, HttpStatus httpStatus, ErrorCode errorCode, String errorMessage, Long id) {
         super(uri, httpStatus, errorCode, errorMessage);
-        this.description = description;
+        this.id = id;
     }
 }

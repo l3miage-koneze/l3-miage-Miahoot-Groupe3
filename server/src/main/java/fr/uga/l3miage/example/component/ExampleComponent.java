@@ -42,22 +42,22 @@ public class ExampleComponent {
     /**
      * @param description de l'entité Test à récupérer
      * @return une {@link TestEntity} correspondant à description donnée
-     * @throws TestEntityNotFoundException si aucune entité Test n'est trouvée
+     * @throws EntityNotFoundException si aucune entité Test n'est trouvée
      */
-    public TestEntity getTest(final String description) throws TestEntityNotFoundException {
+    public TestEntity getTest(final String description) throws EntityNotFoundException {
         return testRepository.findByDescription(description)
-                .orElseThrow(() -> new TestEntityNotFoundException(String.format("Aucune entité n'a été trouvée pour la description [%s]", description), description));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Aucune entité n'a été trouvée pour la description [%s]", description), description));
     }
 
     /**
      * @param entity à créer en base de données
      * @throws IsNotTestException si dans l'entité à créer le champ isTest est égal à <b>false</b>
-     * @throws DescriptionAlreadyExistException Si la description dans l'entité à créer existe déjà en BD
+     * @throws AlreadyExistException Si la description dans l'entité à créer existe déjà en BD
      */
-    public void createTest(final TestEntity entity) throws IsNotTestException, DescriptionAlreadyExistException {
+    public void createTest(final TestEntity entity) throws IsNotTestException, AlreadyExistException {
         if (Boolean.TRUE.equals(entity.getIsTest())) {
             if (testRepository.findByDescription(entity.getDescription()).isPresent()) {
-                throw new DescriptionAlreadyExistException(String.format("La description %s existe déjà en BD.", entity.getDescription()), entity.getDescription());
+                throw new AlreadyExistException(String.format("La description %s existe déjà en BD.", entity.getDescription()), entity.getId());
             }
             testRepository.save(entity);
         } else throw new IsNotTestException("Le champs isTest n'est pas à true, donc erreur technique levée", entity);
@@ -66,17 +66,17 @@ public class ExampleComponent {
     /**
      * @param lastDescription la description de l'entité en BD à mettre à jour
      * @param test le <b color="yellow"> DTO</b> de l'entité qui va permettre la modification
-     * @throws TestEntityNotFoundException si l'entité avec une lastDescription n'est pas trouvée en BD
+     * @throws EntityNotFoundException si l'entité avec une lastDescription n'est pas trouvée en BD
      * @throws IsNotTestException si le champ isTest n'est pas true
-     * @throws DescriptionAlreadyExistException si la description qui est modifiée existe déjà en BD
+     * @throws AlreadyExistException si la description qui est modifiée existe déjà en BD
      */
-    public void updateTest(final String lastDescription, final Test test) throws TestEntityNotFoundException, IsNotTestException, DescriptionAlreadyExistException {
+    public void updateTest(final String lastDescription, final Test test) throws EntityNotFoundException, IsNotTestException, AlreadyExistException {
         if (Boolean.TRUE.equals(test.getIsTest())) {
             if (!lastDescription.equals(test.getDescription()) && testRepository.findByDescription(test.getDescription()).isPresent()) {
-                throw new DescriptionAlreadyExistException(String.format("La description %s existe déjà en BD.", test.getDescription()), test.getDescription());
+                throw new AlreadyExistException(String.format("La description %s existe déjà en BD.", test.getDescription()), -1L);
             }
             TestEntity actualEntity = testRepository.findByDescription(lastDescription)
-                    .orElseThrow(() -> new TestEntityNotFoundException(String.format("Aucune entité n'a été trouvé pour la description [%s]", lastDescription), lastDescription));
+                    .orElseThrow(() -> new EntityNotFoundException(String.format("Aucune entité n'a été trouvé pour la description [%s]", lastDescription), lastDescription));
             testMapper.mergeTestEntity(actualEntity, test);
             testRepository.save(actualEntity);
         } else throw new IsNotTestException("Le champs isTest n'est pas à true, donc erreur technique levée", null);
@@ -86,14 +86,14 @@ public class ExampleComponent {
     /**
      * @param description de l'entité à supprimer
      * @throws MultipleEntityHaveSameDescriptionException <b color="red">Impossible à lever si on passe toujours par les endpoints</b>, mais le sera s'il existe plusieurs entités Test qui sont supprimées. Un <b color="green">rollback()</b> est effectué si problème
-     * @throws TestEntityNotFoundException si l'entité avec la description fournit n'est pas trouvée
+     * @throws EntityNotFoundException si l'entité avec la description fournit n'est pas trouvée
      */
-    public void deleteTest(final String description) throws MultipleEntityHaveSameDescriptionException, TestEntityNotFoundException {
+    public void deleteTest(final String description) throws MultipleEntityHaveSameDescriptionException, EntityNotFoundException {
         int deleted = testRepository.deleteByDescription(description);
         if (deleted > 1)
             throw new MultipleEntityHaveSameDescriptionException("Plusieurs entités ont la même description alors que c'est impossible niveau métier !!");
         else if (deleted == 0)
-            throw new TestEntityNotFoundException("L'entité à supprimer n'a pas été trouvée", description);
+            throw new EntityNotFoundException("L'entité à supprimer n'a pas été trouvée", -1L);
 
     }
 }

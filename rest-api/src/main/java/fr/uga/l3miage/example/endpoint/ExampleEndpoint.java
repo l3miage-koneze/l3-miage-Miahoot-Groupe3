@@ -5,7 +5,7 @@ import fr.uga.l3miage.example.error.IsNotTestErrorResponse;
 import fr.uga.l3miage.example.error.TestEntityNotDeletedErrorResponse;
 import fr.uga.l3miage.example.error.TestIntIsZeroErrorResponse;
 import fr.uga.l3miage.example.error.TestNotFoundErrorResponse;
-import fr.uga.l3miage.example.error.DescriptionAlreadyUseErrorResponse;
+import fr.uga.l3miage.example.error.AlreadyUseErrorResponse;
 import fr.uga.l3miage.example.request.CreateTestRequest;
 import fr.uga.l3miage.example.response.Test;
 import io.swagger.v3.oas.annotations.Operation;
@@ -145,7 +145,7 @@ public interface ExampleEndpoint {
      * <ul>
      *     <li>{@link IsNotTestErrorResponse} si le champ isTest est égal  à false</li>
      *     <li>{@link TestIntIsZeroErrorResponse} si la somme des 2 entiers de la requête est égale à 0</li>
-     *     <li>{@link DescriptionAlreadyUseErrorResponse} si la description existe déjà en BD</li>
+     *     <li>{@link AlreadyUseErrorResponse} si la description existe déjà en BD</li>
      * </ul>
      *
      * Les annotations :
@@ -181,7 +181,7 @@ public interface ExampleEndpoint {
      * <ul>
      *     <li>{@link IsNotTestErrorResponse} si le champ isTest est égal  à false</li>
      *     <li>{@link TestIntIsZeroErrorResponse} si la somme des 2 entiers de la requête est égale à 0</li>
-     *     <li>{@link DescriptionAlreadyUseErrorResponse} si la description existe déjà en BD</li>
+     *     <li>{@link AlreadyUseErrorResponse} si la description existe déjà en BD</li>
      *     <li>{@link TestNotFoundErrorResponse} si l'entité test n'est pas trouvé en BD</li>
      * </ul>
      * Les annotations :

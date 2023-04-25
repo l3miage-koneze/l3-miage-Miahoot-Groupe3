@@ -30,7 +30,7 @@ import org.springframework.http.HttpStatus;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = TestIntIsZeroErrorResponse.class),
         @JsonSubTypes.Type(value = IsNotTestErrorResponse.class),
-        @JsonSubTypes.Type(value = DescriptionAlreadyUseErrorResponse.class),
+        @JsonSubTypes.Type(value = AlreadyUseErrorResponse.class),
         @JsonSubTypes.Type(value = TestEntityNotDeletedErrorResponse.class),
         @JsonSubTypes.Type(value = TestNotFoundErrorResponse.class)
 })

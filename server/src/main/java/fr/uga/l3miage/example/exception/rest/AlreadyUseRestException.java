@@ -13,22 +13,22 @@ import org.springframework.http.HttpStatus;
  * </ul>
  */
 @Getter
-public class DescriptionAlreadyUseRestException extends RuntimeException {
-    private final String description;
+public class AlreadyUseRestException extends RuntimeException {
+    private final Long id;
 
-    public DescriptionAlreadyUseRestException(String message, String description) {
+    public AlreadyUseRestException(String message, Long id) {
         super(message);
-        this.description = description;
+        this.id = id;
     }
 
-    public DescriptionAlreadyUseRestException(String message, String description, Throwable cause) {
+    public AlreadyUseRestException(String message, Long id, Throwable cause) {
         super(message, cause);
-        this.description = description;
+        this.id = id;
     }
 
     public HttpStatus getHttpStatus() {
         return HttpStatus.BAD_REQUEST;
     }
 
-    public ErrorCode getErrorCode(){return ErrorCode.DESCRIPTION_ALREADY_USE_ERROR;}
+    public ErrorCode getErrorCode(){return ErrorCode.ALREADY_USE_ERROR;}
 }

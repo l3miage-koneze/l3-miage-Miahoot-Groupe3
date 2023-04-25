@@ -63,7 +63,7 @@ class ExampleServiceTest {
     }
 
     @Test
-    void getTest() throws TestEntityNotFoundException {
+    void getTest() throws EntityNotFoundException {
         TestEntity testEntity = TestEntity
                 .builder()
                 .description("description")
@@ -73,7 +73,7 @@ class ExampleServiceTest {
                 .build();
 
         when(exampleComponent.getTest("description")).thenReturn(testEntity);
-        when(exampleComponent.getTest("une mauvaise description")).thenThrow(TestEntityNotFoundException.class);
+        when(exampleComponent.getTest("une mauvaise description")).thenThrow(EntityNotFoundException.class);
 
         fr.uga.l3miage.example.response.Test testExpected = fr.uga.l3miage.example.response.Test
                 .builder()
@@ -94,7 +94,7 @@ class ExampleServiceTest {
     }
 
     @Test
-    void createTest() throws IsNotTestException, DescriptionAlreadyExistException {
+    void createTest() throws IsNotTestException, AlreadyExistException {
         CreateTestRequest testRequest = CreateTestRequest
                 .builder()
                 .description("description")
@@ -110,8 +110,8 @@ class ExampleServiceTest {
 
         doThrow(IsNotTestException.class).when(exampleComponent).createTest(any(TestEntity.class));
         assertThrows(IsNotTestRestException.class, () -> exampleService.createTest(testRequest));
-        doThrow(DescriptionAlreadyExistException.class).when(exampleComponent).createTest(any(TestEntity.class));
-        assertThrows(DescriptionAlreadyUseRestException.class, () -> exampleService.createTest(testRequest));
+        doThrow(AlreadyExistException.class).when(exampleComponent).createTest(any(TestEntity.class));
+        assertThrows(AlreadyUseRestException.class, () -> exampleService.createTest(testRequest));
         doNothing().when(exampleComponent).createTest(any(TestEntity.class));
         assertDoesNotThrow(() -> exampleService.createTest(testRequest));
 
@@ -122,7 +122,7 @@ class ExampleServiceTest {
     }
 
     @Test
-    void updateTest() throws IsNotTestException, DescriptionAlreadyExistException, TestEntityNotFoundException {
+    void updateTest() throws IsNotTestException, AlreadyExistException, EntityNotFoundException {
         fr.uga.l3miage.example.response.Test test = fr.uga.l3miage.example.response.Test
                 .builder()
                 .description("description")
@@ -137,9 +137,9 @@ class ExampleServiceTest {
 
         doThrow(IsNotTestException.class).when(exampleComponent).updateTest(eq("description"),any(fr.uga.l3miage.example.response.Test.class));
         assertThrows(IsNotTestRestException.class, () -> exampleService.updateTest("description",test));
-        doThrow(DescriptionAlreadyExistException.class).when(exampleComponent).updateTest(eq("description"),any(fr.uga.l3miage.example.response.Test.class));
-        assertThrows(DescriptionAlreadyUseRestException.class, () -> exampleService.updateTest("description",test));
-        doThrow(TestEntityNotFoundException.class).when(exampleComponent).updateTest(eq("description"),any(fr.uga.l3miage.example.response.Test.class));
+        doThrow(AlreadyExistException.class).when(exampleComponent).updateTest(eq("description"),any(fr.uga.l3miage.example.response.Test.class));
+        assertThrows(AlreadyUseRestException.class, () -> exampleService.updateTest("description",test));
+        doThrow(EntityNotFoundException.class).when(exampleComponent).updateTest(eq("description"),any(fr.uga.l3miage.example.response.Test.class));
         assertThrows(TestEntityNotFoundRestException.class, () -> exampleService.updateTest("description",test));
         doNothing().when(exampleComponent).updateTest(eq("description"),any(fr.uga.l3miage.example.response.Test.class));
         assertDoesNotThrow(() -> exampleService.updateTest("description",test));
@@ -148,10 +148,10 @@ class ExampleServiceTest {
     }
 
     @Test
-    void deleteTest() throws MultipleEntityHaveSameDescriptionException, TestEntityNotFoundException {
+    void deleteTest() throws MultipleEntityHaveSameDescriptionException, EntityNotFoundException {
         doThrow(MultipleEntityHaveSameDescriptionException.class).when(exampleComponent).deleteTest("description");
         assertThrows(TestEntityNotDeletedRestException.class, () -> exampleService.deleteTest("description"));
-        doThrow(TestEntityNotFoundException.class).when(exampleComponent).deleteTest("description");
+        doThrow(EntityNotFoundException.class).when(exampleComponent).deleteTest("description");
         assertThrows(TestEntityNotDeletedRestException.class, () -> exampleService.deleteTest("description"));
         verify(exampleComponent,times(2)).deleteTest("description");
     }

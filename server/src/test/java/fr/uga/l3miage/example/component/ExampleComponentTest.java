@@ -71,7 +71,7 @@ class ExampleComponentTest {
     }
 
     @Test
-    void getTest() throws TestEntityNotFoundException {
+    void getTest() throws EntityNotFoundException {
         TestEntity testEntity = TestEntity
                 .builder()
                 .description("description")
@@ -81,7 +81,7 @@ class ExampleComponentTest {
                 .build();
         testRepository.save(testEntity);
 
-        assertThrows(TestEntityNotFoundException.class, () -> exampleComponent.getTest("une fausse description"));
+        assertThrows(EntityNotFoundException.class, () -> exampleComponent.getTest("une fausse description"));
 
         TestEntity testEntityResponse = exampleComponent.getTest("description");
 
@@ -90,7 +90,7 @@ class ExampleComponentTest {
     }
 
     @Test
-    void createTest() throws IsNotTestException, DescriptionAlreadyExistException {
+    void createTest() throws IsNotTestException, AlreadyExistException {
         TestEntity testEntity = TestEntity
                 .builder()
                 .description("description")
@@ -106,11 +106,11 @@ class ExampleComponentTest {
         exampleComponent.createTest(testEntity);
 
         assertThat(testRepository.count()).isOne();
-        assertThrows(DescriptionAlreadyExistException.class, () -> exampleComponent.createTest(testEntity));
+        assertThrows(AlreadyExistException.class, () -> exampleComponent.createTest(testEntity));
     }
 
     @Test
-    void updateTest() throws IsNotTestException, DescriptionAlreadyExistException, TestEntityNotFoundException {
+    void updateTest() throws IsNotTestException, AlreadyExistException, EntityNotFoundException {
         TestEntity testEntity = TestEntity
                 .builder()
                 .description("description")
@@ -141,9 +141,9 @@ class ExampleComponentTest {
         assertThrows(IsNotTestException.class, () -> exampleComponent.updateTest("description", test));
         test.setIsTest(true);
         test.setDescription("description 1");
-        assertThrows(DescriptionAlreadyExistException.class, () -> exampleComponent.updateTest("description", test));
+        assertThrows(AlreadyExistException.class, () -> exampleComponent.updateTest("description", test));
         test.setDescription("une description qui n'existe pas");
-        assertThrows(TestEntityNotFoundException.class, () -> exampleComponent.updateTest("une description qui n'existe pas", test));
+        assertThrows(EntityNotFoundException.class, () -> exampleComponent.updateTest("une description qui n'existe pas", test));
         test.setDescription("description");
         test.setTestInt(10);
 
@@ -165,7 +165,7 @@ class ExampleComponentTest {
 
     @Transactional
     @Test
-    void deleteTest() throws MultipleEntityHaveSameDescriptionException, TestEntityNotFoundException {
+    void deleteTest() throws MultipleEntityHaveSameDescriptionException, EntityNotFoundException {
         TestEntity testEntity1 = TestEntity
                 .builder()
                 .description("description")
@@ -194,11 +194,11 @@ class ExampleComponentTest {
         testRepository.save(testEntity);
 
         assertThrows(MultipleEntityHaveSameDescriptionException.class, () -> exampleComponent.deleteTest("description"));
-        assertThrows(TestEntityNotFoundException.class, () -> exampleComponent.deleteTest("une description qui n'existe pas"));
+        assertThrows(EntityNotFoundException.class, () -> exampleComponent.deleteTest("une description qui n'existe pas"));
 
         exampleComponent.deleteTest("description unique");
 
         assertThat(testRepository.count()).isZero();
-        assertThrows(TestEntityNotFoundException.class, () -> exampleComponent.getTest("description unique"));
+        assertThrows(EntityNotFoundException.class, () -> exampleComponent.getTest("description unique"));
     }
 }
