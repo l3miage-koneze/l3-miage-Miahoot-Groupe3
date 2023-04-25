@@ -3,7 +3,9 @@ package fr.uga.l3miage.example.component;
 import fr.uga.l3miage.example.exception.technical.*;
 import fr.uga.l3miage.example.mapper.MiahootMapper;
 import fr.uga.l3miage.example.models.MiahootEntity;
+import fr.uga.l3miage.example.models.QuestionEntity;
 import fr.uga.l3miage.example.repository.MiahootRepository;
+import fr.uga.l3miage.example.repository.QuestionRepository;
 import fr.uga.l3miage.example.response.MiahootDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class MiahootComponent {
 
     private final MiahootRepository miahootRepository;
+    private final QuestionRepository questionRepository;
     private final MiahootMapper miahootMapper;
 
 
@@ -25,38 +28,43 @@ public class MiahootComponent {
             return miaOpt.get();
         }
         else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id' [%d]", id), id));
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
         }
     }
 
-    public void createMiahoot(final TestEntity entity) throws IsNotTestException, DescriptionAlreadyExistException {
-        if (Boolean.TRUE.equals(entity.getIsTest())) {
-            if (testRepository.findByDescription(entity.getDescription()).isPresent()) {
-                throw new DescriptionAlreadyExistException(String.format("La description %s existe déjà en BD.", entity.getDescription()), entity.getDescription());
+    public void createMiahoot(final MiahootEntity miahoot) throws IsNotTestException, AlreadyExistException {
+        if (miahootRepository.findById(miahoot.getId()).isPresent()){
+            throw new AlreadyExistException(String.format("Le Miahoot n°[%lu] existe déjà en BD.", miahoot.getId()), miahoot.getId());
+        }
+        else{
+            miahootRepository.save(miahoot);
+        }
+    }
+
+    public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) throws EntityNotFoundException, NotTheSameIdException{
+        if (idMiaToModify == miahoot.getId()) {
+            Optional<MiahootEntity> miaOpt = miahootRepository.findById(idMiaToModify);
+            if (miaOpt.isPresent()){
+                miahootMapper.mergeMiahootEntity(miaOpt.get(), miahoot);
+                miahootRepository.save(miaOpt.get());
             }
-            testRepository.save(entity);
-        } else throw new IsNotTestException("Le champs isTest n'est pas à true, donc erreur technique levée", entity);
-    }
-
-    public void updateMiahoot(final String lastDescription, final Test test) throws TestEntityNotFoundException, IsNotTestException, DescriptionAlreadyExistException {
-        if (Boolean.TRUE.equals(test.getIsTest())) {
-            if (!lastDescription.equals(test.getDescription()) && testRepository.findByDescription(test.getDescription()).isPresent()) {
-                throw new DescriptionAlreadyExistException(String.format("La description %s existe déjà en BD.", test.getDescription()), test.getDescription());
+            else{
+                throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de modifier.", idMiaToModify), idMiaToModify);
             }
-            TestEntity actualEntity = testRepository.findByDescription(lastDescription)
-                    .orElseThrow(() -> new TestEntityNotFoundException(String.format("Aucune entité n'a été trouvé pour la description [%s]", lastDescription), lastDescription));
-            testMapper.mergeTestEntity(actualEntity, test);
-            testRepository.save(actualEntity);
-        } else throw new IsNotTestException("Le champs isTest n'est pas à true, donc erreur technique levée", null);
+        } else throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
     }
 
 
-    public void deleteTest(final String description) throws MultipleEntityHaveSameDescriptionException, TestEntityNotFoundException {
-        int deleted = testRepository.deleteByDescription(description);
-        if (deleted > 1)
-            throw new MultipleEntityHaveSameDescriptionException("Plusieurs entités ont la même description alors que c'est impossible niveau métier !!");
-        else if (deleted == 0)
-            throw new TestEntityNotFoundException("L'entité à supprimer n'a pas été trouvée", description);
-
+    public void deleteMiahoot(final Long id) throws EntityNotFoundException {
+        Optional<MiahootEntity> miaOpt = miahootRepository.findById(id);
+        if (miaOpt.isPresent()) {
+            miahootRepository.deleteById(id);
+            for (QuestionEntity question : miaOpt.get().getQuestions()) {
+                questionRepository.deleteById(question.getId());
+            }
+        } else {
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
+        }
     }
+
 }
