@@ -134,6 +134,8 @@ public interface ExampleEndpoint {
     @GetMapping("{description}")
     Test getEntityTest(@PathVariable String description);
 
+    
+
 
     /**
      * Ici on définit un endpoint en mode <b>POST</b> pour créer une entité Test<br>
