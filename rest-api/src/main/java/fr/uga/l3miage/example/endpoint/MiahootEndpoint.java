@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Tag(name = "Miahoot tag")
 @CrossOrigin
 @RestController
-@RequestMapping("miahoot/")
+@RequestMapping("/miahoot/")
 public interface MiahootEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Miahoot qui a pour id celui passé en paramètre")
@@ -36,7 +36,7 @@ public interface MiahootEndpoint {
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    void newMiahoot(@Valid @RequestBody MiahootDto miahootDto);
+    void newMiahoot(@Valid @RequestBody MiahootDto miahootDto) throws Exception;
 
 
 

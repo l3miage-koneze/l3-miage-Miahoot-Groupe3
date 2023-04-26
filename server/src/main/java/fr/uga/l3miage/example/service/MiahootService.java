@@ -28,12 +28,12 @@ public class MiahootService {
         try {
             return miahootMapper.toMiahootDto(miahootComponent.getMiahoot(id));
         } catch (EntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), "id");
+            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), "id");
         }
     }
 
 
-    public void createMiahoot(final MiahootDto miahootDto) {
+    public void createMiahoot(final MiahootDto miahootDto) throws Exception {
         MiahootEntity newMiahootEntity = miahootMapper.toMiahootEntity(miahootDto);
         try {
             miahootComponent.createMiahoot(newMiahootEntity);
@@ -58,7 +58,7 @@ public class MiahootService {
         try {
             miahootComponent.deleteMiahoot(id);
         } catch (EntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a été retrouvé pour l'id [%lu] : impossible de supprimer",id),"id");
+            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a été retrouvé pour l'id [%d] : impossible de supprimer",id),"id");
         }
     }
 }

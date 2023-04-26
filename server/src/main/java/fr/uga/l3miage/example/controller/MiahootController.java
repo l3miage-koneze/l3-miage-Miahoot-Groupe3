@@ -17,7 +17,7 @@ public class MiahootController implements MiahootEndpoint{
     }
 
     @Override
-    public void newMiahoot(MiahootDto miahootDto) {
+    public void newMiahoot(MiahootDto miahootDto) throws Exception {
         miahootService.createMiahoot(miahootDto);
     }
 

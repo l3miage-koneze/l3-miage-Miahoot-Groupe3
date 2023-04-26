@@ -12,7 +12,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface MiahootMapper {
-    MiahootDto toMiahootDto(Object updated);
+    MiahootDto toMiahootDto(MiahootEntity updated);
     MiahootEntity toMiahootEntity(@Valid MiahootDto miahootDto);
     void mergeMiahootEntity(@MappingTarget @NonNull MiahootEntity miahootEntity, MiahootDto miahootDto);
 }

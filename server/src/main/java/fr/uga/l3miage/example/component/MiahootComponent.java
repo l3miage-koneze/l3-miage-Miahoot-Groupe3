@@ -28,17 +28,25 @@ public class MiahootComponent {
             return miaOpt.get();
         }
         else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), id);
         }
     }
 
-    public void createMiahoot(final MiahootEntity miahoot) throws AlreadyExistException {
-        if (miahootRepository.findById(miahoot.getId()).isPresent()){
-            throw new AlreadyExistException(String.format("Le Miahoot n°[%lu] existe déjà en BD.", miahoot.getId()), miahoot.getId());
+    public void createMiahoot(final MiahootEntity miahoot) throws AlreadyExistException,Exception {
+        //miahoot.setId((long) 233);
+        if(miahoot.getId() != null){
+            if (miahootRepository.findById(miahoot.getId()).isPresent()){
+                throw new AlreadyExistException(String.format("Le Miahoot n°[%d] existe déjà en BD.", miahoot.getId()), miahoot.getId());
+            }
+            else{
+                miahootRepository.save(miahoot);
+                System.out.println("Miahoot create");
+            }
         }
         else{
-            miahootRepository.save(miahoot);
+            throw new Exception(String.format("Le Miahoot id est null.", miahoot.getId()));
         }
+        
     }
 
     public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) throws EntityNotFoundException{
@@ -49,7 +57,7 @@ public class MiahootComponent {
                 miahootRepository.save(miaOpt.get());
             }
             else{
-                throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de modifier.", idMiaToModify), idMiaToModify);
+                throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de modifier.", idMiaToModify), idMiaToModify);
             }
         } //else throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
     }
@@ -63,7 +71,7 @@ public class MiahootComponent {
                 questionRepository.deleteById(question.getId());
             }
         } else {
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), id);
         }
     }
 
