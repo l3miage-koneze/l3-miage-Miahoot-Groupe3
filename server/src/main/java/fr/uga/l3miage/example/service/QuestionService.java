@@ -22,26 +22,24 @@ import javax.transaction.Transactional;
 public class QuestionService {
     private static final String ERROR_DETECTED = "Une erreur lors de la création de l'entité TestConfigWithProperties à été détecté.";
     private final QuestionComponent questionComponent;
-    private final ReponseComponent reponseComponent;
     private final QuestionMapper questionMapper;
 
 
     public QuestionDto getQuestion(final Long id) throws EntityNotFoundException {
         try {
-            return QuestionMapper.toQuestionDto(questionComponent.getQuestion(id));
+            return questionMapper.toQuestionDto(questionComponent.getQuestion(id));
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
         }
     }
 
 
-
-    public void createQuestion(final QuestionEntity question) throws AlreadyExistException {
-        QuestionEntity newQuestionEntity = questionMapper.toQuestionEntity(question);
+    public void createQuestion(final QuestionDto questionDto) throws AlreadyExistException {
+        QuestionEntity newQuestionEntity = questionMapper.toQuestionEntity(questionDto);
         try {
             questionComponent.createQuestion(newQuestionEntity);
         } catch (AlreadyExistException ex) {
-            throw new AlreadyExistException(ERROR_DETECTED,question.getId(),ex);
+            throw new AlreadyExistException(ERROR_DETECTED,questionDto.getId(),ex);
         }
     }
 
