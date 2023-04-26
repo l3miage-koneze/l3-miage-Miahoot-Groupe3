@@ -46,7 +46,7 @@ public class ExampleComponent {
      */
     public TestEntity getTest(final String description) throws EntityNotFoundException {
         return testRepository.findByDescription(description)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Aucune entité n'a été trouvée pour la description [%s]", description), description));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Aucune entité n'a été trouvée pour la description [%s]", description), -1L));
     }
 
     /**
@@ -76,7 +76,7 @@ public class ExampleComponent {
                 throw new AlreadyExistException(String.format("La description %s existe déjà en BD.", test.getDescription()), -1L);
             }
             TestEntity actualEntity = testRepository.findByDescription(lastDescription)
-                    .orElseThrow(() -> new EntityNotFoundException(String.format("Aucune entité n'a été trouvé pour la description [%s]", lastDescription), lastDescription));
+                    .orElseThrow(() -> new EntityNotFoundException(String.format("Aucune entité n'a été trouvé pour la description [%s]", lastDescription), -1L));
             testMapper.mergeTestEntity(actualEntity, test);
             testRepository.save(actualEntity);
         } else throw new IsNotTestException("Le champs isTest n'est pas à true, donc erreur technique levée", null);
