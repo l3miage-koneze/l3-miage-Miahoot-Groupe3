@@ -41,7 +41,7 @@ public class QuestionComponent {
         }
     }
 
-    public void updateQuestion(final Long idQuesToModify, final QuestionDto question) throws EntityNotFoundException, NotTheSameIdException{
+    public void updateQuestion(final Long idQuesToModify, final QuestionDto question) throws EntityNotFoundException{
         if (idQuesToModify == question.getId()) {
             Optional<QuestionEntity> quesOpt = questionRepository.findById(idQuesToModify);
             if (quesOpt.isPresent()){
@@ -51,7 +51,7 @@ public class QuestionComponent {
             else{
                 throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%lu] : impossible de modifier.", idQuesToModify), idQuesToModify);
             }
-        } else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
+        } //else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
     }
 
 

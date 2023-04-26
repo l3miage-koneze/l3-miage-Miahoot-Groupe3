@@ -38,7 +38,7 @@ public class ReponseComponent {
         }
     }
 
-    public void updateReponse(final Long idRepToModify, final ReponseDto reponse) throws EntityNotFoundException, NotTheSameIdException{
+    public void updateReponse(final Long idRepToModify, final ReponseDto reponse) throws EntityNotFoundException{
         if (idRepToModify == reponse.getId()) {
             Optional<ReponseEntity> repOpt = reponseRepository.findById(idRepToModify);
             if (repOpt.isPresent()){
@@ -48,7 +48,7 @@ public class ReponseComponent {
             else{
                 throw new EntityNotFoundException(String.format("Aucune réponse n'a été trouvée pour l'id°[%lu] : impossible de modifier.", idRepToModify), idRepToModify);
             }
-        } else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", reponse.getId(), idRepToModify), reponse.getId(), idRepToModify);
+        } //else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", reponse.getId(), idRepToModify), reponse.getId(), idRepToModify);
     }
 
 

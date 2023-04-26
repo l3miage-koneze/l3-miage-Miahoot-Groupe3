@@ -41,7 +41,7 @@ public class MiahootComponent {
         }
     }
 
-    public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) throws EntityNotFoundException, NotTheSameIdException{
+    public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) throws EntityNotFoundException{
         if (idMiaToModify == miahoot.getId()) {
             Optional<MiahootEntity> miaOpt = miahootRepository.findById(idMiaToModify);
             if (miaOpt.isPresent()){
@@ -51,7 +51,7 @@ public class MiahootComponent {
             else{
                 throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de modifier.", idMiaToModify), idMiaToModify);
             }
-        } else throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
+        } //else throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
     }
 
 

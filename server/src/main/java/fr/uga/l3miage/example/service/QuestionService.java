@@ -25,44 +25,44 @@ public class QuestionService {
     private final QuestionMapper questionMapper;
 
 
-    public QuestionDto getQuestion(final Long id) throws EntityNotFoundException {
+    public QuestionDto getQuestion(final Long id)  {
         try {
             return questionMapper.toQuestionDto(questionComponent.getQuestion(id));
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
+            throw new TestEntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), "id");
         }
     }
 
 
-    public void createQuestion(final QuestionDto questionDto) throws AlreadyExistException {
+    public void createQuestion(final QuestionDto questionDto){
         QuestionEntity newQuestionEntity = questionMapper.toQuestionEntity(questionDto);
         try {
             questionComponent.createQuestion(newQuestionEntity);
         } catch (AlreadyExistException ex) {
-            throw new AlreadyExistException(ERROR_DETECTED,questionDto.getId(),ex);
+            throw new AlreadyUseRestException(ERROR_DETECTED,questionDto.getId(),ex);
         }
     }
 
 
-    public void updateQuestion(final Long idQuesToModify,final QuestionDto question) throws EntityNotFoundException, NotTheSameIdException {
+    public void updateQuestion(final Long idQuesToModify,final QuestionDto question){
         if (idQuesToModify == question.getId()){
             try {
                 questionComponent.updateQuestion(idQuesToModify,question);
             } catch (EntityNotFoundException ex) {
-                throw new EntityNotFoundException(String.format("Aucune question n'a  été trouvé pour l'Id : Impossible de modifier",idQuesToModify),idQuesToModify);
+                throw new TestEntityNotFoundRestException(String.format("Aucune question n'a  été trouvé pour l'Id : Impossible de modifier",idQuesToModify),"idQuesToModify");
             }
-        }else{
-            throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
-        }
+        }//else{
+           // throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
+        //}
 
     }
 
     @Transactional
-    public void deleteQuestion(final Long id) throws EntityNotFoundException{
+    public void deleteQuestion(final Long id){
         try {
             questionComponent.deleteQuestion(id);
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
+            throw new TestEntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), "id");
         }
     }
 

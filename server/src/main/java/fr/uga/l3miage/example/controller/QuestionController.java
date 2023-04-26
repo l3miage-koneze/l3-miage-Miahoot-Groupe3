@@ -13,15 +13,7 @@ import java.util.Collection;
 @RestController
 @RequiredArgsConstructor
 public class QuestionController implements QuestionEndpoint {
-
     private final QuestionService questionService;
-    private final QuestionMapper questionMapper;
-    /*
-
-    public Collection<QuestionDto> getAllQuestions() {
-        return null;
-    } */
-
     @Override
     public QuestionDto getQuestion(Long id) {
         return questionService.getQuestion(id);
@@ -29,8 +21,7 @@ public class QuestionController implements QuestionEndpoint {
 
     @Override
     public void newQuestion(QuestionDto questionDto) {
-        QuestionEntity ques = questionMapper.toQuestionEntity(questionDto);
-         questionService.createQuestion(ques);
+        questionService.createQuestion(questionDto);
     }
 
     @Override
@@ -42,9 +33,4 @@ public class QuestionController implements QuestionEndpoint {
     public void deleteQuestion(Long id) {
         questionService.deleteQuestion(id);
     }
-
-
-    /*public Collection<ReponseDto> getAllReponses(Long questionId) {
-        return null;
-    }*/
 }

@@ -24,41 +24,41 @@ public class MiahootService {
     private final MiahootComponent miahootComponent;
     private final MiahootMapper miahootMapper;
 
-    public MiahootDto getMiahoot(final Long id) throws EntityNotFoundException{
+    public MiahootDto getMiahoot(final Long id){
         try {
             return miahootMapper.toMiahootDto(miahootComponent.getMiahoot(id));
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
+            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), "id");
         }
     }
 
 
-    public void createMiahoot(final MiahootDto miahootDto) throws AlreadyExistException {
+    public void createMiahoot(final MiahootDto miahootDto) {
         MiahootEntity newMiahootEntity = miahootMapper.toMiahootEntity(miahootDto);
         try {
             miahootComponent.createMiahoot(newMiahootEntity);
         } catch (AlreadyExistException ex) {
-            throw new AlreadyExistException(ERROR_DETECTED,newMiahootEntity.getId(),ex);
+            throw new AlreadyUseRestException(ERROR_DETECTED,newMiahootEntity.getId(),ex);
         }
     }
 
-    public void updateMiahoot(final Long idMiaToModify,final MiahootDto miahoot) throws EntityNotFoundException, NotTheSameIdException {
+    public void updateMiahoot(final Long idMiaToModify,final MiahootDto miahoot) {
         try {
             miahootComponent.updateMiahoot(idMiaToModify,miahoot);
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a pas été trouvé pour l'Id : Impossible de modifier",idMiaToModify),idMiaToModify);
-        } catch (NotTheSameIdException ex) {
-            throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
-        }
+            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a pas été trouvé pour l'Id : Impossible de modifier",idMiaToModify),"idMiaToModify");
+        } //catch (NotTheSameIdException ex) {
+           // throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
+       // }
     }
 
 
     @Transactional
-    public void deleteMiahoot(final Long id) throws EntityNotFoundException {
+    public void deleteMiahoot(final Long id){
         try {
             miahootComponent.deleteMiahoot(id);
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été retrouvé pour l'id [%lu] : impossible de supprimer",id),id);
+            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a été retrouvé pour l'id [%lu] : impossible de supprimer",id),"id");
         }
     }
 }
