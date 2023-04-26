@@ -51,9 +51,9 @@ public class ReponseService {
             } catch (EntityNotFoundException ex) {
                 throw new EntityNotFoundRestException(String.format("Aucune reponse n'a  été trouvé pour l'Id : Impossible de modifier",idRepoToModify),idRepoToModify);
             }
-        }//else{
-            //throw new NotTheSameIdException(String.format("L'id de la reponse remplaçante([%lu]) est différent de l'id de la reponse à remplacer([%lu])", reponse.getId(), idRepoToModify), reponse.getId(), idRepoToModify);
-        //}
+        }else{
+            throw new NotTheSameIdRestException(String.format("L'id de la reponse remplaçante([%lu]) est différent de l'id de la reponse à remplacer([%lu])", reponse.getId(), idRepoToModify), reponse.getId(), idRepoToModify);
+        }
 
     }
 

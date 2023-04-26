@@ -38,13 +38,15 @@ public class MiahootService {
     }
 
     public void updateMiahoot(final Long idMiaToModify,final MiahootDto miahoot) {
-        try {
-            miahootComponent.updateMiahoot(idMiaToModify,miahoot);
-        } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundRestException(String.format("Aucun Miahoot n'a pas été trouvé pour l'Id : Impossible de modifier",idMiaToModify),idMiaToModify);
-        } //catch (NotTheSameIdException ex) {
-           // throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
-       // }
+        if (idMiaToModify == miahoot.getId()){
+            try {
+                miahootComponent.updateMiahoot(idMiaToModify,miahoot);
+            } catch (EntityNotFoundException ex) {
+                throw new EntityNotFoundRestException(String.format("Aucun Miahoot n'a pas été trouvé pour l'Id : Impossible de modifier", idMiaToModify), idMiaToModify);
+            }
+        } else{
+           throw new NotTheSameIdRestException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
+        }
     }
 
 

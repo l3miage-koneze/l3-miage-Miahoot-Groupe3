@@ -51,9 +51,9 @@ public class QuestionService {
             } catch (EntityNotFoundException ex) {
                 throw new EntityNotFoundRestException(String.format("Aucune question n'a  été trouvé pour l'Id : Impossible de modifier",idQuesToModify),idQuesToModify);
             }
-        }//else{
-           // throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
-        //}
+        }else{
+            throw new NotTheSameIdRestException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
+        }
 
     }
 
