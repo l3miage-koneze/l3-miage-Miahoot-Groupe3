@@ -29,7 +29,7 @@ public class QuestionService {
         try {
             return questionMapper.toQuestionDto(questionComponent.getQuestion(id));
         } catch (EntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), "id");
+            throw new EntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
         }
     }
 
@@ -49,7 +49,7 @@ public class QuestionService {
             try {
                 questionComponent.updateQuestion(idQuesToModify,question);
             } catch (EntityNotFoundException ex) {
-                throw new TestEntityNotFoundRestException(String.format("Aucune question n'a  été trouvé pour l'Id : Impossible de modifier",idQuesToModify),"idQuesToModify");
+                throw new EntityNotFoundRestException(String.format("Aucune question n'a  été trouvé pour l'Id : Impossible de modifier",idQuesToModify),idQuesToModify);
             }
         }//else{
            // throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
@@ -62,7 +62,7 @@ public class QuestionService {
         try {
             questionComponent.deleteQuestion(id);
         } catch (EntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), "id");
+            throw new EntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
         }
     }
 

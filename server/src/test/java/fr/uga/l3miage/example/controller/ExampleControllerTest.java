@@ -4,7 +4,7 @@ import fr.uga.l3miage.example.config.HelloWordConfig;
 import fr.uga.l3miage.example.error.*;
 import fr.uga.l3miage.example.exception.rest.AlreadyUseRestException;
 import fr.uga.l3miage.example.exception.rest.IsNotTestRestException;
-import fr.uga.l3miage.example.exception.rest.TestEntityNotFoundRestException;
+import fr.uga.l3miage.example.exception.rest.EntityNotFoundRestException;
 import fr.uga.l3miage.example.models.TestEntity;
 import fr.uga.l3miage.example.repository.TestRepository;
 import fr.uga.l3miage.example.request.CreateTestRequest;
@@ -334,7 +334,7 @@ class ExampleControllerTest {
         final Map<String, Object> urlParams = new HashMap<>();
         urlParams.put("lastDescription", "description");
 
-        //doThrow(new TestEntityNotFoundRestException("", "description")).when(spyExampleService).updateTest(eq("description"), any(fr.uga.l3miage.example.response.Test.class));
+        //doThrow(new EntityNotFoundRestException("", "description")).when(spyExampleService).updateTest(eq("description"), any(fr.uga.l3miage.example.response.Test.class));
 
         ResponseEntity<TestNotFoundErrorResponse> response = testRestTemplate.exchange(
                 "/exemple/{lastDescription}", HttpMethod.PATCH, new HttpEntity<>(test, null),

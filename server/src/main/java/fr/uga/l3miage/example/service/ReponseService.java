@@ -20,7 +20,7 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ReponseService {
-    private static final String ERROR_DETECTED = "Une erreur lors de la création de l'entité TestConfigWithProperties à été détecté.";
+    private static final String ERROR_DETECTED = "Une erreur lors de la création de l'entité ReponseConfigWithProperties à été détecté.";
     private final ReponseComponent reponseComponent;
     private final ReponseMapper reponseMapper;
 
@@ -29,7 +29,7 @@ public class ReponseService {
         try {
             return reponseMapper.toReponseDto(reponseComponent.getReponse(id));
         } catch (EntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), "id");
+            throw new EntityNotFoundRestException(String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
         }
     }
 
@@ -49,7 +49,7 @@ public class ReponseService {
             try {
                 reponseComponent.updateReponse(idRepoToModify,reponse);
             } catch (EntityNotFoundException ex) {
-                throw new TestEntityNotFoundRestException(String.format("Aucune reponse n'a  été trouvé pour l'Id : Impossible de modifier",idRepoToModify),"idRepoToModify");
+                throw new EntityNotFoundRestException(String.format("Aucune reponse n'a  été trouvé pour l'Id : Impossible de modifier",idRepoToModify),idRepoToModify);
             }
         }//else{
             //throw new NotTheSameIdException(String.format("L'id de la reponse remplaçante([%lu]) est différent de l'id de la reponse à remplacer([%lu])", reponse.getId(), idRepoToModify), reponse.getId(), idRepoToModify);
@@ -62,7 +62,7 @@ public class ReponseService {
         try {
             reponseComponent.deleteReponse(id);
         } catch (EntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), "id");
+            throw new EntityNotFoundRestException(String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
         }
     }
 

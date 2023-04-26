@@ -1,16 +1,11 @@
 package fr.uga.l3miage.example.service;
 
-import fr.uga.l3miage.example.component.ExampleComponent;
 import fr.uga.l3miage.example.component.MiahootComponent;
 import fr.uga.l3miage.example.exception.rest.*;
 import fr.uga.l3miage.example.exception.technical.*;
 import fr.uga.l3miage.example.mapper.MiahootMapper;
-import fr.uga.l3miage.example.mapper.TestMapper;
 import fr.uga.l3miage.example.models.MiahootEntity;
-import fr.uga.l3miage.example.request.CreateMiahootRequest;
-import fr.uga.l3miage.example.request.CreateTestRequest;
 import fr.uga.l3miage.example.response.MiahootDto;
-import fr.uga.l3miage.example.response.Test;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +23,7 @@ public class MiahootService {
         try {
             return miahootMapper.toMiahootDto(miahootComponent.getMiahoot(id));
         } catch (EntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), "id");
+            throw new EntityNotFoundRestException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), id);
         }
     }
 
@@ -46,7 +41,7 @@ public class MiahootService {
         try {
             miahootComponent.updateMiahoot(idMiaToModify,miahoot);
         } catch (EntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a pas été trouvé pour l'Id : Impossible de modifier",idMiaToModify),"idMiaToModify");
+            throw new EntityNotFoundRestException(String.format("Aucun Miahoot n'a pas été trouvé pour l'Id : Impossible de modifier",idMiaToModify),idMiaToModify);
         } //catch (NotTheSameIdException ex) {
            // throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
        // }
@@ -58,7 +53,7 @@ public class MiahootService {
         try {
             miahootComponent.deleteMiahoot(id);
         } catch (EntityNotFoundException ex) {
-            throw new TestEntityNotFoundRestException(String.format("Aucun Miahoot n'a été retrouvé pour l'id [%d] : impossible de supprimer",id),"id");
+            throw new EntityNotFoundRestException(String.format("Aucun Miahoot n'a été retrouvé pour l'id [%d] : impossible de supprimer",id),id);
         }
     }
 }

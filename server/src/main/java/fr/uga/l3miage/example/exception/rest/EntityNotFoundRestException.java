@@ -12,17 +12,17 @@ import org.springframework.http.HttpStatus;
  * </ul>
  */
 @Getter
-public class TestEntityNotFoundRestException extends RuntimeException {
-    private final String description;
+public class EntityNotFoundRestException extends RuntimeException {
+    private final Long id;
 
-    public TestEntityNotFoundRestException(String message, String description) {
+    public EntityNotFoundRestException(String message, Long id) {
         super(message);
-        this.description = description;
+        this.id = id;
     }
 
-    public TestEntityNotFoundRestException(String message, String description, Throwable cause) {
+    public EntityNotFoundRestException(String message, Long id, Throwable cause) {
         super(message, cause);
-        this.description = description;
+        this.id = id;
     }
 
     public HttpStatus getHttpStatus() {

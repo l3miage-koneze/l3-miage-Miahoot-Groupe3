@@ -2,7 +2,7 @@ package fr.uga.l3miage.example.config.handler;
 
 import fr.uga.l3miage.example.error.ErrorResponse;
 import fr.uga.l3miage.example.error.TestNotFoundErrorResponse;
-import fr.uga.l3miage.example.exception.rest.TestEntityNotFoundRestException;
+import fr.uga.l3miage.example.exception.rest.EntityNotFoundRestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * Cette classe correspond au handler d'exception rest. Ici, on catch l'exception {@link TestEntityNotFoundRestException}<br>
+ * Cette classe correspond au handler d'exception rest. Ici, on catch l'exception {@link EntityNotFoundRestException}<br>
  * Les annotations :
  * <ul>
  *     <li>{@link ConditionalOnWebApplication} permet de dire que cette classe est utilisée si nous sommes sur une application web</li>
@@ -30,8 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 public class NotFoundExceptionHandler {
 
     /**
-     * Cette classe correspond au handler de l'exception {@link TestEntityNotFoundRestException}.<br>
-     * Ici lorsque le code va lever l'exception {@link TestEntityNotFoundRestException} alors la fonction <b color="blue">handle()</b> sera appelée.<br>
+     * Cette classe correspond au handler de l'exception {@link EntityNotFoundRestException}.<br>
+     * Ici lorsque le code va lever l'exception {@link EntityNotFoundRestException} alors la fonction <b color="blue">handle()</b> sera appelée.<br>
      * Les annotations :
      * <ul>
      *     <li>{@link ExceptionHandler} permet de donner tous les types d'exceptions qui vont être catch par ce handler</li>
@@ -40,15 +40,15 @@ public class NotFoundExceptionHandler {
      * @param exception L'exception qui a été levée dans le code server, et qui a été catch par ce handler
      * @return {@link ResponseEntity}<{@link TestNotFoundErrorResponse}></li>
      */
-    @ExceptionHandler(TestEntityNotFoundRestException.class)
+    @ExceptionHandler(EntityNotFoundRestException.class)
     public ResponseEntity<ErrorResponse> handle(HttpServletRequest httpServletRequest, Exception exception) {
-        TestEntityNotFoundRestException ex = (TestEntityNotFoundRestException) exception;
+        EntityNotFoundRestException ex = (EntityNotFoundRestException) exception;
         final TestNotFoundErrorResponse response = TestNotFoundErrorResponse.builder()
                 .uri(httpServletRequest.getRequestURI())
                 .httpStatus(ex.getHttpStatus())
                 .errorMessage(ex.getMessage())
                 .errorCode(ex.getErrorCode())
-                .description(ex.getDescription())
+                .description(ex.getId().toString())
                 .build();
         log.warn(ex.getMessage());
         return ResponseEntity.status(ex.getHttpStatus()).body(response);
