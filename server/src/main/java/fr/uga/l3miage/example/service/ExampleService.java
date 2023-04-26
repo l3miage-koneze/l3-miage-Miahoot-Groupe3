@@ -35,6 +35,7 @@ public class ExampleService {
      * @param isInError boolean qui dit si oui ou non, on veut une erreur
      * @return "Hello Word"
      */
+
     public String helloWord(final boolean isInError) {
         try {
             return exampleComponent.getHelloWord(isInError);
@@ -47,6 +48,7 @@ public class ExampleService {
      * @param description de l'entité test recherchée
      * @return le dto test correspondant à la description
      */
+    /*
     public Test getTest(final String description) {
         try {
             return testMapper.toDto(exampleComponent.getTest(description));
@@ -55,9 +57,12 @@ public class ExampleService {
         }
     }
 
+     */
+
     /**
      * @param createTestRequest la requête qui permet de créer une entité test
      */
+    /*
     public void createTest(final CreateTestRequest createTestRequest) {
         TestEntity newTestEntity = testMapper.toEntity(createTestRequest);
         if(newTestEntity.getTestInt()!=0){
@@ -73,10 +78,13 @@ public class ExampleService {
         }
     }
 
+     */
+
     /**
      * @param lastDescription la description actuelle de l'entité test
      * @param test le DTO qui va permettre de merge les informations
      */
+    /*
     public void updateTest(final String lastDescription,final Test test) {
         if (test.getTestInt() != 0) {
             try {
@@ -98,6 +106,7 @@ public class ExampleService {
      * </ul>
      * @param description de l'entité Test à supprimer
      */
+    /*
     @Transactional
     public void deleteTest(String description) {
         try {
@@ -106,6 +115,8 @@ public class ExampleService {
             throw new TestEntityNotDeletedRestException(ex.getMessage());
         }
     }
+
+     */
 
 
 }
