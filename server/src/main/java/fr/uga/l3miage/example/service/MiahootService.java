@@ -5,7 +5,14 @@ import fr.uga.l3miage.example.exception.rest.*;
 import fr.uga.l3miage.example.exception.technical.*;
 import fr.uga.l3miage.example.mapper.MiahootMapper;
 import fr.uga.l3miage.example.models.MiahootEntity;
+import fr.uga.l3miage.example.repository.MiahootRepository;
 import fr.uga.l3miage.example.response.MiahootDto;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +34,19 @@ public class MiahootService {
         }
     }
 
+    public List<MiahootDto> getAllMiahoots(){
+        List<MiahootEntity> miahootEntities = miahootComponent.getAllMiahoots();
+        return miahootEntities.stream()
+            .map(miahootMapper::toMiahootDto)
+            .collect(Collectors.toList());
+    }
+
+    public List<MiahootDto> findByName(final String nom){
+        List<MiahootEntity> miahootEntities = miahootComponent.findByName(nom);
+        return miahootEntities.stream()
+            .map(miahootMapper::toMiahootDto)
+            .collect(Collectors.toList());
+    }
 
     public void createMiahoot(final MiahootDto miahootDto) throws Exception {
         MiahootEntity newMiahootEntity = miahootMapper.toMiahootEntity(miahootDto);
@@ -38,7 +58,7 @@ public class MiahootService {
     }
 
     public void updateMiahoot(final Long idMiaToModify,final MiahootDto miahoot) {
-        if (idMiaToModify == miahoot.getId()){
+        if (Objects.equals(idMiaToModify, miahoot.getId())){
             try {
                 miahootComponent.updateMiahoot(idMiaToModify,miahoot);
             } catch (EntityNotFoundException ex) {

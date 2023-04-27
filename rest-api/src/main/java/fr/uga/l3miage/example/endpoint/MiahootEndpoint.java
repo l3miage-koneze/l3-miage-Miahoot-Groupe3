@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 @Tag(name = "Miahoot tag")
@@ -30,6 +32,25 @@ public interface MiahootEndpoint {
     @GetMapping("{id}")
     MiahootDto getMiahoot(@PathVariable Long id);
 
+
+    @Operation(description = "Récupérer les DTO de tous les entités Miahoot")
+    @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Miahoot",
+            content = @Content(schema = @Schema(implementation = MiahootDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
+            content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    List<MiahootDto> getAllMiahoots();
+
+
+    @Operation(description = "Récupérer les DTO de tous les entités Miahoot qui a pour nom celui passé en paramètre")
+    @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Miahoot demandée",
+            content = @Content(schema = @Schema(implementation = MiahootDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
+            content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("{nom}")
+    List<MiahootDto> findByName(@PathVariable String nom);
 
     @Operation(description = "Création d'une entité Miahoot")
     @ApiResponse(responseCode = "201", description = "L'entité Miahoot a bien été créée.")
