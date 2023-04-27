@@ -23,7 +23,7 @@ public class QuestionEntity {
     @Column
     private String label;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<ReponseEntity> reponses;
     
     public Collection<ReponseEntity> getReponses(){

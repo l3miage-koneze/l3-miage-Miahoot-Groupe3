@@ -22,7 +22,7 @@ public class MiahootEntity {
     @Column
     private String nom;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<QuestionEntity> questions;
 
     public Collection<QuestionEntity> getQuestions(){
