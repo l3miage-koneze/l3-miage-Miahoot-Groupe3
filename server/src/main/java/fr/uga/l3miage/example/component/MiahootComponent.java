@@ -10,8 +10,10 @@ import fr.uga.l3miage.example.response.MiahootDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -30,6 +32,15 @@ public class MiahootComponent {
         else{
             throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), id);
         }
+    }
+
+    public List<MiahootEntity> getAllMiahoots() {
+        return miahootRepository.findAll();
+    }
+
+    public List<MiahootEntity> findByName(String name) {
+        return miahootRepository.findByName(name);
+        
     }
 
     public void createMiahoot(final MiahootEntity miahoot) throws AlreadyExistException {
