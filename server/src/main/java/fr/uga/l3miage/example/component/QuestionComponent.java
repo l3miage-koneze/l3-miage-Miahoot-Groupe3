@@ -80,9 +80,6 @@ public class QuestionComponent {
             Optional<QuestionEntity> quesOpt = questionRepository.findById(id);
             if (quesOpt.isPresent()) {
                 questionRepository.deleteById(id);
-                for (ReponseEntity reponse : quesOpt.get().getReponses()) {
-                    reponseRepository.deleteById(reponse.getId());
-                }
             } else {
                 throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
             }
