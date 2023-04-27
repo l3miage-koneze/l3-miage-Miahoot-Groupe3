@@ -17,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class QuestionEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column
