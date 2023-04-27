@@ -40,10 +40,16 @@ public class QuestionComponent {
 
     public void createQuestion(final Long miahootId, final QuestionEntity question) throws AlreadyExistException, EntityNotFoundException{
         if (miahootRepository.findById(miahootId).isPresent()) {
-            if (questionRepository.findById(question.getId()).isPresent()) {
-                throw new AlreadyExistException(String.format("La question n°[%lu] existe déjà en BD.", question.getId()), question.getId());
-            } else {
+            if (question.getId() == null){
                 questionRepository.save(question);
+            }
+            else{
+                if (questionRepository.findById(question.getId()).isPresent()){
+                    throw new AlreadyExistException(String.format("La question n°[%d] existe déjà en BD.", question.getId()), question.getId());
+                }
+                else{
+                    questionRepository.save(question);
+                }
             }
         }
         else{

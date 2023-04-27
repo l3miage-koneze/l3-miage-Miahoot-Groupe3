@@ -44,10 +44,16 @@ public class ReponseComponent {
     public void createReponse(Long miahootId, Long questionId, final ReponseEntity reponse) throws AlreadyExistException, EntityNotFoundException {
         if (miahootRepository.findById(miahootId).isPresent()) {
             if (questionRepository.findById(questionId).isPresent()) {
-                if (reponseRepository.findById(reponse.getId()).isPresent()) {
-                    throw new AlreadyExistException(String.format("La réponse n°[%lu] existe déjà en BD.", reponse.getId()), reponse.getId());
-                } else {
+                if (reponse.getId() == null){
                     reponseRepository.save(reponse);
+                }
+                else{
+                    if (reponseRepository.findById(reponse.getId()).isPresent()){
+                        throw new AlreadyExistException(String.format("La réponse n°[%d] existe déjà en BD.", reponse.getId()), reponse.getId());
+                    }
+                    else{
+                        reponseRepository.save(reponse);
+                    }
                 }
             }
             else{
