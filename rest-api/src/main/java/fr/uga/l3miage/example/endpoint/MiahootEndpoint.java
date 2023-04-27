@@ -39,8 +39,9 @@ public interface MiahootEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    List<MiahootDto> getAllMiahoots();
+    @GetMapping("all/")
+    List<MiahootDto> getAllMiahoots(@RequestParam(value = "all", required = false, defaultValue = "false") boolean all);
+      
 
 
     @Operation(description = "Récupérer les DTO de tous les entités Miahoot qui a pour nom celui passé en paramètre")
@@ -49,8 +50,8 @@ public interface MiahootEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("{nom}")
-    List<MiahootDto> findByName(@PathVariable String nom);
+    @GetMapping
+    List<MiahootDto> findByName(@RequestParam(value = "name", required = true) String nom);
 
     @Operation(description = "Création d'une entité Miahoot")
     @ApiResponse(responseCode = "201", description = "L'entité Miahoot a bien été créée.")
