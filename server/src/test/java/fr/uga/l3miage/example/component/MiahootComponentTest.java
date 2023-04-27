@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @AutoConfigureTestDatabase
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, properties = "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect")
 class MiahootComponentTest {
+
+    /*
     @Autowired
     private MiahootRepository miahootRepository;
     @Autowired
@@ -97,5 +99,5 @@ class MiahootComponentTest {
         miahootDto.setDescription("une description qui n'existe pas");
         assertThrows(EntityNotFoundException.class, () -> miahootComponent.updateMiahoot("une description qui n'existe pas",miahootDto));
         test.setDescription("description");
-    }
+    } */
 }

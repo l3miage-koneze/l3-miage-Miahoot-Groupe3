@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Component
@@ -72,6 +73,16 @@ public class MiahootComponent {
             }
         } else {
             throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), id);
+        }
+    }
+
+
+    public Collection<QuestionEntity> getQuestionsMiahoot (final Long id) throws EntityNotFoundException{
+        Optional<MiahootEntity> miaOpt = miahootRepository.findById(id);
+        if(miaOpt.isPresent()){
+            return miaOpt.get().getQuestions();
+        } else {
+            throw new EntityNotFoundException(String.format("Pas de Miahoot de avec cet id trouvé donc pas de questions", id), id);
         }
     }
 
