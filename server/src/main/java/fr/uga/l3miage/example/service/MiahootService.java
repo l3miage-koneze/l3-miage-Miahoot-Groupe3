@@ -7,18 +7,14 @@ import fr.uga.l3miage.example.exception.technical.*;
 import fr.uga.l3miage.example.mapper.MiahootMapper;
 import fr.uga.l3miage.example.mapper.QuestionMapper;
 import fr.uga.l3miage.example.models.MiahootEntity;
-import fr.uga.l3miage.example.repository.MiahootRepository;
 import fr.uga.l3miage.example.response.MiahootDto;
-<<<<<<< HEAD
 import fr.uga.l3miage.example.response.QuestionDto;
-=======
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
->>>>>>> 40614e57daae8f6a8e56ac1790c41343dc74b5f0
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

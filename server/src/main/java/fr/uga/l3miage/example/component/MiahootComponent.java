@@ -10,15 +10,9 @@ import fr.uga.l3miage.example.response.MiahootDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-<<<<<<< HEAD
-
-import java.util.Collection;
-=======
 import java.util.Collection;
 import java.util.List;
->>>>>>> 40614e57daae8f6a8e56ac1790c41343dc74b5f0
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
