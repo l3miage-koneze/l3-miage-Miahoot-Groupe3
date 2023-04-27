@@ -2,6 +2,8 @@ package fr.uga.l3miage.example.models;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -22,7 +24,7 @@ public class MiahootEntity {
     @Column
     private String nom;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany()
     private Collection<QuestionEntity> questions;
 
     public Collection<QuestionEntity> getQuestions(){

@@ -19,9 +19,9 @@ public class ReponseService {
     private final ReponseMapper reponseMapper;
 
 
-    public ReponseDto getReponse(final Long miahootId, final long questionId, final Long id)  {
+    public ReponseDto getReponse(final Long id)  {
         try {
-            return reponseMapper.toReponseDto(reponseComponent.getReponse(miahootId, questionId, id));
+            return reponseMapper.toReponseDto(reponseComponent.getReponse(id));
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundRestException(String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
         }
@@ -40,10 +40,10 @@ public class ReponseService {
     }
 
 
-    public void updateReponse(final Long miahootId, final long questionId, final Long idRepoToModify,final ReponseDto reponse){
+    public void updateReponse(final Long idRepoToModify,final ReponseDto reponse){
         if (idRepoToModify == reponse.getId()){
             try {
-                reponseComponent.updateReponse(miahootId, questionId, idRepoToModify,reponse);
+                reponseComponent.updateReponse(idRepoToModify,reponse);
             } catch (EntityNotFoundException ex) {
                 throw new EntityNotFoundRestException(String.format("Aucune reponse n'a  été trouvé pour l'Id : Impossible de modifier",idRepoToModify),idRepoToModify);
             }
@@ -54,9 +54,9 @@ public class ReponseService {
     }
 
     @Transactional
-    public void deleteReponse(final Long miahootId, final long questionId, final Long id){
+    public void deleteReponse(final Long id){
         try {
-            reponseComponent.deleteReponse(miahootId, questionId, id);
+            reponseComponent.deleteReponse(id);
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundRestException(String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
         }

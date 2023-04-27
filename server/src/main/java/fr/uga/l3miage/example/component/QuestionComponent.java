@@ -24,18 +24,14 @@ public class QuestionComponent {
     private final QuestionMapper questionMapper;
 
 
-    public QuestionEntity getQuestion(final Long miahootId, final Long id) throws EntityNotFoundException {
-        if (miahootRepository.findById(miahootId).isPresent()) {
-            Optional<QuestionEntity> quesOpt = questionRepository.findById(id);
-            if (quesOpt.isPresent()) {
-                return quesOpt.get();
-            } else {
-                throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
-            }
+    public QuestionEntity getQuestion(final Long id) throws EntityNotFoundException {
+        Optional<QuestionEntity> quesOpt = questionRepository.findById(id);
+        if (quesOpt.isPresent()) {
+            return quesOpt.get();
+        } else {
+            throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), id);
         }
-        else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", miahootId), miahootId);
-        }
+
     }
 
     public void createQuestion(final Long miahootId, final QuestionEntity question) throws AlreadyExistException, EntityNotFoundException{
@@ -53,40 +49,35 @@ public class QuestionComponent {
             }
         }
         else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", miahootId), miahootId);
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de récupérer", miahootId), miahootId);
         }
     }
 
-    public void updateQuestion(final Long miahootId, final Long idQuesToModify, final QuestionDto question) throws EntityNotFoundException{
-        if (miahootRepository.findById(miahootId).isPresent()) {
-            if (idQuesToModify == question.getId()) {
-                Optional<QuestionEntity> quesOpt = questionRepository.findById(idQuesToModify);
-                if (quesOpt.isPresent()) {
-                    questionMapper.mergeQuestionEntity(quesOpt.get(), question);
-                    questionRepository.save(quesOpt.get());
-                } else {
-                    throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%lu] : impossible de modifier.", idQuesToModify), idQuesToModify);
-                }
-            } //else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
-        }
-        else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", miahootId), miahootId);
-        }
-    }
-
-
-    public void deleteQuestion(final Long miahootId, final Long id) throws EntityNotFoundException {
-        if (miahootRepository.findById(miahootId).isPresent()) {
-            Optional<QuestionEntity> quesOpt = questionRepository.findById(id);
+    public void updateQuestion(final Long idQuesToModify, final QuestionDto question) throws EntityNotFoundException{
+        if (idQuesToModify == question.getId()) {
+            Optional<QuestionEntity> quesOpt = questionRepository.findById(idQuesToModify);
             if (quesOpt.isPresent()) {
-                questionRepository.deleteById(id);
+                questionMapper.mergeQuestionEntity(quesOpt.get(), question);
+                questionRepository.save(quesOpt.get());
             } else {
-                throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
+                throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%d] : impossible de modifier.", idQuesToModify), idQuesToModify);
             }
-        }
-        else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", miahootId), miahootId);
+        } //else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%d]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
+
+    }
+
+
+    public void deleteQuestion(final Long id) throws EntityNotFoundException {
+        Optional<QuestionEntity> quesOpt = questionRepository.findById(id);
+        if (quesOpt.isPresent()) {
+            questionRepository.deleteById(id);
+            for (ReponseEntity reponse : quesOpt.get().getReponses()) {
+                reponseRepository.deleteById(reponse.getId());
+            }
+        } else {
+            throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), id);
         }
     }
+
 
 }
