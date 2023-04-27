@@ -32,20 +32,22 @@ public class MiahootComponent {
         }
     }
 
-    public void createMiahoot(final MiahootEntity miahoot) throws AlreadyExistException,Exception {
-        //miahoot.setId((long) 233);
-        if(miahoot.getId() != null){
+    public void createMiahoot(final MiahootEntity miahoot) throws AlreadyExistException {
+
+        if (miahoot.getId() == null){
+            miahootRepository.save(miahoot);
+            System.out.println("Miahoot create");
+        }
+        else{
             if (miahootRepository.findById(miahoot.getId()).isPresent()){
                 throw new AlreadyExistException(String.format("Le Miahoot n°[%d] existe déjà en BD.", miahoot.getId()), miahoot.getId());
             }
             else{
                 miahootRepository.save(miahoot);
-                System.out.println("Miahoot create");
             }
         }
-        else{
-            throw new Exception(String.format("Le Miahoot id est null.", miahoot.getId()));
-        }
+
+
         
     }
 
