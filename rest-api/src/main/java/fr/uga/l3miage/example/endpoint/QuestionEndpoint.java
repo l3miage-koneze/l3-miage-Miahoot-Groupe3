@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Tag(name = "Question tag")
 @CrossOrigin
 @RestController
-@RequestMapping("/question/{id}/")
+@RequestMapping("/miahoot/")
 public interface QuestionEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Question qui a pour id celui passé en paramètre")
@@ -28,16 +28,16 @@ public interface QuestionEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("{id}")
-    QuestionDto getQuestion(@PathVariable Long id);
+    @GetMapping("{miahootId}/question/{id}")
+    QuestionDto getQuestion(@PathVariable Long miahootId, @PathVariable Long id);
 
 
     @Operation(description = "Création d'une entité Miahoot")
     @ApiResponse(responseCode = "201", description = "L'entité Miahoot a bien été créée.")
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    void newQuestion(@Valid @RequestBody QuestionDto questionDto);
+    @PostMapping("{miahootId}/question")
+    void newQuestion(@PathVariable Long miahootId, @Valid @RequestBody QuestionDto questionDto);
 
 
 
@@ -47,8 +47,8 @@ public interface QuestionEndpoint {
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @Error400Custom
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PatchMapping("{id}")
-    void updateQuestion(@PathVariable final Long id,@RequestBody final QuestionDto questionDto);
+    @PatchMapping("{miahootId}/question/{id}")
+    void updateQuestion(@PathVariable Long miahootId, @PathVariable final Long id,@RequestBody final QuestionDto questionDto);
 
 
 
@@ -57,6 +57,6 @@ public interface QuestionEndpoint {
     @ApiResponse(responseCode = "418", description = "Renvoie une erreur 418 si l'entité n'a pu être supprimée",
             content = @Content(schema = @Schema(implementation = TestEntityNotDeletedErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("{id}")
-    void deleteQuestion(@PathVariable Long id);
+    @DeleteMapping("{miahootId}/question/{id}")
+    void deleteQuestion(@PathVariable Long miahootId, @PathVariable Long id);
 }

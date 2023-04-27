@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Tag(name = "Reponse tag")
 @CrossOrigin
 @RestController
-@RequestMapping("reponse/")
+@RequestMapping("miahoot/{miahootId}/question/{questionId}/")
 public interface ReponseEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Reponse qui a pour id celui passé en paramètre")
@@ -28,7 +28,7 @@ public interface ReponseEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("{id}")
+    @GetMapping("reponse/{id}")
     ReponseDto getReponse(@PathVariable Long id);
 
 
@@ -36,7 +36,7 @@ public interface ReponseEndpoint {
     @ApiResponse(responseCode = "201", description = "L'entité Reponse a bien été créée.")
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping("reponse")
     void newReponse(@Valid @RequestBody ReponseDto reponseDto);
 
 
@@ -47,7 +47,7 @@ public interface ReponseEndpoint {
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @Error400Custom
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PatchMapping("{id}")
+    @PatchMapping("reponse/{id}")
     void updateReponse(@PathVariable final Long id,@RequestBody final ReponseDto reponseDto);
 
 
@@ -57,6 +57,6 @@ public interface ReponseEndpoint {
     @ApiResponse(responseCode = "418", description = "Renvoie une erreur 418 si l'entité n'a pu être supprimée",
             content = @Content(schema = @Schema(implementation = TestEntityNotDeletedErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("{id}")
+    @DeleteMapping("reponse/{id}")
     void deleteReponse(@PathVariable Long id);
 }
