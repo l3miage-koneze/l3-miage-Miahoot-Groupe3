@@ -19,11 +19,7 @@ import javax.validation.Valid;
 @Tag(name = "Question tag")
 @CrossOrigin
 @RestController
-<<<<<<< HEAD
-@RequestMapping("/miahoot/id/")
-=======
-@RequestMapping()
->>>>>>> db617fdf76f049a6755cc4efb0479ec40ca90db1
+@RequestMapping("/api")
 public interface QuestionEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Question qui a pour id celui passé en paramètre")
@@ -40,7 +36,7 @@ public interface QuestionEndpoint {
     @ApiResponse(responseCode = "201", description = "L'entité Question a bien été créée.")
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/miahoot/{miahootId}/question")
+    @PostMapping("/miahoot/id/{miahootId}/question")
     void newQuestion(@PathVariable Long miahootId, @Valid @RequestBody QuestionDto questionDto);
 
 

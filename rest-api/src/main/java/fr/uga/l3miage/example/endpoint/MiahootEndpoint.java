@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Tag(name = "Miahoot tag")
 @CrossOrigin
 @RestController
-@RequestMapping("/miahoot/")
+@RequestMapping("/api/miahoot/")
 public interface MiahootEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Miahoot qui a pour id celui passé en paramètre")
