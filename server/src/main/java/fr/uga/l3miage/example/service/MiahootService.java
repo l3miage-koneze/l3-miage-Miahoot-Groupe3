@@ -9,16 +9,13 @@ import fr.uga.l3miage.example.mapper.QuestionMapper;
 import fr.uga.l3miage.example.models.MiahootEntity;
 import fr.uga.l3miage.example.repository.MiahootRepository;
 import fr.uga.l3miage.example.response.MiahootDto;
-<<<<<<< HEAD
 import fr.uga.l3miage.example.response.QuestionDto;
-=======
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
->>>>>>> 40614e57daae8f6a8e56ac1790c41343dc74b5f0
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +29,6 @@ public class MiahootService {
     private static final String ERROR_DETECTED = "Une erreur lors de la création de l'entité TestConfigWithProperties à été détecté.";
     private final MiahootComponent miahootComponent;
     private final MiahootMapper miahootMapper;
-    private final QuestionComponent questionComponent;
-    private final QuestionMapper questionMapper;
-
     public MiahootDto getMiahoot(final Long id){
         try {
             return miahootMapper.toMiahootDto(miahootComponent.getMiahoot(id));
@@ -88,13 +82,14 @@ public class MiahootService {
         }
     }
 
-
     public Collection<QuestionDto> getALlQuestionsMiahoot( final Long id) {
         try {
             return miahootMapper.toMiahootDto(miahootComponent.getMiahoot(id)).getQuestions();
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundRestException(String.format("Aucun Miahoot n'a été trouvé pou cet id", id), id);
         }
-
     }
+
+
+
 }

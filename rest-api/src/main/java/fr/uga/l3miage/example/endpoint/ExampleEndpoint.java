@@ -258,3 +258,4 @@ public interface ExampleEndpoint {
     @DeleteMapping("{description}")
     void deleteTestEntity(@PathVariable String description);
 }
+

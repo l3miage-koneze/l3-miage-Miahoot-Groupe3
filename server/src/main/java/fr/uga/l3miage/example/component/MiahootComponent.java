@@ -63,8 +63,6 @@ public class MiahootComponent {
             }
         }
 
-
-        
     }
 
     public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) throws EntityNotFoundException{
