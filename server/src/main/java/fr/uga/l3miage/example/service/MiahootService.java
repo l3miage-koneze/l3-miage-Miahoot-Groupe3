@@ -36,6 +36,7 @@ public class MiahootService {
 
     public List<MiahootDto> getAllMiahoots(){
         List<MiahootEntity> miahootEntities = miahootComponent.getAllMiahoots();
+        System.out.println(miahootEntities.get(0));
         return miahootEntities.stream()
             .map(miahootMapper::toMiahootDto)
             .collect(Collectors.toList());

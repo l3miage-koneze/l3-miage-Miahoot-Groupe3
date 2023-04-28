@@ -20,11 +20,9 @@ public class MiahootController implements MiahootEndpoint{
     }
     
     @Override
-    public List<MiahootDto> getAllMiahoots(boolean all) {
-        if (all) {
+    public List<MiahootDto> getAllMiahoots() {
             return miahootService.getAllMiahoots();
-        }
-        return null;
+    
     }
     
     @Override
