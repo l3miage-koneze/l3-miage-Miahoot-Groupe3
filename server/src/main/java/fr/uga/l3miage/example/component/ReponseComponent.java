@@ -10,7 +10,7 @@ import fr.uga.l3miage.example.response.ReponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -31,6 +31,10 @@ public class ReponseComponent {
         }
 
     }
+
+    public List<ReponseEntity> getAllReponses(){
+        return reponseRepository.findAll();
+}
 
     public void createReponse(Long miahootId, Long questionId, final ReponseEntity reponse) throws AlreadyExistException, EntityNotFoundException {
         if (miahootRepository.findById(miahootId).isPresent()) {

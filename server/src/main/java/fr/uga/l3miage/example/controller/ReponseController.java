@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 
 import java.util.stream.Collectors;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +32,11 @@ public class ReponseController implements ReponseEndpoint {
     @Override
     public ReponseDto getReponse( Long id) {
         return reponseService.getReponse(id);
+    }
+
+    @Override
+    public List<ReponseDto> getAllReponses() {
+        return reponseService.getAllReponses();
     }
 
     @Override

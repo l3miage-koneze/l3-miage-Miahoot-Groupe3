@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 @Tag(name = "Reponse tag")
@@ -30,6 +32,15 @@ public interface ReponseEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/reponse/{id}")
     ReponseDto getReponse(@PathVariable Long id);
+
+    @Operation(description = "Récupérer les DTO de les entités Reponses")
+    @ApiResponse(responseCode = "200", description = "Renvoie le DTO de l'entité Reponse",
+            content = @Content(schema = @Schema(implementation = ReponseDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
+            content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/reponse/{id}/all")
+    List<ReponseDto> getAllReponses();
 
 
     @Operation(description = "Création d'une entité Reponse")

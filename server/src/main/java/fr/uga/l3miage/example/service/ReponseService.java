@@ -9,6 +9,9 @@ import fr.uga.l3miage.example.response.ReponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
 @Service
@@ -27,6 +30,14 @@ public class ReponseService {
         }
     }
 
+    public List<ReponseDto> getAllReponses() {
+        List<ReponseEntity> reponseEntities = reponseComponent.getAllReponses();
+        return reponseEntities.stream()
+                .map(reponseMapper::toReponseDto)
+                .collect(Collectors.toList());
+
+
+}
 
     public void createReponse(final Long miahootId, final long questionId, final ReponseDto reponseDto) {
         ReponseEntity newReponseEntity = reponseMapper.toReponseEntity(reponseDto);
