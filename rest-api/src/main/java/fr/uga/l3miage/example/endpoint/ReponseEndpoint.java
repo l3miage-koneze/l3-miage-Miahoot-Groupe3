@@ -39,7 +39,7 @@ public interface ReponseEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/reponse/{id}/all")
+    @GetMapping("/reponse/all")
     List<ReponseDto> getAllReponses();
 
 
