@@ -22,23 +22,14 @@ public class ReponseComponent {
     private final QuestionRepository questionRepository;
     private final ReponseMapper reponseMapper;
 
-    public ReponseEntity getReponse(Long miahootId, Long questionId, final Long id) throws EntityNotFoundException {
-        if (miahootRepository.findById(miahootId).isPresent()) {
-            if (questionRepository.findById(questionId).isPresent()) {
-                Optional<ReponseEntity> repOpt = reponseRepository.findById(id);
-                if (repOpt.isPresent()) {
-                    return repOpt.get();
-                } else {
-                    throw new EntityNotFoundException(String.format("Aucune réponse n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
-                }
-            }
-            else{
-                throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%lu] : impossible de récupérer", questionId), questionId);
-            }
+    public ReponseEntity getReponse(final Long id) throws EntityNotFoundException {
+        Optional<ReponseEntity> repOpt = reponseRepository.findById(id);
+        if (repOpt.isPresent()) {
+            return repOpt.get();
+        } else {
+            throw new EntityNotFoundException(String.format("Aucune réponse n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), id);
         }
-        else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de récupérer", miahootId), miahootId);
-        }
+
     }
 
     public void createReponse(Long miahootId, Long questionId, final ReponseEntity reponse) throws AlreadyExistException, EntityNotFoundException {
@@ -57,53 +48,33 @@ public class ReponseComponent {
                 }
             }
             else{
-                throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%lu] : impossible de créer", questionId), questionId);
+                throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%d] : impossible de créer", questionId), questionId);
             }
         }
         else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de créer", miahootId), miahootId);
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de créer", miahootId), miahootId);
         }
     }
 
-    public void updateReponse(Long miahootId, Long questionId, final Long idRepToModify, final ReponseDto reponse) throws EntityNotFoundException{
-        if (miahootRepository.findById(miahootId).isPresent()) {
-            if (questionRepository.findById(questionId).isPresent()) {
-                if (idRepToModify == reponse.getId()) {
-                    Optional<ReponseEntity> repOpt = reponseRepository.findById(idRepToModify);
-                    if (repOpt.isPresent()) {
-                        reponseMapper.mergeReponseEntity(repOpt.get(), reponse);
-                        reponseRepository.save(repOpt.get());
-                    } else {
-                        throw new EntityNotFoundException(String.format("Aucune réponse n'a été trouvée pour l'id°[%lu] : impossible de modifier.", idRepToModify), idRepToModify);
-                    }
-                } //else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", reponse.getId(), idRepToModify), reponse.getId(), idRepToModify);
+    public void updateReponse(final Long idRepToModify, final ReponseDto reponse) throws EntityNotFoundException{
+        if (idRepToModify == reponse.getId()) {
+            Optional<ReponseEntity> repOpt = reponseRepository.findById(idRepToModify);
+            if (repOpt.isPresent()) {
+                reponseMapper.mergeReponseEntity(repOpt.get(), reponse);
+                reponseRepository.save(repOpt.get());
+            } else {
+                throw new EntityNotFoundException(String.format("Aucune réponse n'a été trouvée pour l'id°[%d] : impossible de modifier.", idRepToModify), idRepToModify);
             }
-            else{
-                throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%lu] : impossible de modifier", questionId), questionId);
-            }
-        }
-        else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de modifier", miahootId), miahootId);
-        }
+        } //else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%d]) est différent de l'id de la question à remplacer([%lu])", reponse.getId(), idRepToModify), reponse.getId(), idRepToModify);
     }
 
 
-    public void deleteReponse(Long miahootId, Long questionId, final Long id) throws EntityNotFoundException {
-        if (miahootRepository.findById(miahootId).isPresent()) {
-            if (questionRepository.findById(questionId).isPresent()) {
-                Optional<ReponseEntity> repOpt = reponseRepository.findById(id);
-                if (repOpt.isPresent()) {
-                    reponseRepository.deleteById(id);
-                } else {
-                    throw new EntityNotFoundException(String.format("Aucune réponse n'a été trouvée pour l'id°[%lu] : impossible de supprimer.", id), id);
-                }
-            }
-            else{
-                throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%lu] : impossible de supprimer", questionId), questionId);
-            }
-        }
-        else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%lu] : impossible de supprimer", miahootId), miahootId);
+    public void deleteReponse(final Long id) throws EntityNotFoundException {
+        Optional<ReponseEntity> repOpt = reponseRepository.findById(id);
+        if (repOpt.isPresent()) {
+            reponseRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException(String.format("Aucune réponse n'a été trouvée pour l'id°[%d] : impossible de supprimer.", id), id);
         }
     }
 

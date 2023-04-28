@@ -29,8 +29,8 @@ public class ReponseController implements ReponseEndpoint {
     private final ReponseService reponseService;
 
     @Override
-    public ReponseDto getReponse(Long miahootId, Long questionId, Long id) {
-        return reponseService.getReponse(miahootId, questionId, id);
+    public ReponseDto getReponse( Long id) {
+        return reponseService.getReponse(id);
     }
 
     @Override
@@ -39,12 +39,12 @@ public class ReponseController implements ReponseEndpoint {
     }
 
     @Override
-    public void updateReponse(Long miahootId, Long questionId, Long id, ReponseDto reponseDto) {
-        reponseService.updateReponse(miahootId, questionId, id, reponseDto);
+    public void updateReponse(Long id, ReponseDto reponseDto) {
+        reponseService.updateReponse(id, reponseDto);
     }
 
     @Override
-    public void deleteReponse(Long miahootId, Long questionId, Long id) {
-        reponseService.deleteReponse(miahootId, questionId, id);
+    public void deleteReponse(Long id) {
+        reponseService.deleteReponse(id);
     }
 }

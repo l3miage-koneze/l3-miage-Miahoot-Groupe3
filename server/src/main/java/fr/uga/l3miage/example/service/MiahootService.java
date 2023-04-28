@@ -1,12 +1,14 @@
 package fr.uga.l3miage.example.service;
 
 import fr.uga.l3miage.example.component.MiahootComponent;
+import fr.uga.l3miage.example.component.QuestionComponent;
 import fr.uga.l3miage.example.exception.rest.*;
 import fr.uga.l3miage.example.exception.technical.*;
 import fr.uga.l3miage.example.mapper.MiahootMapper;
+import fr.uga.l3miage.example.mapper.QuestionMapper;
 import fr.uga.l3miage.example.models.MiahootEntity;
-import fr.uga.l3miage.example.repository.MiahootRepository;
 import fr.uga.l3miage.example.response.MiahootDto;
+import fr.uga.l3miage.example.response.QuestionDto;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,8 @@ public class MiahootService {
     private static final String ERROR_DETECTED = "Une erreur lors de la création de l'entité TestConfigWithProperties à été détecté.";
     private final MiahootComponent miahootComponent;
     private final MiahootMapper miahootMapper;
+    private final QuestionComponent questionComponent;
+    private final QuestionMapper questionMapper;
 
     public MiahootDto getMiahoot(final Long id){
         try {
@@ -78,5 +83,15 @@ public class MiahootService {
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundRestException(String.format("Aucun Miahoot n'a été retrouvé pour l'id [%d] : impossible de supprimer",id),id);
         }
+    }
+
+
+    public Collection<QuestionDto> getALlQuestionsMiahoot( final Long id) {
+        try {
+            return miahootMapper.toMiahootDto(miahootComponent.getMiahoot(id)).getQuestions();
+        } catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundRestException(String.format("Aucun Miahoot n'a été trouvé pou cet id", id), id);
+        }
+
     }
 }

@@ -19,7 +19,11 @@ import javax.validation.Valid;
 @Tag(name = "Question tag")
 @CrossOrigin
 @RestController
+<<<<<<< HEAD
 @RequestMapping("/miahoot/id/")
+=======
+@RequestMapping()
+>>>>>>> db617fdf76f049a6755cc4efb0479ec40ca90db1
 public interface QuestionEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Question qui a pour id celui passé en paramètre")
@@ -28,15 +32,15 @@ public interface QuestionEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("{miahootId}/question/{id}")
-    QuestionDto getQuestion(@PathVariable Long miahootId, @PathVariable Long id);
+    @GetMapping("/question/{id}")
+    QuestionDto getQuestion(@PathVariable Long id);
 
 
-    @Operation(description = "Création d'une entité Miahoot")
-    @ApiResponse(responseCode = "201", description = "L'entité Miahoot a bien été créée.")
+    @Operation(description = "Création d'une entité Question")
+    @ApiResponse(responseCode = "201", description = "L'entité Question a bien été créée.")
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("{miahootId}/question")
+    @PostMapping("/miahoot/{miahootId}/question")
     void newQuestion(@PathVariable Long miahootId, @Valid @RequestBody QuestionDto questionDto);
 
 
@@ -47,8 +51,8 @@ public interface QuestionEndpoint {
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @Error400Custom
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PatchMapping("{miahootId}/question/{id}")
-    void updateQuestion(@PathVariable Long miahootId, @PathVariable final Long id,@RequestBody final QuestionDto questionDto);
+    @PatchMapping("/question/{id}")
+    void updateQuestion(@PathVariable final Long id,@RequestBody final QuestionDto questionDto);
 
 
 
@@ -57,6 +61,6 @@ public interface QuestionEndpoint {
     @ApiResponse(responseCode = "418", description = "Renvoie une erreur 418 si l'entité n'a pu être supprimée",
             content = @Content(schema = @Schema(implementation = TestEntityNotDeletedErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("{miahootId}/question/{id}")
-    void deleteQuestion(@PathVariable Long miahootId, @PathVariable Long id);
+    @DeleteMapping("/question/{id}")
+    void deleteQuestion(@PathVariable Long id);
 }
