@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Tag(name = "Miahoot tag")
 @CrossOrigin
 @RestController
-@RequestMapping("/miahoot/")
+@RequestMapping("/api/miahoot/")
 public interface MiahootEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Miahoot qui a pour id celui passé en paramètre")
@@ -29,7 +29,7 @@ public interface MiahootEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("{id}")
+    @GetMapping("id/{id}")
     MiahootDto getMiahoot(@PathVariable Long id);
 
 
@@ -39,8 +39,8 @@ public interface MiahootEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("all/")
-    List<MiahootDto> getAllMiahoots(@RequestParam(value = "all", required = false, defaultValue = "false") boolean all);
+    @GetMapping("all")
+    List<MiahootDto> getAllMiahoots();
       
 
 
@@ -50,8 +50,8 @@ public interface MiahootEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    List<MiahootDto> findByName(@RequestParam(value = "name", required = true) String nom);
+    @GetMapping("nom/{nom}")
+    List<MiahootDto> findByName(@PathVariable String nom);
 
     @Operation(description = "Création d'une entité Miahoot")
     @ApiResponse(responseCode = "201", description = "L'entité Miahoot a bien été créée.")

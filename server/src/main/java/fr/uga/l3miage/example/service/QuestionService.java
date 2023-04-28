@@ -19,9 +19,9 @@ public class QuestionService {
     private final QuestionMapper questionMapper;
 
 
-    public QuestionDto getQuestion(final Long miahootId, final Long id)  {
+    public QuestionDto getQuestion(final Long id)  {
         try {
-            return questionMapper.toQuestionDto(questionComponent.getQuestion(miahootId, id));
+            return questionMapper.toQuestionDto(questionComponent.getQuestion(id));
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
         }
@@ -40,10 +40,10 @@ public class QuestionService {
     }
 
 
-    public void updateQuestion(final Long miahootId, final Long idQuesToModify,final QuestionDto question){
+    public void updateQuestion(final Long idQuesToModify,final QuestionDto question){
         if (idQuesToModify == question.getId()){
             try {
-                questionComponent.updateQuestion(miahootId, idQuesToModify,question);
+                questionComponent.updateQuestion(idQuesToModify,question);
             } catch (EntityNotFoundException ex) {
                 throw new EntityNotFoundRestException(String.format("Aucune question n'a  été trouvé pour l'Id : Impossible de modifier",idQuesToModify),idQuesToModify);
             }
@@ -54,9 +54,9 @@ public class QuestionService {
     }
 
     @Transactional
-    public void deleteQuestion(final Long miahootId, final Long id){
+    public void deleteQuestion(final Long id){
         try {
-            questionComponent.deleteQuestion(miahootId, id);
+            questionComponent.deleteQuestion( id);
         } catch (EntityNotFoundException ex) {
             throw new EntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
         }

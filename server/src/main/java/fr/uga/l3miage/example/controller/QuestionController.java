@@ -15,8 +15,8 @@ import java.util.Collection;
 public class QuestionController implements QuestionEndpoint {
     private final QuestionService questionService;
     @Override
-    public QuestionDto getQuestion(Long miahootId, Long id) {
-        return questionService.getQuestion(miahootId, id);
+    public QuestionDto getQuestion(Long id) {
+        return questionService.getQuestion(id);
     }
 
     @Override
@@ -26,12 +26,12 @@ public class QuestionController implements QuestionEndpoint {
 
 
     @Override
-    public void updateQuestion(Long miahootId, Long id, QuestionDto questionDto) {
-        questionService.updateQuestion(miahootId, id, questionDto);
+    public void updateQuestion(Long id, QuestionDto questionDto) {
+        questionService.updateQuestion(id, questionDto);
     }
 
     @Override
-    public void deleteQuestion(Long miahootId, Long id) {
-        questionService.deleteQuestion(miahootId, id);
+    public void deleteQuestion(Long id) {
+        questionService.deleteQuestion(id);
     }
 }

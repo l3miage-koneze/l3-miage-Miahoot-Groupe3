@@ -7,7 +7,6 @@ import fr.uga.l3miage.example.exception.technical.*;
 import fr.uga.l3miage.example.mapper.MiahootMapper;
 import fr.uga.l3miage.example.mapper.QuestionMapper;
 import fr.uga.l3miage.example.models.MiahootEntity;
-import fr.uga.l3miage.example.repository.MiahootRepository;
 import fr.uga.l3miage.example.response.MiahootDto;
 import fr.uga.l3miage.example.response.QuestionDto;
 
@@ -39,6 +38,7 @@ public class MiahootService {
 
     public List<MiahootDto> getAllMiahoots(){
         List<MiahootEntity> miahootEntities = miahootComponent.getAllMiahoots();
+        System.out.println(miahootEntities.get(0));
         return miahootEntities.stream()
             .map(miahootMapper::toMiahootDto)
             .collect(Collectors.toList());

@@ -10,15 +10,9 @@ import fr.uga.l3miage.example.response.MiahootDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-<<<<<<< HEAD
-
-import java.util.Collection;
-=======
 import java.util.Collection;
 import java.util.List;
->>>>>>> 40614e57daae8f6a8e56ac1790c41343dc74b5f0
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -75,7 +69,7 @@ public class MiahootComponent {
             else{
                 throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de modifier.", idMiaToModify), idMiaToModify);
             }
-        } //else throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%lu]) est différent de l'id du Miahoot à remplacer([%lu])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
+        } //else throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%d]) est différent de l'id du Miahoot à remplacer([%d])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
     }
 
 

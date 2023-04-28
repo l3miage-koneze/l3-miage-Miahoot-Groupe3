@@ -16,7 +16,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface QuestionMapper {
-    QuestionDto toQuestionDto (@Valid Object updated);
+    QuestionDto toQuestionDto (QuestionEntity updated);
     QuestionEntity toQuestionEntity(@Valid QuestionDto questionDto);
     void mergeQuestionEntity(@MappingTarget @NonNull QuestionEntity questionEntity, QuestionDto question);
 }
