@@ -2,6 +2,7 @@ package fr.uga.l3miage.example.component;
 
 import fr.uga.l3miage.example.exception.technical.*;
 import fr.uga.l3miage.example.mapper.QuestionMapper;
+import fr.uga.l3miage.example.models.MiahootEntity;
 import fr.uga.l3miage.example.models.ReponseEntity;
 import fr.uga.l3miage.example.models.QuestionEntity;
 import fr.uga.l3miage.example.repository.MiahootRepository;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -32,6 +34,10 @@ public class QuestionComponent {
             throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), id);
         }
 
+    }
+
+    public List<QuestionEntity> getAllQuestions(){
+            return questionRepository.findAll();
     }
 
     public void createQuestion(final Long miahootId, final QuestionEntity question) throws AlreadyExistException, EntityNotFoundException{

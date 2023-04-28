@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class QuestionController implements QuestionEndpoint {
@@ -25,6 +27,10 @@ public class QuestionController implements QuestionEndpoint {
     }
 
 
+    @Override
+    public List<QuestionDto> getAllQuestions(){
+        return questionService.getALlQuestions();
+    }
     @Override
     public void updateQuestion(Long id, QuestionDto questionDto) {
         questionService.updateQuestion(id, questionDto);

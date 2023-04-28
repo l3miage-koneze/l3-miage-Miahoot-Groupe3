@@ -38,7 +38,6 @@ public class MiahootService {
 
     public List<MiahootDto> getAllMiahoots(){
         List<MiahootEntity> miahootEntities = miahootComponent.getAllMiahoots();
-        System.out.println(miahootEntities.get(0));
         return miahootEntities.stream()
             .map(miahootMapper::toMiahootDto)
             .collect(Collectors.toList());
@@ -82,13 +81,6 @@ public class MiahootService {
         }
     }
 
-    public Collection<QuestionDto> getALlQuestionsMiahoot( final Long id) {
-        try {
-            return miahootMapper.toMiahootDto(miahootComponent.getMiahoot(id)).getQuestions();
-        } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundRestException(String.format("Aucun Miahoot n'a été trouvé pou cet id", id), id);
-        }
-    }
 
 
 

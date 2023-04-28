@@ -4,12 +4,16 @@ import fr.uga.l3miage.example.component.QuestionComponent;
 import fr.uga.l3miage.example.exception.rest.*;
 import fr.uga.l3miage.example.exception.technical.*;
 import fr.uga.l3miage.example.mapper.QuestionMapper;
+import fr.uga.l3miage.example.models.MiahootEntity;
 import fr.uga.l3miage.example.models.QuestionEntity;
 import fr.uga.l3miage.example.response.QuestionDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,5 +66,14 @@ public class QuestionService {
         }
     }
 
+
+    public List<QuestionDto> getALlQuestions() {
+            List<QuestionEntity> questionEntities = questionComponent.getAllQuestions();
+            return questionEntities.stream()
+                    .map(questionMapper::toQuestionDto)
+                    .collect(Collectors.toList());
+
+
+    }
 
 }

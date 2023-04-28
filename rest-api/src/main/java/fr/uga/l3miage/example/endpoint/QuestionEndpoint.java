@@ -3,6 +3,7 @@ package fr.uga.l3miage.example.endpoint;
 import fr.uga.l3miage.example.annotations.Error400Custom;
 import fr.uga.l3miage.example.error.TestEntityNotDeletedErrorResponse;
 import fr.uga.l3miage.example.error.TestNotFoundErrorResponse;
+import fr.uga.l3miage.example.response.MiahootDto;
 import fr.uga.l3miage.example.response.QuestionDto;
 import fr.uga.l3miage.example.response.Test;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Tag(name = "Question tag")
 @CrossOrigin
@@ -30,6 +32,15 @@ public interface QuestionEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/question/{id}")
     QuestionDto getQuestion(@PathVariable Long id);
+
+    @Operation(description = "Récupérer les DTO de tous les entités Questions")
+    @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Question",
+            content = @Content(schema = @Schema(implementation = QuestionDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
+            content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/question/all")
+    List<QuestionDto> getAllQuestions();
 
 
     @Operation(description = "Création d'une entité Question")

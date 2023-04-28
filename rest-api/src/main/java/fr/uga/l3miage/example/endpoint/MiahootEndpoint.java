@@ -41,7 +41,7 @@ public interface MiahootEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("all")
     List<MiahootDto> getAllMiahoots();
-      
+
 
 
     @Operation(description = "Récupérer les DTO de tous les entités Miahoot qui a pour nom celui passé en paramètre")
