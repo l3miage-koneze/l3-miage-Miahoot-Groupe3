@@ -50,10 +50,10 @@ public class MiahootService {
             .collect(Collectors.toList());
     }
 
-    public void createMiahoot(final MiahootDto miahootDto) throws Exception {
+    public Long createMiahoot(final MiahootDto miahootDto) throws Exception {
         MiahootEntity newMiahootEntity = miahootMapper.toMiahootEntity(miahootDto);
         try {
-            miahootComponent.createMiahoot(newMiahootEntity);
+            return miahootComponent.createMiahoot(newMiahootEntity);
         } catch (AlreadyExistException ex) {
             throw new AlreadyUseRestException(ERROR_DETECTED,newMiahootEntity.getId(),ex);
         }

@@ -40,17 +40,17 @@ public class QuestionComponent {
             return questionRepository.findAll();
     }
 
-    public void createQuestion(final Long miahootId, final QuestionEntity question) throws AlreadyExistException, EntityNotFoundException{
+    public Long createQuestion(final Long miahootId, final QuestionEntity question) throws AlreadyExistException, EntityNotFoundException{
         if (miahootRepository.findById(miahootId).isPresent()) {
             if (question.getId() == null){
-                questionRepository.save(question);
+                return questionRepository.save(question).getId();
             }
             else{
                 if (questionRepository.findById(question.getId()).isPresent()){
                     throw new AlreadyExistException(String.format("La question n°[%d] existe déjà en BD.", question.getId()), question.getId());
                 }
                 else{
-                    questionRepository.save(question);
+                    return questionRepository.save(question).getId();
                 }
             }
         }

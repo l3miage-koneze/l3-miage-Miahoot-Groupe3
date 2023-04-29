@@ -36,18 +36,18 @@ public class ReponseComponent {
         return reponseRepository.findAll();
 }
 
-    public void createReponse(Long miahootId, Long questionId, final ReponseEntity reponse) throws AlreadyExistException, EntityNotFoundException {
+    public Long createReponse(Long miahootId, Long questionId, final ReponseEntity reponse) throws AlreadyExistException, EntityNotFoundException {
         if (miahootRepository.findById(miahootId).isPresent()) {
             if (questionRepository.findById(questionId).isPresent()) {
                 if (reponse.getId() == null){
-                    reponseRepository.save(reponse);
+                    return reponseRepository.save(reponse).getId();
                 }
                 else{
                     if (reponseRepository.findById(reponse.getId()).isPresent()){
                         throw new AlreadyExistException(String.format("La réponse n°[%d] existe déjà en BD.", reponse.getId()), reponse.getId());
                     }
                     else{
-                        reponseRepository.save(reponse);
+                        return reponseRepository.save(reponse).getId();
                     }
                 }
             }

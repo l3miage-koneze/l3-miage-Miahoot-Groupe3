@@ -58,7 +58,7 @@ public interface MiahootEndpoint {
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    void newMiahoot(@Valid @RequestBody MiahootDto miahootDto) throws Exception;
+    Long newMiahoot(@Valid @RequestBody MiahootDto miahootDto) throws Exception;
 
 
 

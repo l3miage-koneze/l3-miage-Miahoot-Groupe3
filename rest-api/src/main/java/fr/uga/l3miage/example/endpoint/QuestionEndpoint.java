@@ -48,7 +48,7 @@ public interface QuestionEndpoint {
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/miahoot/id/{miahootId}/question")
-    void newQuestion(@PathVariable Long miahootId, @Valid @RequestBody QuestionDto questionDto);
+    Long newQuestion(@PathVariable Long miahootId, @Valid @RequestBody QuestionDto questionDto);
 
 
 

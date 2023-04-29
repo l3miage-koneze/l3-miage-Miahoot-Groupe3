@@ -40,8 +40,8 @@ public class ReponseController implements ReponseEndpoint {
     }
 
     @Override
-    public void newReponse(Long miahootId, Long questionId, ReponseDto reponseDto) {
-        reponseService.createReponse(miahootId, questionId, reponseDto);
+    public Long newReponse(Long miahootId, Long questionId, ReponseDto reponseDto) {
+        return reponseService.createReponse(miahootId, questionId, reponseDto);
     }
 
     @Override

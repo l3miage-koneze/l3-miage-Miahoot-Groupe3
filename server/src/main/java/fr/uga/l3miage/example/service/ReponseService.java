@@ -39,10 +39,10 @@ public class ReponseService {
 
 }
 
-    public void createReponse(final Long miahootId, final long questionId, final ReponseDto reponseDto) {
+    public Long createReponse(final Long miahootId, final long questionId, final ReponseDto reponseDto) {
         ReponseEntity newReponseEntity = reponseMapper.toReponseEntity(reponseDto);
         try {
-            reponseComponent.createReponse(miahootId, questionId, newReponseEntity);
+            return reponseComponent.createReponse(miahootId, questionId, newReponseEntity);
         } catch (AlreadyExistException ex) {
             throw new AlreadyUseRestException(ERROR_DETECTED,reponseDto.getId(),ex);
         } catch (EntityNotFoundException ex){

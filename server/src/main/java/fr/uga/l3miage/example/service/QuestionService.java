@@ -32,10 +32,10 @@ public class QuestionService {
     }
 
 
-    public void createQuestion(final Long miahootId, final QuestionDto questionDto){
+    public Long createQuestion(final Long miahootId, final QuestionDto questionDto){
         QuestionEntity newQuestionEntity = questionMapper.toQuestionEntity(questionDto);
         try {
-            questionComponent.createQuestion(miahootId, newQuestionEntity);
+            return questionComponent.createQuestion(miahootId, newQuestionEntity);
         } catch (AlreadyExistException ex) {
             throw new AlreadyUseRestException(ERROR_DETECTED,questionDto.getId(),ex);
         } catch (EntityNotFoundException ex){

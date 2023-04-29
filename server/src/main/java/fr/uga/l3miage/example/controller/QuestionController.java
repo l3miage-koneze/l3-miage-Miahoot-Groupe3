@@ -22,8 +22,8 @@ public class QuestionController implements QuestionEndpoint {
     }
 
     @Override
-    public void newQuestion(Long miahootId, QuestionDto questionDto) {
-        questionService.createQuestion(miahootId, questionDto);
+    public Long newQuestion(Long miahootId, QuestionDto questionDto) {
+        return questionService.createQuestion(miahootId, questionDto);
     }
 
 
