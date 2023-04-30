@@ -43,6 +43,7 @@ public class QuestionComponent {
     public Long createQuestion(final Long miahootId, final QuestionEntity question) throws AlreadyExistException, EntityNotFoundException{
         if (miahootRepository.findById(miahootId).isPresent()) {
             if (question.getId() == null){
+                miahootRepository.findById(miahootId).get().getQuestions().add(question);
                 return questionRepository.save(question).getId();
             }
             else{

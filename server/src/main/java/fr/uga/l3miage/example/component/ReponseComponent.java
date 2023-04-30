@@ -40,6 +40,7 @@ public class ReponseComponent {
         if (miahootRepository.findById(miahootId).isPresent()) {
             if (questionRepository.findById(questionId).isPresent()) {
                 if (reponse.getId() == null){
+                    questionRepository.findById(questionId).get().getReponses().add(reponse);
                     return reponseRepository.save(reponse).getId();
                 }
                 else{
