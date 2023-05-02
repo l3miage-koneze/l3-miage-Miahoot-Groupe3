@@ -19,13 +19,13 @@ import lombok.Setter;
 public abstract class Personne {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String nom;
     private String photo;
     // autres attributs et méthodes communs à Participant et Creator
 
-    public Personne(String nom, int id, String photo) {
+    public Personne(String nom, Long id, String photo) {
         this.nom = nom;
         this.id = id;
         this.photo = photo;

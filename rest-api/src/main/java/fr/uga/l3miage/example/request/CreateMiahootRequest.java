@@ -13,10 +13,10 @@ import lombok.Data;
 public class CreateMiahootRequest {
     @Schema(description = "Miahoot ID")
     private Long id;
-    
+
     @Schema(description = "Miahoot nom")
     private String nom;
-    
+
     @Schema(description = "Liste de questions")
     private List<QuestionDto> questions;
 }
