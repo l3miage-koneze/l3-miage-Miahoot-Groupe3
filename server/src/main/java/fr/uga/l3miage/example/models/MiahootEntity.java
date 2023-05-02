@@ -1,6 +1,7 @@
 package fr.uga.l3miage.example.models;
 
 import lombok.*;
+
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -24,11 +25,21 @@ public class MiahootEntity {
     @Column
     private String nom;
 
+    @Column
+    private CreatorEntity creator;
+
+    @OneToMany()
+    private Collection<ParticipantEntity> participants;
+
     @OneToMany()
     private Collection<QuestionEntity> questions;
 
     public Collection<QuestionEntity> getQuestions(){
         return questions;
+    }
+
+    public Collection<ParticipantEntity> getParticipants(){
+        return participants;
     }
 
     @Override

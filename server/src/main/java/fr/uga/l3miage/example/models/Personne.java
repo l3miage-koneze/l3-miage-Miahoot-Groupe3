@@ -19,7 +19,7 @@ import lombok.Setter;
 public abstract class Personne {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private String nom;
     private String photo;
