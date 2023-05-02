@@ -28,7 +28,7 @@ public class ParticipantController implements ParticipantEndpoint {
 
 
     @Override
-    public List<ParticipantDto> getAllParticipants(){
+    public List<ParticipantDto> getAllParticipants(Long id){
         return participantService.getALlParticipants();
     }
     @Override

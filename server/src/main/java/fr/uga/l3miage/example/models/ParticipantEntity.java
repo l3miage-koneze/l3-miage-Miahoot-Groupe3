@@ -15,6 +15,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class ParticipantEntity{
     @Id

@@ -37,9 +37,9 @@ public interface ParticipantEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/participant/all")
-    List<ParticipantDto> getAllParticipants();
-
+    @GetMapping("/miahoot/id/{id}/participant/all")
+    List<ParticipantDto> getAllParticipants(@PathVariable Long id);
+    
 
     @Operation(description = "Création d'une entité Participant")
     @ApiResponse(responseCode = "201", description = "L'entité Participant a bien été créée.")
