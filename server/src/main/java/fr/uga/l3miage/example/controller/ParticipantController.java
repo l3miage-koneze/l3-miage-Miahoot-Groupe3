@@ -22,7 +22,7 @@ public class ParticipantController implements ParticipantEndpoint {
     }
 
     @Override
-    public Long newParticipant(Long miahootId, ParticipantDto ParticipantDto) {
+    public Long newParticipant(Long creatorId,Long miahootId, ParticipantDto ParticipantDto) {
         return participantService.createParticipant(miahootId, ParticipantDto);
     }
 

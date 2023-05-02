@@ -1,5 +1,7 @@
 package fr.uga.l3miage.example.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +13,7 @@ public class ParticipantDto {
     @Schema(description = "Participant ID")
     private Long id;
     
+    @JsonProperty("nom")
     @Schema(description = "Participant nom")
     private String nom;
     

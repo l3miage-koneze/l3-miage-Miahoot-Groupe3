@@ -27,7 +27,7 @@ public class ParticipantService {
         try {
             return participantMapper.toParticipantDto(participantComponent.getParticipant(id));
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundRestException(String.format("Aucune Participant n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
+            throw new EntityNotFoundRestException(String.format("Aucune Participant n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), id);
         }
     }
 

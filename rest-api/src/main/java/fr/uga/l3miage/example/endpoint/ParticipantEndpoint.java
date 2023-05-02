@@ -45,8 +45,8 @@ public interface ParticipantEndpoint {
     @ApiResponse(responseCode = "201", description = "L'entité Participant a bien été créée.")
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/miahoot/id/{miahootId}/participant")
-    Long newParticipant(@PathVariable Long miahootId, @Valid @RequestBody ParticipantDto participantDto);
+    @PostMapping("/creator/{creatorId}/miahoot/id/{miahootId}/participant")
+    Long newParticipant(@PathVariable Long miahootId, @PathVariable Long creatorId,@Valid @RequestBody ParticipantDto participantDto);
 
 
 
