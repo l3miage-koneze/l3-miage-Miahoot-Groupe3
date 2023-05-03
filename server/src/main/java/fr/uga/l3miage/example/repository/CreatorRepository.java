@@ -14,5 +14,5 @@ public interface CreatorRepository extends JpaRepository<CreatorEntity, Long> {
     Optional<CreatorEntity> findById(String id);
 
     void deleteById(String id);
-
+    boolean existsByUid(String uid);
 }

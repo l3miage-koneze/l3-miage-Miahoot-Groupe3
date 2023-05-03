@@ -8,6 +8,8 @@ import fr.uga.l3miage.example.repository.MiahootRepository;
 import fr.uga.l3miage.example.repository.CreatorRepository;
 import fr.uga.l3miage.example.response.CreatorDto;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -50,6 +52,10 @@ public class CreatorComponent {
 
     }
 
+    public boolean checkIfCreatorExists(String uid) {
+        return creatorRepository.existsByUid(uid);
+    }
+
     public void updateCreator(final String idCreToModify, final CreatorDto creator) throws EntityNotFoundException{
         if (idCreToModify == creator.getId()) {
             Optional<CreatorEntity> creOpt = creatorRepository.findById(idCreToModify);
@@ -75,6 +81,10 @@ public class CreatorComponent {
             throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), 404l);
         }
     }
+
+   
+
+
 
 
 }

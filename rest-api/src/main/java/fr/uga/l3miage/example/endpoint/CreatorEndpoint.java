@@ -11,13 +11,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import javax.validation.Valid;
 
-@Tag(name = "Miahoot tag")
+@Tag(name = "Creator tag")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/creator/")
@@ -40,6 +41,13 @@ public interface CreatorEndpoint {
     String newCreator(@Valid @RequestBody CreatorDto creatorDto) throws Exception;
 
 
+    @Operation(description = "Création d'une entité Creator")
+    @ApiResponse(responseCode = "201", description = "L'entité Creator a bien été créée.")
+    @Error400Custom
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/creatorGoogle")
+    ResponseEntity<?> createCreatorGoogle(@Valid @RequestBody CreatorDto creatorDto) throws Exception;
+
 
     @Operation(description = "Mise à jour d'une entité Creator")
     @ApiResponse(responseCode = "202", description = "L'entité à bien été mise à jour")
@@ -59,4 +67,11 @@ public interface CreatorEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("{id}")
     void deleteCreator(@PathVariable String id);
+
+    @Operation(description = "Vérification d'une entité Creator existe")
+    @ApiResponse(responseCode = "201", description = "L'entité Creator a bien été existe.")
+    @Error400Custom
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/check/{uid}")
+    ResponseEntity<Boolean> checkIfCreatorExists(@Valid @PathVariable String uid) throws Exception;
 }

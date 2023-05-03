@@ -19,6 +19,9 @@ public class CreatorDto {
     @Schema(description = "Creator PP")
     private String photo;
 
+    @Schema(description = "Creator uid")
+    private String uid;
+
     @Schema(description = "Liste de miahoots")
     private Collection<MiahootDto> miahoots;
 }

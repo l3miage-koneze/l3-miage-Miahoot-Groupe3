@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,4 +36,15 @@ public class CreatorController implements CreatorEndpoint{
     public void deleteCreator(String id) {
         creatorService.deleteCreator(id);
     }
+
+    @Override
+    public ResponseEntity<?> createCreatorGoogle(CreatorDto creatorDto) {
+        return creatorService.createCreatorGoogle(creatorDto);
+    }
+
+    @Override
+    public ResponseEntity<Boolean> checkIfCreatorExists(String uid) {
+        return ResponseEntity.ok(creatorService.checkIfCreatorExists(uid));
+    }
+    
 }

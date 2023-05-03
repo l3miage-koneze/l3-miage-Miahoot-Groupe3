@@ -6,11 +6,14 @@ import lombok.NonNull;
 import javax.validation.Valid;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+
 
 @Mapper
 public interface CreatorMapper {
     CreatorDto toCreatorDto(CreatorEntity creatorEntity);
+    @Mapping(target = "uid", source = "creatorDto.uid")
     CreatorEntity toCreatorEntity(@Valid CreatorDto creatorDto);
     void mergeCreatorEntity(@MappingTarget @NonNull CreatorEntity creatorEntity, CreatorDto creatorDto);
 }

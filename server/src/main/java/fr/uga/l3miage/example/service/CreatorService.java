@@ -10,6 +10,9 @@ import fr.uga.l3miage.example.response.CreatorDto;
 import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -51,6 +54,19 @@ public class CreatorService {
     }
 
 
+    public ResponseEntity<?> createCreatorGoogle(CreatorDto creatorDto) {
+        CreatorEntity newCreatorEntity = creatorMapper.toCreatorEntity(creatorDto);
+        try {
+            String creatorId = creatorComponent.createCreator(newCreatorEntity);
+            return new ResponseEntity<>(creatorId, HttpStatus.CREATED);
+        } catch (AlreadyExistException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    public boolean checkIfCreatorExists(String uid) {
+        return creatorComponent.checkIfCreatorExists(uid);
+    }
     @Transactional
     public void deleteCreator(final String id){
         try {
