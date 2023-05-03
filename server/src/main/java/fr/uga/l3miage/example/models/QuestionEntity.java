@@ -25,6 +25,10 @@ public class QuestionEntity {
     @Column
     private String label;
 
+    @ManyToOne
+    @JoinColumn(name = "miahootId")
+    private MiahootEntity miahoot;
+
     @OneToMany()
     private Collection<ReponseEntity> reponses;
     

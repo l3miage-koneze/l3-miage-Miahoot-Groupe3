@@ -35,11 +35,12 @@ public class QuestionComponent {
         }
 
     }
-
+/* 
     public List<QuestionEntity> getAllQuestions(){
             return questionRepository.findAll();
     }
-
+    */
+/* 
     public Long createQuestion(final Long miahootId, final QuestionEntity question) throws AlreadyExistException, EntityNotFoundException{
         if (miahootRepository.findById(miahootId).isPresent()) {
             if (question.getId() == null){
@@ -59,6 +60,19 @@ public class QuestionComponent {
             throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de récupérer", miahootId), miahootId);
         }
     }
+*/
+public Long createQuestion(final Long miahootId, final QuestionEntity question) throws AlreadyExistException, EntityNotFoundException {
+    Optional<MiahootEntity> miahootOpt = miahootRepository.findById(miahootId);
+
+    if (miahootOpt.isPresent()) {
+        MiahootEntity miahoot = miahootOpt.get();
+        question.setMiahoot(miahoot);
+        QuestionEntity savedQuestion = questionRepository.save(question);
+        return savedQuestion.getId();
+    } else {
+        throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de créer la question", miahootId), miahootId);
+    }
+}
 
     public void updateQuestion(final Long idQuesToModify, final QuestionDto question) throws EntityNotFoundException{
         if (idQuesToModify == question.getId()) {
@@ -85,6 +99,8 @@ public class QuestionComponent {
             throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), id);
         }
     }
-
+    public List<QuestionEntity> getQuestionsByMiahootId(Long miahootId) {
+        return questionRepository.findQuestionsByMiahootId(miahootId);
+    }
 
 }

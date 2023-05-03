@@ -21,19 +21,19 @@ public class CreatorComponent {
     private final CreatorMapper creatorMapper;
 
 
-    public CreatorEntity getCreator(final Long id) throws EntityNotFoundException {
+    public CreatorEntity getCreator(final String id) throws EntityNotFoundException {
         Optional<CreatorEntity> creOpt = creatorRepository.findById(id);
         if (creOpt.isPresent()){
             return creOpt.get();
         }
         else{
-            throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), id);
+            throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%s] : impossible de récupérer", id), 404l);
         }
     }
 
-    public Long createCreator(final CreatorEntity creator) throws AlreadyExistException {
+    public String createCreator(final CreatorEntity creator) throws AlreadyExistException {
 
-        if (creator.getId() == null){
+        if (creator.getId() == ""){
             CreatorEntity cre = creatorRepository.save(creator);
             System.out.println("Créateur created");
             System.out.println(cre.getId());
@@ -41,7 +41,7 @@ public class CreatorComponent {
         }
         else{
             if (creatorRepository.findById(creator.getId()).isPresent()){
-                throw new AlreadyExistException(String.format("Le créateur n°[%d] existe déjà en BD.", creator.getId()), creator.getId());
+                throw new AlreadyExistException(String.format("Le créateur n°[%s] existe déjà en BD.", creator.getId()), 404l);
             }
             else{
                 return creatorRepository.save(creator).getId();
@@ -50,7 +50,7 @@ public class CreatorComponent {
 
     }
 
-    public void updateCreator(final Long idCreToModify, final CreatorDto creator) throws EntityNotFoundException{
+    public void updateCreator(final String idCreToModify, final CreatorDto creator) throws EntityNotFoundException{
         if (idCreToModify == creator.getId()) {
             Optional<CreatorEntity> creOpt = creatorRepository.findById(idCreToModify);
             if (creOpt.isPresent()){
@@ -58,13 +58,13 @@ public class CreatorComponent {
                 creatorRepository.save(creOpt.get());
             }
             else{
-                throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%d] : impossible de modifier.", idCreToModify), idCreToModify);
+                throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%s] : impossible de modifier.", idCreToModify), 404l);
             }
         } //else throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%d]) est différent de l'id du Miahoot à remplacer([%d])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
     }
 
 
-    public void deleteCreator(final Long id) throws EntityNotFoundException {
+    public void deleteCreator(final String id) throws EntityNotFoundException {
         Optional<CreatorEntity> creOpt = creatorRepository.findById(id);
         if (creOpt.isPresent()) {
             creatorRepository.deleteById(id);
@@ -72,7 +72,7 @@ public class CreatorComponent {
                 miahootRepository.deleteById(miahoot.getId());
             }
         } else {
-            throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), id);
+            throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), 404l);
         }
     }
 

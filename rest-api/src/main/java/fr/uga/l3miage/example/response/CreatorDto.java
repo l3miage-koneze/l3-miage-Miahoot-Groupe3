@@ -11,7 +11,7 @@ import lombok.Data;
 @Schema(description = "correspond au DTO de l'entité Miahoot")
 public class CreatorDto {
     @Schema(description = "Creator ID")
-    private Long id;
+    private String id;
 
     @Schema(description = "Creator nom")
     private String nom;

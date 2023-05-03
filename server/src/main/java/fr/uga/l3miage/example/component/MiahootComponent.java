@@ -138,5 +138,9 @@ public Long createMiahoot(final Long creatorId, final MiahootEntity miahoot) thr
         }
     }
 
+    public List<QuestionEntity> getQuestionsByMiahootId(Long miahootId) {
+        return questionRepository.findQuestionsByMiahootId(miahootId);
+    }
+
 
 }

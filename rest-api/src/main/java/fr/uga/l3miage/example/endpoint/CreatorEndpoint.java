@@ -30,14 +30,14 @@ public interface CreatorEndpoint {
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("{id}")
-    CreatorDto getCreator(@PathVariable Long id);
+    CreatorDto getCreator(@PathVariable String id);
 
     @Operation(description = "Création d'une entité Creator")
     @ApiResponse(responseCode = "201", description = "L'entité Creator a bien été créée.")
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    Long newCreator(@Valid @RequestBody CreatorDto creatorDto) throws Exception;
+    String newCreator(@Valid @RequestBody CreatorDto creatorDto) throws Exception;
 
 
 
@@ -48,7 +48,7 @@ public interface CreatorEndpoint {
     @Error400Custom
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("{id}")
-    void updateCreator(@PathVariable final Long id,@RequestBody final CreatorDto creatorDto);
+    void updateCreator(@PathVariable final String id,@RequestBody final CreatorDto creatorDto);
 
 
 
@@ -58,5 +58,5 @@ public interface CreatorEndpoint {
             content = @Content(schema = @Schema(implementation = TestEntityNotDeletedErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("{id}")
-    void deleteCreator(@PathVariable Long id);
+    void deleteCreator(@PathVariable String id);
 }

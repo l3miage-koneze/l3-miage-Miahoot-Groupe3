@@ -21,7 +21,7 @@ import java.util.List;
 @Tag(name = "Question tag")
 @CrossOrigin
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/miahoot/{miahootId}")
 public interface QuestionEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Question qui a pour id celui passé en paramètre")
@@ -32,22 +32,30 @@ public interface QuestionEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/question/{id}")
     QuestionDto getQuestion(@PathVariable Long id);
-
+/* 
     @Operation(description = "Récupérer les DTO de tous les entités Questions")
     @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Question",
             content = @Content(schema = @Schema(implementation = QuestionDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/question/all")
+    @GetMapping("/all")
     List<QuestionDto> getAllQuestions();
-
+*/
+@Operation(description = "Récupérer les DTO de tous les entités Questions")
+    @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Question",
+            content = @Content(schema = @Schema(implementation = QuestionDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
+            content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/question/all")
+    List<QuestionDto> getQuestionsByMiahootId(@PathVariable Long miahootId);
 
     @Operation(description = "Création d'une entité Question")
     @ApiResponse(responseCode = "201", description = "L'entité Question a bien été créée.")
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/miahoot/id/{miahootId}/question")
+    @PostMapping("/question")
     Long newQuestion(@PathVariable Long miahootId, @Valid @RequestBody QuestionDto questionDto);
 
 

@@ -21,42 +21,42 @@ public class CreatorService {
     private static final String ERROR_DETECTED = "Une erreur lors de la création de l'entité TestConfigWithProperties à été détecté.";
     private final CreatorComponent creatorComponent;
     private final CreatorMapper creatorMapper;
-    public CreatorDto getCreator(final Long id){
+    public CreatorDto getCreator(final String id){
         try {
             return creatorMapper.toCreatorDto(creatorComponent.getCreator(id));
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundRestException(String.format("Aucun Creator n'a été trouvé pour l'id°[%d] : impossible de récupérer", id), id);
+            throw new EntityNotFoundRestException(String.format("Aucun Creator n'a été trouvé pour l'id°[%s] : impossible de récupérer", id), 404l);
         }
     }
 
-    public Long createCreator(final CreatorDto creatorDto) throws Exception {
+    public String createCreator(final CreatorDto creatorDto) throws Exception {
         CreatorEntity newCreatorEntity = creatorMapper.toCreatorEntity(creatorDto);
         try {
             return creatorComponent.createCreator(newCreatorEntity);
         } catch (AlreadyExistException ex) {
-            throw new AlreadyUseRestException(ERROR_DETECTED,newCreatorEntity.getId(),ex);
+            throw new AlreadyUseRestException(ERROR_DETECTED,404l);
         }
     }
 
-    public void updateCreator(final Long idCreToModify,final CreatorDto creator) {
+    public void updateCreator(final String idCreToModify,final CreatorDto creator) {
         if (Objects.equals(idCreToModify, creator.getId())){
             try {
                 creatorComponent.updateCreator(idCreToModify,creator);
             } catch (EntityNotFoundException ex) {
-                throw new EntityNotFoundRestException(String.format("Aucun créateur n'a pas été trouvé pour l'Id : Impossible de modifier", idCreToModify), idCreToModify);
+                throw new EntityNotFoundRestException(String.format("Aucun créateur n'a pas été trouvé pour l'Id : Impossible de modifier", idCreToModify), 404l);
             }
         } else{
-            throw new NotTheSameIdRestException(String.format("L'id du créateur remplaçant([%lu]) est différent de l'id du créateur à remplacer([%lu])", creator.getId(), idCreToModify), creator.getId(), idCreToModify);
+            throw new NotTheSameIdRestException(String.format("L'id du créateur remplaçant([%s]) est différent de l'id du créateur à remplacer([%s])", creator.getId(), idCreToModify), 404l, 404l);
         }
     }
 
 
     @Transactional
-    public void deleteCreator(final Long id){
+    public void deleteCreator(final String id){
         try {
             creatorComponent.deleteCreator(id);
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundRestException(String.format("Aucun créateur n'a été retrouvé pour l'id [%d] : impossible de supprimer",id),id);
+            throw new EntityNotFoundRestException(String.format("Aucun créateur n'a été retrouvé pour l'id [%s] : impossible de supprimer",id),404l);
         }
     }
 

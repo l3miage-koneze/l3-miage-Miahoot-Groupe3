@@ -65,8 +65,15 @@ public class QuestionService {
             throw new EntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
         }
     }
+    public List<QuestionDto> getQuestionsByMiahootId(Long miahootId) {
+        List<QuestionEntity> questionEntities = questionComponent.getQuestionsByMiahootId(miahootId);
+        return questionEntities.stream()
+                .map(questionMapper::toQuestionDto)
+                .collect(Collectors.toList());
 
 
+}
+/* 
     public List<QuestionDto> getAllQuestions() {
             List<QuestionEntity> questionEntities = questionComponent.getAllQuestions();
             return questionEntities.stream()
@@ -75,5 +82,5 @@ public class QuestionService {
 
 
     }
-
+*/
 }

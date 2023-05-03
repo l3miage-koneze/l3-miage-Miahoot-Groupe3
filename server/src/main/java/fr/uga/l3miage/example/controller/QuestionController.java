@@ -16,21 +16,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionController implements QuestionEndpoint {
     private final QuestionService questionService;
-    @Override
-    public QuestionDto getQuestion(Long id) {
-        return questionService.getQuestion(id);
-    }
 
     @Override
     public Long newQuestion(Long miahootId, QuestionDto questionDto) {
         return questionService.createQuestion(miahootId, questionDto);
     }
 
-
+/* 
     @Override
     public List<QuestionDto> getAllQuestions(){
         return questionService.getAllQuestions();
     }
+    */
     @Override
     public void updateQuestion(Long id, QuestionDto questionDto) {
         questionService.updateQuestion(id, questionDto);
@@ -39,5 +36,15 @@ public class QuestionController implements QuestionEndpoint {
     @Override
     public void deleteQuestion(Long id) {
         questionService.deleteQuestion(id);
+    }
+
+    @Override
+    public QuestionDto getQuestion(Long id) {
+        return questionService.getQuestion(id);
+    }
+
+    @Override
+    public List<QuestionDto> getQuestionsByMiahootId(Long miahootId) {
+        return questionService.getQuestionsByMiahootId(miahootId);
     }
 }

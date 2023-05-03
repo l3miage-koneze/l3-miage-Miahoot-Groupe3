@@ -16,22 +16,22 @@ public class CreatorController implements CreatorEndpoint{
     private final CreatorService creatorService;
 
     @Override
-    public CreatorDto getCreator(Long id){
+    public CreatorDto getCreator(String id){
         return creatorService.getCreator(id);
     }
 
     @Override
-    public Long newCreator(CreatorDto creatorDto) throws Exception {
+    public String newCreator(CreatorDto creatorDto) throws Exception {
         return creatorService.createCreator(creatorDto);
     }
 
     @Override
-    public void updateCreator(Long id, CreatorDto creatorDto) {
+    public void updateCreator(String id, CreatorDto creatorDto) {
         creatorService.updateCreator(id, creatorDto);
     }
 
     @Override
-    public void deleteCreator(Long id) {
+    public void deleteCreator(String id) {
         creatorService.deleteCreator(id);
     }
 }
