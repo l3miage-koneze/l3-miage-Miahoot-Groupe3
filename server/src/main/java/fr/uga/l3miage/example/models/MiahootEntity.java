@@ -25,8 +25,10 @@ public class MiahootEntity {
     @Column
     private String nom;
 
-    //@Column
-    //private CreatorEntity creator;
+    @ManyToOne
+@JoinColumn(name = "creatorId")
+private CreatorEntity creator;
+
 
     @OneToMany()
     private Collection<ParticipantEntity> participants;

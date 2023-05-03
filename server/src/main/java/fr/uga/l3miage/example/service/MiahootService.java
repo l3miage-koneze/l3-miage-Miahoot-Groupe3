@@ -50,6 +50,14 @@ public class MiahootService {
             .collect(Collectors.toList());
     }
 
+
+public List<MiahootDto> findByCreatorId(Long creatorId) {
+    List<MiahootEntity> miahootEntities = miahootComponent.findByCreatorId(creatorId);
+    return miahootEntities.stream()
+            .map(miahootMapper::toMiahootDto)
+            .collect(Collectors.toList());
+}
+/* 
     public Long createMiahoot(final MiahootDto miahootDto) throws Exception {
         MiahootEntity newMiahootEntity = miahootMapper.toMiahootEntity(miahootDto);
         try {
@@ -58,7 +66,17 @@ public class MiahootService {
             throw new AlreadyUseRestException(ERROR_DETECTED,newMiahootEntity.getId(),ex);
         }
     }
-
+*/
+public Long createMiahoot(final Long creatorId, final MiahootDto miahootDto){
+    MiahootEntity newMiahootEntity = miahootMapper.toMiahootEntity(miahootDto);
+    try {
+        return miahootComponent.createMiahoot(creatorId, newMiahootEntity);
+    } catch (AlreadyExistException ex) {
+        throw new AlreadyUseRestException(ERROR_DETECTED,miahootDto.getId(),ex);
+    } catch (EntityNotFoundException ex){
+        throw new EntityNotFoundRestException(ERROR_DETECTED,miahootDto.getId(),ex);
+    }
+}
     public void updateMiahoot(final Long idMiaToModify,final MiahootDto miahoot) {
         if (Objects.equals(idMiaToModify, miahoot.getId())){
             try {

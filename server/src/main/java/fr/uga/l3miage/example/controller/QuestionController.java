@@ -29,7 +29,7 @@ public class QuestionController implements QuestionEndpoint {
 
     @Override
     public List<QuestionDto> getAllQuestions(){
-        return questionService.getALlQuestions();
+        return questionService.getAllQuestions();
     }
     @Override
     public void updateQuestion(Long id, QuestionDto questionDto) {

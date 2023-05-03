@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Tag(name = "Miahoot tag")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/creator/{id}/miahoot/")
+@RequestMapping("/api/creator/{creatorId}/miahoot/")
 public interface MiahootEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Miahoot qui a pour id celui passé en paramètre")
@@ -39,10 +39,17 @@ public interface MiahootEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("all")
+    @GetMapping("all/all")
     List<MiahootDto> getAllMiahoots();
 
-
+    @Operation(description = "Récupérer les DTO de tous les entités Miahoot")
+    @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Miahoot",
+            content = @Content(schema = @Schema(implementation = MiahootDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
+            content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("all")
+    List<MiahootDto> findByCreatorId(@PathVariable Long creatorId);
 
     @Operation(description = "Récupérer les DTO de tous les entités Miahoot qui a pour nom celui passé en paramètre")
     @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Miahoot demandée",
@@ -58,7 +65,7 @@ public interface MiahootEndpoint {
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    Long newMiahoot(@Valid @RequestBody MiahootDto miahootDto) throws Exception;
+    Long newMiahoot(@PathVariable Long creatorId, @Valid @RequestBody MiahootDto miahootDto) throws Exception;
 
 
 

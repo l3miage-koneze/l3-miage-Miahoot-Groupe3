@@ -16,6 +16,8 @@ public class MiahootDto {
     @Schema(description = "Miahoot nom")
     private String nom;
     
+    @Schema(description = "Miahoot creator")
+    private CreatorDto creatorDto;
     @Schema(description = "Liste de questions")
     private Collection<QuestionDto> questions;
 }

@@ -67,7 +67,7 @@ public class QuestionService {
     }
 
 
-    public List<QuestionDto> getALlQuestions() {
+    public List<QuestionDto> getAllQuestions() {
             List<QuestionEntity> questionEntities = questionComponent.getAllQuestions();
             return questionEntities.stream()
                     .map(questionMapper::toQuestionDto)

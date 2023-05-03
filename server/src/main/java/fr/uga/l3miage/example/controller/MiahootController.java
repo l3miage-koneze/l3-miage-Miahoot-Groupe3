@@ -24,10 +24,15 @@ public class MiahootController implements MiahootEndpoint{
             return miahootService.getAllMiahoots();
     
     }
+
+    @Override
+    public List<MiahootDto> findByCreatorId(Long creatorId){
+        return miahootService.findByCreatorId(creatorId);
+    }
     
     @Override
-    public Long newMiahoot(MiahootDto miahootDto) throws Exception {
-        return miahootService.createMiahoot(miahootDto);
+    public Long newMiahoot(Long creatorId, MiahootDto miahootDto) throws Exception {
+        return miahootService.createMiahoot(creatorId,miahootDto);
     }
 
     @Override
