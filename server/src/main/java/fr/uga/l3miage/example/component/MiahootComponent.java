@@ -95,6 +95,7 @@ public Long createMiahoot(final String creatorId, final MiahootEntity miahoot) t
     if (creatorOpt.isPresent()) {
         CreatorEntity creator = creatorOpt.get();
         miahoot.setCreator(creator);
+        creatorRepository.findById(creatorId).get().getMiahoots().add(miahoot);
         MiahootEntity savedMiahoot = miahootRepository.save(miahoot);
         return savedMiahoot.getId();
     } else {

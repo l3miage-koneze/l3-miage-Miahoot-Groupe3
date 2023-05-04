@@ -67,6 +67,7 @@ public Long createQuestion(final Long miahootId, final QuestionEntity question) 
     if (miahootOpt.isPresent()) {
         MiahootEntity miahoot = miahootOpt.get();
         question.setMiahoot(miahoot);
+        miahootRepository.findById(miahootId).get().getQuestions().add(question);
         QuestionEntity savedQuestion = questionRepository.save(question);
         return savedQuestion.getId();
     } else {
