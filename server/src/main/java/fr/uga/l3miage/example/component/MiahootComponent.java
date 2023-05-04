@@ -90,12 +90,12 @@ public Long createMiahoot(final Long creatorId, final MiahootEntity miahoot) thr
 }
 */
 public Long createMiahoot(final String creatorId, final MiahootEntity miahoot) throws AlreadyExistException, EntityNotFoundException{
-    Optional<CreatorEntity> creatorOpt = creatorRepository.findById(creatorId);
+    Optional<CreatorEntity> creatorOpt = creatorRepository.findByUId(creatorId);
 
     if (creatorOpt.isPresent()) {
         CreatorEntity creator = creatorOpt.get();
         miahoot.setCreator(creator);
-        creatorRepository.findById(creatorId).get().getMiahoots().add(miahoot);
+        creatorRepository.findByUId(creatorId).get().getMiahoots().add(miahoot);
         MiahootEntity savedMiahoot = miahootRepository.save(miahoot);
         return savedMiahoot.getId();
     } else {

@@ -30,8 +30,8 @@ public interface CreatorEndpoint {
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("{id}")
-    CreatorDto getCreator(@PathVariable String id);
+    @GetMapping("{uid}")
+    CreatorDto getCreator(@PathVariable String uid);
 
     @Operation(description = "Création d'une entité Creator")
     @ApiResponse(responseCode = "201", description = "L'entité Creator a bien été créée.")
@@ -55,8 +55,8 @@ public interface CreatorEndpoint {
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @Error400Custom
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PatchMapping("{id}")
-    void updateCreator(@PathVariable final String id,@RequestBody final CreatorDto creatorDto);
+    @PatchMapping("{uid}")
+    void updateCreator(@PathVariable final String uid,@RequestBody final CreatorDto creatorDto);
 
 
 
@@ -65,8 +65,8 @@ public interface CreatorEndpoint {
     @ApiResponse(responseCode = "418", description = "Renvoie une erreur 418 si l'entité n'a pu être supprimée",
             content = @Content(schema = @Schema(implementation = TestEntityNotDeletedErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("{id}")
-    void deleteCreator(@PathVariable String id);
+    @DeleteMapping("{uid}")
+    void deleteCreator(@PathVariable String uid);
 
     @Operation(description = "Vérification d'une entité Creator existe")
     @ApiResponse(responseCode = "201", description = "L'entité Creator a bien été existe.")

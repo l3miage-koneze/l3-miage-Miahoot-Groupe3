@@ -26,7 +26,7 @@ public class MiahootEntity {
     private String nom;
 
     @ManyToOne
-    @JoinColumn(name = "creatorId")
+    @JoinColumn(name = "creatorUId")
     private CreatorEntity creator;
 
 

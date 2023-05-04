@@ -23,13 +23,13 @@ public class CreatorComponent {
     private final CreatorMapper creatorMapper;
 
 
-    public CreatorEntity getCreator(final String id) throws EntityNotFoundException {
-        Optional<CreatorEntity> creOpt = creatorRepository.findById(id);
+    public CreatorEntity getCreator(final String uid) throws EntityNotFoundException {
+        Optional<CreatorEntity> creOpt = creatorRepository.findByUId(uid);
         if (creOpt.isPresent()){
             return creOpt.get();
         }
         else{
-            throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%s] : impossible de récupérer", id), 404l);
+            throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%s] : impossible de récupérer", uid), 404l);
         }
     }
 
@@ -42,7 +42,7 @@ public class CreatorComponent {
             return cre.getId();
         }
         else{
-            if (creatorRepository.findById(creator.getId()).isPresent()){
+            if (creatorRepository.findByUId(creator.getId()).isPresent()){
                 throw new AlreadyExistException(String.format("Le créateur n°[%s] existe déjà en BD.", creator.getId()), 404l);
             }
             else{
@@ -58,7 +58,7 @@ public class CreatorComponent {
 
     public void updateCreator(final String idCreToModify, final CreatorDto creator) throws EntityNotFoundException{
         if (idCreToModify == creator.getId()) {
-            Optional<CreatorEntity> creOpt = creatorRepository.findById(idCreToModify);
+            Optional<CreatorEntity> creOpt = creatorRepository.findByUId(idCreToModify);
             if (creOpt.isPresent()){
                 creatorMapper.mergeCreatorEntity(creOpt.get(), creator);
                 creatorRepository.save(creOpt.get());
@@ -70,15 +70,15 @@ public class CreatorComponent {
     }
 
 
-    public void deleteCreator(final String id) throws EntityNotFoundException {
-        Optional<CreatorEntity> creOpt = creatorRepository.findById(id);
+    public void deleteCreator(final String uid) throws EntityNotFoundException {
+        Optional<CreatorEntity> creOpt = creatorRepository.findByUId(uid);
         if (creOpt.isPresent()) {
-            creatorRepository.deleteById(id);
+            creatorRepository.deleteById(uid);
             for (MiahootEntity miahoot : creOpt.get().getMiahoots()) {
                 miahootRepository.deleteById(miahoot.getId());
             }
         } else {
-            throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), 404l);
+            throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%d] : impossible de supprimer.", uid), 404l);
         }
     }
 

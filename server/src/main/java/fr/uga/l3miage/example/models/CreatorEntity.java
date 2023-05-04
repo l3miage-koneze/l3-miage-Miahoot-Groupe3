@@ -37,14 +37,16 @@ public class CreatorEntity {
     private Collection<MiahootEntity> miahoots;
     */
     @Id
+    private String uid;
+    
+    @Column
     private String id;
 
     @Column
     private String nom;
     @Column
     private String photo;
-    @Column
-    private String uid;
+    
 
     @OneToMany(mappedBy = "creator")
     private Collection<MiahootEntity> miahoots;

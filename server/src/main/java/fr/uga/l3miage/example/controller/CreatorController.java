@@ -18,8 +18,8 @@ public class CreatorController implements CreatorEndpoint{
     private final CreatorService creatorService;
 
     @Override
-    public CreatorDto getCreator(String id){
-        return creatorService.getCreator(id);
+    public CreatorDto getCreator(String uid){
+        return creatorService.getCreator(uid);
     }
 
     @Override
@@ -28,13 +28,13 @@ public class CreatorController implements CreatorEndpoint{
     }
 
     @Override
-    public void updateCreator(String id, CreatorDto creatorDto) {
-        creatorService.updateCreator(id, creatorDto);
+    public void updateCreator(String uid, CreatorDto creatorDto) {
+        creatorService.updateCreator(uid, creatorDto);
     }
 
     @Override
-    public void deleteCreator(String id) {
-        creatorService.deleteCreator(id);
+    public void deleteCreator(String uid) {
+        creatorService.deleteCreator(uid);
     }
 
     @Override
