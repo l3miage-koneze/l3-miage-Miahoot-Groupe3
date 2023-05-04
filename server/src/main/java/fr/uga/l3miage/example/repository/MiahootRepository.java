@@ -15,7 +15,7 @@ public interface MiahootRepository extends JpaRepository<MiahootEntity, Long> {
     List<MiahootEntity> findByName(String nom);
     
     @Query("SELECT m FROM MiahootEntity m WHERE m.creator.id = :creatorId")
-List<MiahootEntity> findByCreatorId(@Param("creatorId") Long creatorId);
+List<MiahootEntity> findByCreatorId(@Param("creatorId") String creatorId);
 
     //ATTENTION !
     /* Les fichiers repository sont vides car les fonctions CRUD sont déjà fournies par

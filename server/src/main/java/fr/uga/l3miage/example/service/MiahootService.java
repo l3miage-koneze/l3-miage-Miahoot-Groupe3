@@ -51,7 +51,7 @@ public class MiahootService {
     }
 
 
-public List<MiahootDto> findByCreatorId(Long creatorId) {
+public List<MiahootDto> findByCreatorId(String creatorId) {
     List<MiahootEntity> miahootEntities = miahootComponent.findByCreatorId(creatorId);
     return miahootEntities.stream()
             .map(miahootMapper::toMiahootDto)
@@ -67,7 +67,7 @@ public List<MiahootDto> findByCreatorId(Long creatorId) {
         }
     }
 */
-public Long createMiahoot(final Long creatorId, final MiahootDto miahootDto){
+public Long createMiahoot(final String creatorId, final MiahootDto miahootDto){
     MiahootEntity newMiahootEntity = miahootMapper.toMiahootEntity(miahootDto);
     try {
         return miahootComponent.createMiahoot(creatorId, newMiahootEntity);

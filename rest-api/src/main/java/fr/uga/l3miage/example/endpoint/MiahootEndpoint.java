@@ -49,7 +49,7 @@ public interface MiahootEndpoint {
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("all")
-    List<MiahootDto> findByCreatorId(@PathVariable Long creatorId);
+    List<MiahootDto> findByCreatorId(@PathVariable String creatorId);
 
     @Operation(description = "Récupérer les DTO de tous les entités Miahoot qui a pour nom celui passé en paramètre")
     @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Miahoot demandée",
@@ -65,7 +65,7 @@ public interface MiahootEndpoint {
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    Long newMiahoot(@PathVariable Long creatorId, @Valid @RequestBody MiahootDto miahootDto) throws Exception;
+    Long newMiahoot(@PathVariable String creatorId, @Valid @RequestBody MiahootDto miahootDto) throws Exception;
 
 
 

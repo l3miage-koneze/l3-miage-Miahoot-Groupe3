@@ -26,12 +26,12 @@ public class MiahootController implements MiahootEndpoint{
     }
 
     @Override
-    public List<MiahootDto> findByCreatorId(Long creatorId){
+    public List<MiahootDto> findByCreatorId(String creatorId){
         return miahootService.findByCreatorId(creatorId);
     }
     
     @Override
-    public Long newMiahoot(Long creatorId, MiahootDto miahootDto) throws Exception {
+    public Long newMiahoot(String creatorId, MiahootDto miahootDto) throws Exception {
         return miahootService.createMiahoot(creatorId,miahootDto);
     }
 

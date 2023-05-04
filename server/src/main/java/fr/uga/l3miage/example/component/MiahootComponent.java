@@ -46,7 +46,7 @@ public class MiahootComponent {
         
     }
 
-    public List<MiahootEntity> findByCreatorId(Long creatorId) {
+    public List<MiahootEntity> findByCreatorId(String creatorId) {
         return miahootRepository.findByCreatorId(creatorId);
     }
 /* 
@@ -89,7 +89,7 @@ public Long createMiahoot(final Long creatorId, final MiahootEntity miahoot) thr
     }
 }
 */
-public Long createMiahoot(final Long creatorId, final MiahootEntity miahoot) throws AlreadyExistException, EntityNotFoundException{
+public Long createMiahoot(final String creatorId, final MiahootEntity miahoot) throws AlreadyExistException, EntityNotFoundException{
     Optional<CreatorEntity> creatorOpt = creatorRepository.findById(creatorId);
 
     if (creatorOpt.isPresent()) {
@@ -98,7 +98,7 @@ public Long createMiahoot(final Long creatorId, final MiahootEntity miahoot) thr
         MiahootEntity savedMiahoot = miahootRepository.save(miahoot);
         return savedMiahoot.getId();
     } else {
-        throw new EntityNotFoundException(String.format("Aucun Creator n'a été trouvé pour l'id°[%d] : impossible de créer le Miahoot", creatorId), creatorId);
+        throw new EntityNotFoundException(String.format("Aucun Creator n'a été trouvé pour l'id°[%s] : impossible de créer le Miahoot", creatorId), 404l);
     }
 }
 
