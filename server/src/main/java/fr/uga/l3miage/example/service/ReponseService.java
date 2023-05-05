@@ -30,8 +30,8 @@ public class ReponseService {
         }
     }
 
-    public List<ReponseDto> getAllReponses() {
-        List<ReponseEntity> reponseEntities = reponseComponent.getAllReponses();
+    public List<ReponseDto> getReponsesByQuestionId(Long questionId) {
+        List<ReponseEntity> reponseEntities = reponseComponent.getReponsesByQuestionId(questionId);
         return reponseEntities.stream()
                 .map(reponseMapper::toReponseDto)
                 .collect(Collectors.toList());
@@ -39,10 +39,10 @@ public class ReponseService {
 
 }
 
-    public Long createReponse(final Long miahootId, final long questionId, final ReponseDto reponseDto) {
+    public Long createReponse(final long questionId, final ReponseDto reponseDto) {
         ReponseEntity newReponseEntity = reponseMapper.toReponseEntity(reponseDto);
         try {
-            return reponseComponent.createReponse(miahootId, questionId, newReponseEntity);
+            return reponseComponent.createReponse(questionId, newReponseEntity);
         } catch (AlreadyExistException ex) {
             throw new AlreadyUseRestException(ERROR_DETECTED,reponseDto.getId(),ex);
         } catch (EntityNotFoundException ex){

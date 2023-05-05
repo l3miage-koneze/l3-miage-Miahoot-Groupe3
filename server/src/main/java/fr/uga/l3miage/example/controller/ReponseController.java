@@ -30,23 +30,29 @@ public class ReponseController implements ReponseEndpoint {
     private final ReponseService reponseService;
 
     @Override
-    public ReponseDto getReponse( Long id) {
+    public ReponseDto getReponse(Long id) {
         return reponseService.getReponse(id);
     }
+    /*
+     * @Override
+     * public List<ReponseDto> getAllReponses(Long questionId) {
+     * return reponseService.getAllReponses(questionId);
+     * }
+     */
 
     @Override
-    public List<ReponseDto> getAllReponses() {
-        return reponseService.getAllReponses();
+    public List<ReponseDto> getReponsesByQuestionId(Long questionId){
+        return reponseService.getReponsesByQuestionId(questionId);
     }
 
     @Override
-    public Long newReponse(Long miahootId, Long questionId, ReponseDto reponseDto) {
-        return reponseService.createReponse(miahootId, questionId, reponseDto);
+    public Long newReponse(Long questionId, ReponseDto reponseDto) {
+        return reponseService.createReponse(questionId, reponseDto);
     }
 
     @Override
     public void updateReponse(Long id, ReponseDto reponseDto) {
-        reponseService.updateReponse(id, reponseDto);
+        reponseService.updateReponse( id, reponseDto);
     }
 
     @Override

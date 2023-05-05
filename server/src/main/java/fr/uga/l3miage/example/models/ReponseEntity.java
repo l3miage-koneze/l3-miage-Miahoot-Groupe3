@@ -19,6 +19,10 @@ public class ReponseEntity {
     @Column
     private String label;
 
+    @ManyToOne
+    @JoinColumn(name = "questionId")
+    private QuestionEntity question;
+
     @Column
     private boolean estValide;
     

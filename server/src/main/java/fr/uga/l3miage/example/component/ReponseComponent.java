@@ -2,6 +2,7 @@ package fr.uga.l3miage.example.component;
 
 import fr.uga.l3miage.example.exception.technical.*;
 import fr.uga.l3miage.example.mapper.ReponseMapper;
+import fr.uga.l3miage.example.models.QuestionEntity;
 import fr.uga.l3miage.example.models.ReponseEntity;
 import fr.uga.l3miage.example.repository.MiahootRepository;
 import fr.uga.l3miage.example.repository.ReponseRepository;
@@ -31,14 +32,14 @@ public class ReponseComponent {
         }
 
     }
-
+/* 
     public List<ReponseEntity> getAllReponses(){
         return reponseRepository.findAll();
 }
 
-    public Long createReponse(Long miahootId, Long questionId, final ReponseEntity reponse) throws AlreadyExistException, EntityNotFoundException {
-        if (miahootRepository.findById(miahootId).isPresent()) {
-            if (questionRepository.findById(questionId).isPresent()) {
+    public Long createReponse(Long questionId, final ReponseEntity reponse) throws AlreadyExistException, EntityNotFoundException {
+        Optional<QuestionEntity> questionOpt = questionRepository.findById(questionId);
+        if (questionRepository.findById(questionId).isPresent()) {
                 if (reponse.getId() == null){
                     questionRepository.findById(questionId).get().getReponses().add(reponse);
                     return reponseRepository.save(reponse).getId();
@@ -55,11 +56,22 @@ public class ReponseComponent {
             else{
                 throw new EntityNotFoundException(String.format("Aucune question n'a été trouvée pour l'id°[%d] : impossible de créer", questionId), questionId);
             }
-        }
-        else{
-            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de créer", miahootId), miahootId);
-        }
     }
+*/
+public Long createReponse(final Long questionId, final ReponseEntity reponse) throws AlreadyExistException, EntityNotFoundException {
+    Optional<QuestionEntity> questionOpt = questionRepository.findById(questionId);
+
+    if (questionOpt.isPresent()) {
+        QuestionEntity question = questionOpt.get();
+        reponse.setQuestion(question);
+        questionRepository.findById(questionId).get().getReponses().add(reponse);
+        ReponseEntity savedReponse = reponseRepository.save(reponse);
+        return savedReponse.getId();
+    } else {
+        throw new EntityNotFoundException(String.format("Aucun question n'a été trouvé pour l'id°[%d] : impossible de créer la question", questionId), questionId);
+    }
+
+}
 
     public void updateReponse(final Long idRepToModify, final ReponseDto reponse) throws EntityNotFoundException{
         if (idRepToModify == reponse.getId()) {
@@ -81,6 +93,10 @@ public class ReponseComponent {
         } else {
             throw new EntityNotFoundException(String.format("Aucune réponse n'a été trouvée pour l'id°[%d] : impossible de supprimer.", id), id);
         }
+    }
+
+    public List<ReponseEntity> getReponsesByQuestionId(Long questionId) {
+        return reponseRepository.findReponsesByQuestionId(questionId);
     }
 
 }

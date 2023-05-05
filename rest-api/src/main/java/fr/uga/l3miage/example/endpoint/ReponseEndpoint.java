@@ -21,7 +21,7 @@ import javax.validation.Valid;
 @Tag(name = "Reponse tag")
 @CrossOrigin
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/question/{questionId}")
 public interface ReponseEndpoint {
 
     @Operation(description = "Récupérer le DTO de l'entité Reponse qui a pour id celui passé en paramètre")
@@ -40,15 +40,15 @@ public interface ReponseEndpoint {
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/reponse/all")
-    List<ReponseDto> getAllReponses();
+    List<ReponseDto> getReponsesByQuestionId(@PathVariable Long questionid);
 
 
     @Operation(description = "Création d'une entité Reponse")
     @ApiResponse(responseCode = "201", description = "L'entité Reponse a bien été créée.")
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/miahoot/id/{miahootId}/question/{questionId}/reponse")
-    Long newReponse(@PathVariable final Long miahootId, @PathVariable final Long questionId, @Valid @RequestBody ReponseDto reponseDto);
+    @PostMapping("/reponse")
+    Long newReponse(@PathVariable final Long questionId, @Valid @RequestBody ReponseDto reponseDto);
 
 
 
