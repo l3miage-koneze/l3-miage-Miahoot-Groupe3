@@ -64,6 +64,7 @@ public Long createReponse(final Long questionId, final ReponseEntity reponse) th
     if (questionOpt.isPresent()) {
         QuestionEntity question = questionOpt.get();
         reponse.setQuestion(question);
+        reponseMapper.toReponseDto(reponse).setQuestionId(questionId);
         questionRepository.findById(questionId).get().getReponses().add(reponse);
         ReponseEntity savedReponse = reponseRepository.save(reponse);
         return savedReponse.getId();
@@ -72,7 +73,7 @@ public Long createReponse(final Long questionId, final ReponseEntity reponse) th
     }
 
 }
-
+/* 
     public void updateReponse(final Long idRepToModify, final ReponseDto reponse) throws EntityNotFoundException{
         if (idRepToModify == reponse.getId()) {
             Optional<ReponseEntity> repOpt = reponseRepository.findById(idRepToModify);
@@ -85,7 +86,50 @@ public Long createReponse(final Long questionId, final ReponseEntity reponse) th
         } //else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%d]) est différent de l'id de la question à remplacer([%lu])", reponse.getId(), idRepToModify), reponse.getId(), idRepToModify);
     }
 
+*/
 
+/* 
+public void updateReponse(final Long idRepoToModify, final ReponseDto reponseDto) throws EntityNotFoundException{
+    if (idRepoToModify == reponseDto.getId()) {
+        Optional<ReponseEntity> repoOpt = reponseRepository.findById(idRepoToModify);
+        if (repoOpt.isPresent()) {
+            ReponseEntity existingReponseEntity = repoOpt.get();
+            reponseMapper.mergeReponsenEntity(repoOpt.get(), reponseDto);
+             // Get questionId from ReponseDto and find the associated QuestionEntity
+        Long questionId = reponseDto.getQuestionId();
+        QuestionEntity questionEntity = questionRepository.findById(questionId)
+            .orElseThrow(() -> new EntityNotFoundException(String.format("Aucun Question n'a été trouvé pour l'id°[%d] : impossible de modifier.", questionId), questionId));
+            reponseRepository.save(repoOpt.get());
+            existingReponseEntity.setQuestion(questionEntity);
+        questionRepository.findById(questionId).get().getReponses().add(existingReponseEntity);
+        reponseRepository.save(existingReponseEntity); // Save the existingQuestionEntity again after setting the MiahootEntity
+        } else {
+            throw new EntityNotFoundException(String.format("Aucune reponse n'a été trouvée pour l'id°[%d] : impossible de modifier.", idRepoToModify), idRepoToModify);
+        }
+    } 
+
+}
+*/
+public void updateReponse(final Long idReponseToModify, final ReponseDto reponse) throws EntityNotFoundException{
+    if (idReponseToModify == reponse.getId()) {
+        Optional<ReponseEntity> reponseOpt = reponseRepository.findById(idReponseToModify);
+        if (reponseOpt.isPresent()) {
+            ReponseEntity existingReponseEntity = reponseOpt.get();
+            reponseMapper.mergeReponseEntity(reponseOpt.get(), reponse);
+             // Get questionId from ReponseDto and find the associated QuestionEntity
+        Long questionId = reponse.getQuestionId();
+        QuestionEntity questionEntity = questionRepository.findById(questionId)
+            .orElseThrow(() -> new EntityNotFoundException(String.format("Aucun Question n'a été trouvé pour l'id°[%d] : impossible de modifier.", questionId), questionId));
+            reponseRepository.save(reponseOpt.get());
+            existingReponseEntity.setQuestion(questionEntity);
+            questionRepository.findById(questionId).get().getReponses().add(existingReponseEntity);
+            reponseRepository.save(existingReponseEntity); // Save the existingQuestionEntity again after setting the MiahootEntity
+        } else {
+            throw new EntityNotFoundException(String.format("Aucune reponse n'a été trouvée pour l'id°[%d] : impossible de modifier.", idReponseToModify), idReponseToModify);
+        }
+    } //else throw new NotTheSameIdException(String.format("L'id de la question remplaçante([%d]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
+
+}
     public void deleteReponse(final Long id) throws EntityNotFoundException {
         Optional<ReponseEntity> repOpt = reponseRepository.findById(id);
         if (repOpt.isPresent()) {

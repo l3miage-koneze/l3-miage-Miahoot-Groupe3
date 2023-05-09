@@ -14,5 +14,8 @@ import lombok.NonNull;
 public interface ReponseMapper {
     ReponseDto toReponseDto(ReponseEntity updated);
     ReponseEntity toReponseEntity(@Valid ReponseDto reponseDto);
-    void mergeReponseEntity(@MappingTarget @NonNull ReponseEntity reponseEntity, ReponseDto reponseDto);
+    //void mergeReponseEntity(@MappingTarget @NonNull ReponseEntity reponseEntity, ReponseDto reponseDto);
+    void mergeReponsenEntity(@MappingTarget @NonNull ReponseEntity reponseEntity, ReponseDto reponseDto);
+    void mergeReponseEntity(@MappingTarget @NonNull ReponseEntity existingReponseEntity, ReponseEntity reponseEntity);
+    void mergeReponseEntity(@MappingTarget @NonNull ReponseEntity existingReponseEntity, ReponseDto reponse);
 }

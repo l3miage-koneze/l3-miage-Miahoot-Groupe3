@@ -44,7 +44,7 @@ public class QuestionController implements QuestionEndpoint {
     }
 
     @Override
-    public List<QuestionDto> getQuestionsByMiahootId(Long miahootId) {
+    public Collection<QuestionDto> getQuestionsByMiahootId(Long miahootId) {
         return questionService.getQuestionsByMiahootId(miahootId);
     }
 }

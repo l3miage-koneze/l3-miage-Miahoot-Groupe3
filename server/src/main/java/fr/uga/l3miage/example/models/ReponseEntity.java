@@ -3,6 +3,8 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+
+import java.util.Collection;
 import java.util.Objects;
 
 @Getter
@@ -19,7 +21,7 @@ public class ReponseEntity {
     @Column
     private String label;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "questionId")
     private QuestionEntity question;
 
@@ -30,7 +32,7 @@ public class ReponseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        TestEntity that = (TestEntity) o;
+        ReponseEntity that = (ReponseEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 
@@ -38,4 +40,5 @@ public class ReponseEntity {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

@@ -19,4 +19,5 @@ public interface QuestionMapper {
     QuestionDto toQuestionDto (QuestionEntity updated);
     QuestionEntity toQuestionEntity(@Valid QuestionDto questionDto);
     void mergeQuestionEntity(@MappingTarget @NonNull QuestionEntity questionEntity, QuestionDto question);
+    void mergeQuestionEntity(@MappingTarget @NonNull QuestionEntity existingQuestionEntity, QuestionEntity updatedQuestionEntity);
 }
