@@ -85,6 +85,24 @@ public void updateQuestion(final Long idQuestionToModify, final QuestionDto ques
         Optional<QuestionEntity> questionOpt = questionRepository.findById(idQuestionToModify);
         if (questionOpt.isPresent()) {
             QuestionEntity existingQuestionEntity = questionOpt.get();
+            
+            // Only update the label
+            existingQuestionEntity.setLabel(questionDto.getLabel());
+
+            // Save the updated question
+            questionRepository.save(existingQuestionEntity);
+        } else {
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de modifier.", idQuestionToModify), idQuestionToModify);
+        }
+    }
+}
+
+/* 
+public void updateQuestion(final Long idQuestionToModify, final QuestionDto questionDto) throws EntityNotFoundException {
+    if (idQuestionToModify.equals(questionDto.getId())) {
+        Optional<QuestionEntity> questionOpt = questionRepository.findById(idQuestionToModify);
+        if (questionOpt.isPresent()) {
+            QuestionEntity existingQuestionEntity = questionOpt.get();
             questionMapper.mergeQuestionEntity(questionOpt.get(), questionDto);
             // récupérer tous les réponses de ce question
             Collection<ReponseEntity> existingReponses = existingQuestionEntity.getReponses();
@@ -93,7 +111,6 @@ public void updateQuestion(final Long idQuestionToModify, final QuestionDto ques
             Long miahootId = questionDto.getMiahootId();
             MiahootEntity miahootEntity = miahootRepository.findById(miahootId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de modifier.", miahootId), miahootId));
-                questionRepository.save(questionOpt.get());
             // mettre à jour les reponses
             for (ReponseDto reponseDto : questionDto.getReponses()) {
                 ReponseEntity reponseEntity = reponseMapper.toReponseEntity(reponseDto);
@@ -117,13 +134,14 @@ public void updateQuestion(final Long idQuestionToModify, final QuestionDto ques
             // Merge other fields of the QuestionEntity
             existingQuestionEntity.setMiahoot(miahootEntity);
             miahootRepository.findById(miahootId).get().getQuestions().add(existingQuestionEntity);
-            questionMapper.mergeQuestionEntity(existingQuestionEntity, questionDto);
+            questionMapper.mergeQuestionEntityWithoutReponses(existingQuestionEntity, questionDto);
             questionRepository.save(existingQuestionEntity);
         } else {
             throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de modifier.", idQuestionToModify), idQuestionToModify);
         }
     }
 }
+*/
 /* 
     public void updateQuestion(final Long idQuesToModify, final QuestionDto question) throws EntityNotFoundException{
         if (idQuesToModify == question.getId()) {

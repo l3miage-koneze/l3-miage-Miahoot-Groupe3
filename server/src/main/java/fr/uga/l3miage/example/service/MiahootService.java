@@ -103,20 +103,11 @@ public Long createMiahoot(final String creatorId, final MiahootDto miahootDto){
 public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahootDto) {
     if (Objects.equals(idMiaToModify, miahootDto.getId())) {
         
-        for (QuestionDto questionDto : miahootDto.getQuestions()) {
             try {
-                
-                QuestionEntity existingQuestionEntity = questionComponent.getQuestion(questionDto.getId());
-                LOGGER.info("Existing Question Entity: {}", existingQuestionEntity);
-                QuestionEntity updatedQuestionEntity = questionMapper.toQuestionEntity(questionDto);
-                LOGGER.info("Updated Question Entity: {}", updatedQuestionEntity);
-                questionMapper.mergeQuestionEntity(existingQuestionEntity, updatedQuestionEntity);
                 miahootComponent.updateMiahoot(idMiaToModify,miahootDto);
             } catch (EntityNotFoundException ex) {
-                LOGGER.error("Question with ID {} not found. Error: {}", questionDto.getId(), ex.getMessage());
-                throw new EntityNotFoundRestException(String.format("Aucune question n'a été trouvée pour l'id [%d] : impossible de récupérer", questionDto.getId()), questionDto.getId());
+                throw new EntityNotFoundRestException(String.format("Aucune question n'a été trouvée pour l'id [%d] : impossible de récupérer", idMiaToModify), idMiaToModify);
             }
-        }
     } else {
         throw new NotTheSameIdRestException(String.format("L'id du Miahoot remplaçant([%d]) est différent de l'id du Miahoot à remplacer([%d])", miahootDto.getId(), idMiaToModify), miahootDto.getId(), idMiaToModify);
     }

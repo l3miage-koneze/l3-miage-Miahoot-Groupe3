@@ -42,9 +42,6 @@ public class MiahootController implements MiahootEndpoint{
     @Override
     public void updateMiahoot(Long id, MiahootDto miahootDto) {
         miahootService.updateMiahoot(id, miahootDto);
-        for (QuestionDto questionDto : miahootDto.getQuestions()) {
-            questionService.updateQuestion(questionDto.getId(), questionDto);
-        }
     }
 
     @Override

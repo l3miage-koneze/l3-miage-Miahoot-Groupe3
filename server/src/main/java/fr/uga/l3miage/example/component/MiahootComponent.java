@@ -106,7 +106,24 @@ public Long createMiahoot(final String creatorId, final MiahootEntity miahoot) t
         throw new EntityNotFoundException(String.format("Aucun Creator n'a été trouvé pour l'id°[%s] : impossible de créer le Miahoot", creatorId), 404l);
     }
 }
+public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) throws EntityNotFoundException {
+    if (idMiaToModify.equals(miahoot.getId())) {
+        Optional<MiahootEntity> miaOpt = miahootRepository.findById(idMiaToModify);
+        if (miaOpt.isPresent()) {
+            MiahootEntity existingMiahootEntity = miaOpt.get();
 
+            // Only update the label
+            existingMiahootEntity.setNom(miahoot.getNom());
+
+            // Save the updated Miahoot
+            miahootRepository.save(existingMiahootEntity);
+        } else {
+            throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de modifier.", idMiaToModify), idMiaToModify);
+        }
+    }
+}
+
+/* 
 public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) throws EntityNotFoundException {
     if (idMiaToModify.equals(miahoot.getId())) {
         Optional<MiahootEntity> miaOpt = miahootRepository.findById(idMiaToModify);
@@ -144,7 +161,7 @@ public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) th
         }
     }
 }
-
+*/
 
 /* 
     public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) throws EntityNotFoundException{
