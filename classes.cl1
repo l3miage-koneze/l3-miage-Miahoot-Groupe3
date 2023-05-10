@@ -1,0 +1,77 @@
+-- THIS FILE IS GENERATED. DON'T TOUCH IT!!!
+
+model M
+
+enum Status {
+}
+
+class Miahoot
+    attributes
+        nom : String
+end
+
+class Question
+    attributes
+        label : String
+end
+
+class Reponse
+    attributes
+        label : String
+        estValide : Boolean
+end
+
+class Utilisateur
+end
+
+class Vote
+end
+
+class Partie
+    attributes
+        dateTime : String
+        status : Status
+end
+
+association ACree
+    between
+        Miahoot[1..*] role miahootsCrees
+        Utilisateur[1] role concepteur
+end
+
+association FaitPartieDe
+    between
+        Question[*] role questions
+        Miahoot[1] role miahoot
+end
+
+association EstReponseA
+    between
+        Reponse[*] role reponses
+        Question[1] role question
+end
+
+association CorrespondA
+    between
+        Reponse[1] role reponse
+        Vote[0..*] role votes
+end
+
+association ParticipeA
+    between
+        Partie[0..*] role parties
+        Utilisateur[1] role participant
+end
+
+association Contient
+    between
+        Partie[1] role partie
+        Vote[0..*] role 
+end
+
+association ASoumis
+    between
+        Utilisateur[1..*] role participants
+        Vote[0..*] role votes
+end
+
