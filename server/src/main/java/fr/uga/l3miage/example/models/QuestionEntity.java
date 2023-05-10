@@ -25,13 +25,13 @@ public class QuestionEntity {
     @Column
     private String label;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "miahootId")
     private MiahootEntity miahoot;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<ReponseEntity> reponses;
-    
+
     public Collection<ReponseEntity> getReponses(){
         return reponses;
     }
@@ -39,7 +39,7 @@ public class QuestionEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        TestEntity that = (TestEntity) o;
+        QuestionEntity that = (QuestionEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

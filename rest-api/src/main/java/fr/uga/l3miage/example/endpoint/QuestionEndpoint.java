@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.*;
 
 @Tag(name = "Question tag")
 @CrossOrigin
@@ -49,7 +49,7 @@ public interface QuestionEndpoint {
             content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/question/all")
-    List<QuestionDto> getQuestionsByMiahootId(@PathVariable Long miahootId);
+    Collection<QuestionDto> getQuestionsByMiahootId(@PathVariable Long miahootId);
 
     @Operation(description = "Création d'une entité Question")
     @ApiResponse(responseCode = "201", description = "L'entité Question a bien été créée.")

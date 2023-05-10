@@ -2,11 +2,11 @@ package fr.uga.l3miage.example.models;
 
 import lombok.*;
 
-import org.hibernate.Hibernate;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
 
 import javax.persistence.*;
+
+import org.hibernate.Hibernate;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -33,7 +33,7 @@ public class MiahootEntity {
     @OneToMany()
     private Collection<ParticipantEntity> participants;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "miahoot", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<QuestionEntity> questions;
 
     public Collection<QuestionEntity> getQuestions(){
@@ -50,7 +50,7 @@ public class MiahootEntity {
             return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
             return false;
-        TestEntity that = (TestEntity) o;
+        MiahootEntity that = (MiahootEntity) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

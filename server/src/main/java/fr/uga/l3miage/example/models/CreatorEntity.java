@@ -23,19 +23,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreatorEntity {
-    /* 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-
-    @Column
-    private String nom;
-    @Column
-    private String photo;
-
-    @OneToMany(mappedBy = "creator")
-    private Collection<MiahootEntity> miahoots;
-    */
     @Id
     private String uid;
     

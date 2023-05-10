@@ -49,10 +49,10 @@ public class QuestionService {
             try {
                 questionComponent.updateQuestion(idQuesToModify,question);
             } catch (EntityNotFoundException ex) {
-                throw new EntityNotFoundRestException(String.format("Aucune question n'a  été trouvé pour l'Id : Impossible de modifier",idQuesToModify),idQuesToModify);
+                throw new EntityNotFoundRestException(String.format("Aucune question n'a  été trouvé pour l'Id ([%d]): Impossible de modifier",idQuesToModify),idQuesToModify);
             }
         }else{
-            throw new NotTheSameIdRestException(String.format("L'id de la question remplaçante([%lu]) est différent de l'id de la question à remplacer([%lu])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
+            throw new NotTheSameIdRestException(String.format("L'id de la question remplaçante([%d]) est différent de l'id de la question à remplacer([%d])", question.getId(), idQuesToModify), question.getId(), idQuesToModify);
         }
 
     }
@@ -65,8 +65,9 @@ public class QuestionService {
             throw new EntityNotFoundRestException(String.format("Aucune question n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
         }
     }
-    public List<QuestionDto> getQuestionsByMiahootId(Long miahootId) {
-        List<QuestionEntity> questionEntities = questionComponent.getQuestionsByMiahootId(miahootId);
+    public Collection<QuestionDto> getQuestionsByMiahootId(Long miahootId) {
+        Collection<QuestionEntity> questionEntities = questionComponent.getQuestionsByMiahootId(miahootId);
+        System.out.println("QuestionEntities: " + questionEntities);
         return questionEntities.stream()
                 .map(questionMapper::toQuestionDto)
                 .collect(Collectors.toList());
