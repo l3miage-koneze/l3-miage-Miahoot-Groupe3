@@ -1,0 +1,43 @@
+-- THIS FILE IS GENERATED. DON'T TOUCH IT!!!
+
+-- state état1
+
+! create uml : Miahoot
+!     uml.nom := 'uml'
+
+! create q2 : Question
+!     q2.label := 'combien une association a-t-elle de rôle au maximum ?'
+
+! create q1 : Question
+!     q1.label := 'une classe associative est une classe'
+
+! create r12 : Reponse
+!     r12.label := 'faux'
+!     r12.estValide := false
+
+! create r11 : Reponse
+!     r11.label := 'vrai'
+!     r11.estValide := true
+
+! create r22 : Reponse
+!     r22.label := '2'
+!     r22.estValide := true
+
+! create r21 : Reponse
+!     r21.label := '1'
+!     r21.estValide := false
+
+! create r23 : Reponse
+!     r23.estValide := false
+!     r23.label := '3'
+
+
+! insert(q2,uml) into FaitPartieDe
+! insert(q1,uml) into FaitPartieDe
+! insert(r12,q1) into EstReponseA
+! insert(r11,q1) into EstReponseA
+! insert(r22,q2) into EsReponseA
+! insert(r21,q2) into EstReponseA
+! insert(r23,q2) into EstReponseA
+
+check -v -d

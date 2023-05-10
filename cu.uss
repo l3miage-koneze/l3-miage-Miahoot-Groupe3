@@ -1,0 +1,22 @@
+-- THIS FILE IS GENERATED. DON'T TOUCH IT!!!
+
+model M
+
+actor Présentateur
+actor Concepteur
+actor Participant
+actor Enseignant
+
+usecase CreerUnMiahoot
+usecase ModifierUnMiahoot
+usecase PrésenterUnMiahoot
+usecase ParticiperAUnMiahoot
+usecase SupprimerUnMiahoot
+
+interactions 
+    un Concepteur peut CreerUnMiahoot
+    un Présentateur peut ModifierUnMiahoot
+    un Présentateur peut PrésenterUnMiahoot
+    un Concepteur peut ModifierUnMiahoot
+    un Concepteur peut SupprimerUnMiahoot
+    un Participant peut ParticiperAUnMiahoot
