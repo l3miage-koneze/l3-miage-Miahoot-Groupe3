@@ -186,10 +186,11 @@ public void updateMiahoot(final Long idMiaToModify, final MiahootDto miahoot) th
     public void deleteMiahoot(final Long id) throws EntityNotFoundException {
         Optional<MiahootEntity> miaOpt = miahootRepository.findById(id);
         if (miaOpt.isPresent()) {
-            miahootRepository.deleteById(id);
+           
             for (QuestionEntity question : miaOpt.get().getQuestions()) {
                 questionRepository.deleteById(question.getId());
             }
+            miahootRepository.deleteById(id);
         } else {
             throw new EntityNotFoundException(String.format("Aucun Miahoot n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), id);
         }

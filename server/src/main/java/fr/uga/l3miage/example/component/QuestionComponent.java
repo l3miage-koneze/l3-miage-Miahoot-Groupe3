@@ -186,10 +186,11 @@ public void updateQuestion(final Long idQuestionToModify, final QuestionDto ques
     public void deleteQuestion(final Long id) throws EntityNotFoundException {
         Optional<QuestionEntity> quesOpt = questionRepository.findById(id);
         if (quesOpt.isPresent()) {
-            questionRepository.deleteById(id);
+            
             for (ReponseEntity reponse : quesOpt.get().getReponses()) {
                 reponseRepository.deleteById(reponse.getId());
             }
+            questionRepository.deleteById(id);
         } else {
             throw new EntityNotFoundException(String.format("Aucune question n'a été trouvé pour l'id°[%d] : impossible de supprimer.", id), id);
         }
