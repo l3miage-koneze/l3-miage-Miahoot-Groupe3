@@ -18,6 +18,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MiahootEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,10 +30,6 @@ public class MiahootEntity {
     @JoinColumn(name = "creatorUId")
     private CreatorEntity creator;
 
-
-    @OneToMany()
-    private Collection<ParticipantEntity> participants;
-
     @OneToMany(mappedBy = "miahoot", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<QuestionEntity> questions;
 
@@ -40,9 +37,6 @@ public class MiahootEntity {
         return questions;
     }
 
-    public Collection<ParticipantEntity> getParticipants(){
-        return participants;
-    }
 
     @Override
     public boolean equals(Object o) {

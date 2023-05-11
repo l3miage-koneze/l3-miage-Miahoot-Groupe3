@@ -32,16 +32,6 @@ public interface MiahootEndpoint {
     @GetMapping("id/{id}")
     MiahootDto getMiahoot(@PathVariable Long id);
 
-
-    @Operation(description = "Récupérer les DTO de tous les entités Miahoot")
-    @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Miahoot",
-            content = @Content(schema = @Schema(implementation = MiahootDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
-    @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
-            content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("all/all")
-    Collection<MiahootDto> getAllMiahoots();
-
     @Operation(description = "Récupérer les DTO de tous les entités Miahoot")
     @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Miahoot",
             content = @Content(schema = @Schema(implementation = MiahootDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))

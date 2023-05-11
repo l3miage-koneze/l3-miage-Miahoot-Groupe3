@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReponseRepository extends JpaRepository<ReponseEntity, Long> {
+
     List<ReponseEntity> findReponsesByQuestionId(Long questionId);
+    
     //ATTENTION !
     /* Les fichiers repository sont vides car les fonctions CRUD sont déjà fournies par
     JpaRepository, qui hérite lui même de CRUDRepository. (getById, deleteById...)

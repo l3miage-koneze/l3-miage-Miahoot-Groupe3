@@ -18,6 +18,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,6 +36,7 @@ public class QuestionEntity {
     public Collection<ReponseEntity> getReponses(){
         return reponses;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

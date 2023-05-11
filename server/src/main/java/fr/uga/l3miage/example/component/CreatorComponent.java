@@ -9,7 +9,6 @@ import fr.uga.l3miage.example.repository.CreatorRepository;
 import fr.uga.l3miage.example.response.CreatorDto;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -23,6 +22,9 @@ public class CreatorComponent {
     private final CreatorMapper creatorMapper;
 
 
+    /*
+     * Récupérer un creator par uid
+     */
     public CreatorEntity getCreator(final String uid) throws EntityNotFoundException {
         Optional<CreatorEntity> creOpt = creatorRepository.findByUId(uid);
         if (creOpt.isPresent()){
@@ -33,8 +35,10 @@ public class CreatorComponent {
         }
     }
 
+    /*
+     * Créer un nouvel creator
+     */
     public String createCreator(final CreatorEntity creator) throws AlreadyExistException {
-
         if (creator.getId() == ""){
             CreatorEntity cre = creatorRepository.save(creator);
             System.out.println("Créateur created");
@@ -49,13 +53,18 @@ public class CreatorComponent {
                 return creatorRepository.save(creator).getId();
             }
         }
-
     }
 
+    /*
+     * Vérifier si le creator avec uid donnée existe ou pas
+     */
     public boolean checkIfCreatorExists(String uid) {
         return creatorRepository.existsByUid(uid);
     }
 
+    /*
+     * Mettre à jour un creator
+     */
     public void updateCreator(final String idCreToModify, final CreatorDto creator) throws EntityNotFoundException{
         if (idCreToModify == creator.getId()) {
             Optional<CreatorEntity> creOpt = creatorRepository.findByUId(idCreToModify);
@@ -66,10 +75,13 @@ public class CreatorComponent {
             else{
                 throw new EntityNotFoundException(String.format("Aucun créateur n'a été trouvé pour l'id°[%s] : impossible de modifier.", idCreToModify), 404l);
             }
-        } //else throw new NotTheSameIdException(String.format("L'id du Miahoot remplaçant([%d]) est différent de l'id du Miahoot à remplacer([%d])", miahoot.getId(), idMiaToModify), miahoot.getId(), idMiaToModify);
+        } 
     }
 
 
+    /*
+     * Supprimer un creator avec l'uid donnée
+     */
     public void deleteCreator(final String uid) throws EntityNotFoundException {
         Optional<CreatorEntity> creOpt = creatorRepository.findByUId(uid);
         if (creOpt.isPresent()) {

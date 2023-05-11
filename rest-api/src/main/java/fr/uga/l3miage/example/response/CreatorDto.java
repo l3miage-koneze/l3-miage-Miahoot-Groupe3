@@ -20,7 +20,7 @@ public class CreatorDto {
     @Schema(description = "Creator nom")
     private String nom;
 
-    @Schema(description = "Creator PP")
+    @Schema(description = "Creator Photo")
     private String photo;
 
     @Schema(description = "Creator uid")

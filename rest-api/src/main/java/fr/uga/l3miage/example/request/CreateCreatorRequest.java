@@ -1,7 +1,6 @@
 package fr.uga.l3miage.example.request;
 
 import java.util.Collection;
-import java.util.List;
 
 import fr.uga.l3miage.example.response.MiahootDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,7 +17,7 @@ public class CreateCreatorRequest {
     @Schema(description = "Creator nom")
     private String nom;
 
-    @Schema(description = "Creator PP")
+    @Schema(description = "Creator Photo")
     private String photo;
 
     @Schema(description = "Liste de miahoots")

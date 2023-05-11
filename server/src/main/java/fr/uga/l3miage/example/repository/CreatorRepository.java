@@ -10,9 +10,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CreatorRepository extends JpaRepository<CreatorEntity, Long> {
+
     @Query("SELECT c FROM CreatorEntity c WHERE c.uid LIKE %:uid%")
     Optional<CreatorEntity> findByUId(String uid);
 
     void deleteById(String id);
+    
     boolean existsByUid(String uid);
 }

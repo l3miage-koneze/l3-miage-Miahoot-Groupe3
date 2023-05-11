@@ -24,6 +24,7 @@ public class CreatorService {
     private static final String ERROR_DETECTED = "Une erreur lors de la création de l'entité TestConfigWithProperties à été détecté.";
     private final CreatorComponent creatorComponent;
     private final CreatorMapper creatorMapper;
+
     public CreatorDto getCreator(final String id){
         try {
             return creatorMapper.toCreatorDto(creatorComponent.getCreator(id));
@@ -67,6 +68,7 @@ public class CreatorService {
     public boolean checkIfCreatorExists(String uid) {
         return creatorComponent.checkIfCreatorExists(uid);
     }
+    
     @Transactional
     public void deleteCreator(final String id){
         try {

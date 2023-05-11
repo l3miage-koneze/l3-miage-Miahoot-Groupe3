@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/creator/")
 public interface CreatorEndpoint {
 
-    @Operation(description = "Récupérer le DTO de l'entité Creator qui a pour id celui passé en paramètre")
+    @Operation(description = "Récupérer le DTO de l'entité Creator qui a pour uid celui passé en paramètre")
     @ApiResponse(responseCode = "200", description = "Renvoie le DTO de l'entité Creator demandée",
             content = @Content(schema = @Schema(implementation = CreatorDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
@@ -41,7 +41,7 @@ public interface CreatorEndpoint {
     String newCreator(@Valid @RequestBody CreatorDto creatorDto) throws Exception;
 
 
-    @Operation(description = "Création d'une entité Creator")
+    @Operation(description = "Création d'une entité Creator lié au uid")
     @ApiResponse(responseCode = "201", description = "L'entité Creator a bien été créée.")
     @Error400Custom
     @ResponseStatus(HttpStatus.CREATED)

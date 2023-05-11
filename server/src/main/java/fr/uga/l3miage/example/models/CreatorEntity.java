@@ -31,6 +31,7 @@ public class CreatorEntity {
 
     @Column
     private String nom;
+    
     @Column
     private String photo;
     

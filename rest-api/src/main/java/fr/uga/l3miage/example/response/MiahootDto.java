@@ -2,9 +2,6 @@ package fr.uga.l3miage.example.response;
 
 import java.util.Collection;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +22,7 @@ public class MiahootDto {
     
     @Schema(description = "Miahoot creator")
     private CreatorDto creatorDto;
+    
     @Schema(description = "Liste de questions")
     private Collection<QuestionDto> questions;
 

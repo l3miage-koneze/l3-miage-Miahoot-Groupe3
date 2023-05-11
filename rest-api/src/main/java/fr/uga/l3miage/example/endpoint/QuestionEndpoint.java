@@ -3,9 +3,7 @@ package fr.uga.l3miage.example.endpoint;
 import fr.uga.l3miage.example.annotations.Error400Custom;
 import fr.uga.l3miage.example.error.TestEntityNotDeletedErrorResponse;
 import fr.uga.l3miage.example.error.TestNotFoundErrorResponse;
-import fr.uga.l3miage.example.response.MiahootDto;
 import fr.uga.l3miage.example.response.QuestionDto;
-import fr.uga.l3miage.example.response.Test;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,17 +30,8 @@ public interface QuestionEndpoint {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/question/{id}")
     QuestionDto getQuestion(@PathVariable Long id);
-/* 
-    @Operation(description = "Récupérer les DTO de tous les entités Questions")
-    @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Question",
-            content = @Content(schema = @Schema(implementation = QuestionDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
-    @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
-            content = @Content(schema = @Schema(implementation = TestNotFoundErrorResponse.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/all")
-    List<QuestionDto> getAllQuestions();
-*/
-@Operation(description = "Récupérer les DTO de tous les entités Questions")
+
+    @Operation(description = "Récupérer les DTO de tous les entités Questions qui a pour id de Miahoot celui passé en paramètre")
     @ApiResponse(responseCode = "200", description = "Renvoie les DTO de tous les entités Question",
             content = @Content(schema = @Schema(implementation = QuestionDto.class),mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
@@ -58,8 +47,6 @@ public interface QuestionEndpoint {
     @PostMapping("/question")
     Long newQuestion(@PathVariable Long miahootId, @Valid @RequestBody QuestionDto questionDto);
 
-
-
     @Operation(description = "Mise à jour d'une entité Question")
     @ApiResponse(responseCode = "202", description = "L'entité à bien été mise à jour")
     @ApiResponse(responseCode = "404", description = "Renvoie une erreur 404 si l'entité n'est pas trouvée",
@@ -68,8 +55,6 @@ public interface QuestionEndpoint {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("/question/{id}")
     void updateQuestion(@PathVariable final Long id,@RequestBody final QuestionDto questionDto);
-
-
 
     @Operation(description = "Suppression d'une entité Question en bd")
     @ApiResponse(responseCode = "200", description = "L'entité a bien été supprimée")

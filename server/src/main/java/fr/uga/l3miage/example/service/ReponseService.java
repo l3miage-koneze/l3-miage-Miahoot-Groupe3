@@ -21,12 +21,12 @@ public class ReponseService {
     private final ReponseComponent reponseComponent;
     private final ReponseMapper reponseMapper;
 
-
-    public ReponseDto getReponse(final Long id)  {
+    public ReponseDto getReponse(final Long id) {
         try {
             return reponseMapper.toReponseDto(reponseComponent.getReponse(id));
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundRestException(String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
+            throw new EntityNotFoundRestException(
+                    String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de récupérer", id), id);
         }
     }
 
@@ -36,42 +36,44 @@ public class ReponseService {
                 .map(reponseMapper::toReponseDto)
                 .collect(Collectors.toList());
 
-
-}
+    }
 
     public Long createReponse(final long questionId, final ReponseDto reponseDto) {
         ReponseEntity newReponseEntity = reponseMapper.toReponseEntity(reponseDto);
         try {
             return reponseComponent.createReponse(questionId, newReponseEntity);
         } catch (AlreadyExistException ex) {
-            throw new AlreadyUseRestException(ERROR_DETECTED,reponseDto.getId(),ex);
-        } catch (EntityNotFoundException ex){
-            throw new EntityNotFoundRestException(ERROR_DETECTED,reponseDto.getId(),ex);
+            throw new AlreadyUseRestException(ERROR_DETECTED, reponseDto.getId(), ex);
+        } catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundRestException(ERROR_DETECTED, reponseDto.getId(), ex);
         }
     }
 
-
-    public void updateReponse(final Long idRepoToModify,final ReponseDto reponse){
-        if (idRepoToModify == reponse.getId()){
+    public void updateReponse(final Long idRepoToModify, final ReponseDto reponse) {
+        if (idRepoToModify == reponse.getId()) {
             try {
-                reponseComponent.updateReponse(idRepoToModify,reponse);
+                reponseComponent.updateReponse(idRepoToModify, reponse);
             } catch (EntityNotFoundException ex) {
-                throw new EntityNotFoundRestException(String.format("Aucune reponse n'a  été trouvé pour l'Id : Impossible de modifier",idRepoToModify),idRepoToModify);
+                throw new EntityNotFoundRestException(String
+                        .format("Aucune reponse n'a  été trouvé pour l'Id : Impossible de modifier", idRepoToModify),
+                        idRepoToModify);
             }
-        }else{
-            throw new NotTheSameIdRestException(String.format("L'id de la reponse remplaçante([%lu]) est différent de l'id de la reponse à remplacer([%lu])", reponse.getId(), idRepoToModify), reponse.getId(), idRepoToModify);
+        } else {
+            throw new NotTheSameIdRestException(String.format(
+                    "L'id de la reponse remplaçante([%d]) est différent de l'id de la reponse à remplacer([%d])",
+                    reponse.getId(), idRepoToModify), reponse.getId(), idRepoToModify);
         }
 
     }
 
     @Transactional
-    public void deleteReponse(final Long id){
+    public void deleteReponse(final Long id) {
         try {
             reponseComponent.deleteReponse(id);
         } catch (EntityNotFoundException ex) {
-            throw new EntityNotFoundRestException(String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
+            throw new EntityNotFoundRestException(
+                    String.format("Aucune reponse n'a été trouvé pour l'id°[%lu] : impossible de supprimer.", id), id);
         }
     }
-
 
 }
